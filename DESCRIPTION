@@ -1,0 +1,18 @@
+Package: RColetum
+Type: Package
+Title: Access data from Coletum API
+Version: 0.1.0
+Date: 2018-01-12
+Author: André Inacio Smaniotto
+Maintainer: GeoSapiens <geosapiens@geosapiens.com.br>
+Description: Get your data (forms, schemas, answers) from Coletum 
+    <https://coletum.com> to handle and analyse.
+License: What license is it under???
+URL: https://github.com/geo-sapiens/RColetum
+Encoding: UTF-8
+LazyData: true
+Imports:
+    httr, 
+    jsonlite,
+    magrittr
+RoxygenNote: 6.0.1
