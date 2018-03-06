@@ -12,10 +12,11 @@
 
 GetForms <- function(token, idUser) {
   #### TODO: Adjust conform right URL ####
-  #### TODO: Send token and idUser together in the request ####
+  #### TODO: Send token together in the request ####
   # Temporary url
-  ## To account 1 to the current account connected by URL
-  url <- "http://XXX.XXX.X.XX/app_dev.php/api/test/account/1/graphql"
+  url <- paste0("http://XXX.XXX.X.XX/app_dev.php/api/test/account/",
+                idUser,
+                "/graphql")
 
   query <- "{
       forms{
