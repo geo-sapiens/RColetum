@@ -66,7 +66,7 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   #### TODO: Check errors with in the API documentation ####
   # Catch some specific error
   switch(
-    toString(resp$status_code),
+    toString(answer_definition$status_code),
     '404' = stop(
       paste0('Error 404: Something went wrong.',
              ' If the problem persist, please, contact us.')
@@ -86,8 +86,8 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   answer_definition <- jsonlite::fromJSON(httr::content(answer_definition, "text", encoding = "UTF-8"))
 
   # Catch some another existing error
-  if (!is.null(resp$errors$message)) {
-    stop(paste0("You may used a invalid argument: ", resp$errors$message))
+  if (!is.null(answer_definition$errors$message)) {
+    stop(paste0("You may used a invalid argument: ", answer_definition$errors$message))
   }
 
   # Return a nested data frame with the answer schema
