@@ -63,8 +63,32 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   # Request
   answer_definition <- httr::GET(url, query = list(query = query), encode = "json")
 
+  #### TODO: Check errors with in the API documentation ####
+  # Catch some specific error
+  switch(
+    toString(resp$status_code),
+    '404' = stop(
+      paste0('Error 404: Something went wrong.',
+             ' If the problem persist, please, contact us.')
+    ),
+    '403' = stop(
+      paste0('Error 403: Acess Denied.',
+             'Please check your credetials and the valid of your token',
+             ' and try again.')
+    ),
+    '500' = stop(
+      paste0('Error 500: Internal Server Error.',
+             'Check your token and idUser if they are correct.')
+    )
+  )
+
   # Convert the response to useful object
   answer_definition <- jsonlite::fromJSON(httr::content(answer_definition, "text", encoding = "UTF-8"))
+
+  # Catch some another existing error
+  if (!is.null(resp$errors$message)) {
+    stop(paste0("You may used a invalid argument: ", resp$errors$message))
+  }
 
   # Return a nested data frame with the answer schema
   answer_definition <- answer_definition$data$answer_definition

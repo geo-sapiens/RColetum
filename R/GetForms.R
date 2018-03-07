@@ -35,19 +35,23 @@ GetForms <- function(token, idUser) {
   # Request
   resp <- httr::GET(url, query = list(query = query), encode = "json")
 
-  #### TODO (AIS): Check errors with in the API documentation ####
+  #### TODO: Check errors with in the API documentation ####
   # Catch some specific error
   switch(
     toString(resp$status_code),
     '404' = stop(
-      paste0('Error 404: Something go wrong.',
+      paste0('Error 404: Something went wrong.',
              ' If the problem persist, please, contact us.')
     ),
     '403' = stop(
       paste0('Error 403: Acess Denied.',
              'Please check your credetials and the valid of your token',
              ' and try again.')
-      )
+      ),
+    '500' = stop(
+      paste0('Error 500: Internal Server Error.',
+             'Check your token and idUser if they are correct.')
+    )
   )
 
   # Convert the response to useful object
