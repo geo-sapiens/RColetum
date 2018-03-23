@@ -14,7 +14,7 @@ GetForms <- function(token, idUser) {
   #### TODO: Adjust conform right URL ####
   #### TODO: Send token together in the request ####
   # Temporary url
-  url <- paste0("http://XXX.XXX.X.XX/app_dev.php/api/test/account/",
+  url <- paste0("http://localhost:86/app_dev.php/api/test/account/",
                 idUser,
                 "/graphql")
 
@@ -57,9 +57,9 @@ GetForms <- function(token, idUser) {
   # Convert the response to useful object
   resp <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
 
-  # Catch some another existing error
+  # Catch some another existing warming
   if (!is.null(resp$errors$message)) {
-    stop(paste0("You may used a invalid argument: ", resp$errors$message))
+    warming(paste0("You may used a invalid argument: ", resp$errors$message))
   }
 
   # Return a data frame with the forms infos

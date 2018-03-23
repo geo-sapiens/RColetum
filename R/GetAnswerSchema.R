@@ -17,7 +17,7 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   #### TODO: Adjust conform right URL ####
   #### TODO: Send token together in the request ####
   # Temporary url
-  url <- paste0("http://XXX.XXX.X.XX/app_dev.php/api/test/account/",
+  url <- paste0("http://localhost:86/app_dev.php/api/test/account/",
                 idUser,
                 "/graphql")
 
@@ -85,9 +85,9 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   # Convert the response to useful object
   answer_definition <- jsonlite::fromJSON(httr::content(answer_definition, "text", encoding = "UTF-8"))
 
-  # Catch some another existing error
+  # Catch some another existing warming
   if (!is.null(answer_definition$errors$message)) {
-    stop(paste0("You may used a invalid argument: ", answer_definition$errors$message))
+    warming(paste0("You may used a invalid argument: ", answer_definition$errors$message))
   }
 
   # Return a nested data frame with the answer schema
