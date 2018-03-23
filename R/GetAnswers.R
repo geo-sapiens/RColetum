@@ -66,6 +66,9 @@ GetAnswers <- function(token, idUser, idForm) {
   #Unnesting the data frame
   resp <- jsonlite::flatten(resp)
 
+  # Rename the coluns, changing the idComponents by the question names
+  names(resp) <- getQuestionNames(answer_definition)
+
   # Return data frame with the answers
   return(resp)
 }

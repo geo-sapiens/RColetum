@@ -1,3 +1,4 @@
+# Auxiliar function
 # Is used to get the idComponents of each answer from the answer schema to be
 # possible be used to get the answers after.
 #
@@ -5,7 +6,7 @@
 # nested components.
 
 seachIdComponents <- function(dataFrame, idComponentsString = NULL) {
-  i = 1
+  i <- 1
   nrow <- nrow(dataFrame)
   while (i <= nrow) {
 
@@ -14,10 +15,20 @@ seachIdComponents <- function(dataFrame, idComponentsString = NULL) {
         idComponentsString,
         dataFrame[[i,"componentId"]],
         '{')
-      idComponentsString <- seachIdComponents(dataFrame[[i,"components"]], idComponentsString)
+      idComponentsString <- seachIdComponents(dataFrame[[i,"components"]],
+                                              idComponentsString)
       idComponentsString <- paste0(idComponentsString,'}')
     } else {
-      idComponentsString <- paste0(idComponentsString,dataFrame[[i,"componentId"]],",")
+      # Todo: change the if/else by a switch case ####
+      if (identical(dataFrame[[i,"type"]], 'moneyfield')) {
+        idComponentsString <- paste0(idComponentsString,
+                                     dataFrame[[i,"componentId"]],
+                                     "{value}",
+                                     ",")
+      } else {
+        idComponentsString <- paste0(idComponentsString,
+                                     dataFrame[[i,"componentId"]],",")
+      }
     }
 
     i <- i + 1
