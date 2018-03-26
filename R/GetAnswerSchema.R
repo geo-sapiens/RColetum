@@ -85,9 +85,9 @@ GetAnswerSchema <- function(token, idUser, idForm) {
   # Convert the response to useful object
   answer_definition <- jsonlite::fromJSON(httr::content(answer_definition, "text", encoding = "UTF-8"))
 
-  # Catch some another existing warming
+  # Catch some another existing warning
   if (!is.null(answer_definition$errors$message)) {
-    warming(paste0("You may used a invalid argument: ", answer_definition$errors$message))
+    warning(paste0("You may used a invalid argument: ", answer_definition$errors$message))
   }
 
   # Return a nested data frame with the answer schema

@@ -55,9 +55,9 @@ GetAnswers <- function(token, idUser, idForm) {
   # Convert the response to useful object
   resp <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
 
-  # Catch some another existing warming
+  # Catch some another existing warning
   if (!is.null(resp$errors$message)) {
-    warming(paste0("You may used a invalid argument: ", resp$errors$message))
+    warning(paste0("You may used a invalid argument: ", resp$errors$message))
   }
 
   # Get just the data frame populated with the data
