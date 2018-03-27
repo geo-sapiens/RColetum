@@ -1,10 +1,10 @@
 #' Get all the answers of a form.
 #'
 #' Get all the currents answers of a especific form. This function make a call
-#' to GetAnswerSchema().
+#' to GetFormSchema().
 #'
 #' @param token A string access token.
-#' @param idUser Numeric Id of the user.
+#' @param idAccount Numeric Id of the account.
 #' @param idForm Numeric Id of the required form.
 #'
 #' @return A data frame.
@@ -12,10 +12,10 @@
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
 #' @export
 
-GetAnswers <- function(token, idUser, idForm) {
-  url <- paste0("http://localhost:86/app_dev.php/api/test/account/",
-                idUser,
-                "/graphql")
+GetAnswers <- function(token, idAccount, idForm) {
+  #### TODO: Adjust conform right URL ####
+  # Temporary url
+  url <- "http://localhost:86/app_dev.php/api/graphql"
 
   answer_definition <- GetAnswerSchema(token,idUser,idForm)
   componentsId <- seachIdComponents(answer_definition)
@@ -31,7 +31,10 @@ GetAnswers <- function(token, idUser, idForm) {
   )
 
   # Request
-  resp <- httr::GET(url, query = list(query = query), encode = "json")
+  resp <- httr::GET(url,
+                    httr::add_headers(Token = token, Account = idAccount),
+                    query = list(query = query),
+                    encode = "json")
 
   #### TODO: Check errors with in the API documentation ####
   # Catch some specific error
@@ -48,7 +51,7 @@ GetAnswers <- function(token, idUser, idForm) {
     ),
     '500' = stop(
       paste0('Error 500: Internal Server Error.',
-             'Check your token and idUser if they are correct.')
+             'Check your token and idAccount if they are correct.')
     )
   )
 

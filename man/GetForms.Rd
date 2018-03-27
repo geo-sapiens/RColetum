@@ -4,12 +4,12 @@
 \alias{GetForms}
 \title{Get infos of all forms.}
 \usage{
-GetForms(token, idUser)
+GetForms(token, idAccount)
 }
 \arguments{
 \item{token}{A string access token.}
 
-\item{idUser}{Numeric Id of the user.}
+\item{idAccount}{Numeric Id of the account.}
 }
 \value{
 A data frame.

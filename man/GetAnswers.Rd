@@ -4,12 +4,12 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idUser, idForm)
+GetAnswers(token, idAccount, idForm)
 }
 \arguments{
 \item{token}{A string access token.}
 
-\item{idUser}{Numeric Id of the user.}
+\item{idAccount}{Numeric Id of the account.}
 
 \item{idForm}{Numeric Id of the required form.}
 }
@@ -18,7 +18,7 @@ A data frame.
 }
 \description{
 Get all the currents answers of a especific form. This function make a call
-to GetAnswerSchema().
+to GetFormSchema().
 }
 \examples{
 GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)

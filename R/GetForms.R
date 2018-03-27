@@ -3,23 +3,21 @@
 #' Get the principals infos of all forms.
 #'
 #' @param token A string access token.
-#' @param idUser Numeric Id of the user.
+#' @param idAccount Numeric Id of the account.
 #'
 #' @return A data frame.
 #' @examples
 #' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5)
 #' @export
 
-GetForms <- function(token, idUser) {
+GetForms <- function(token, idAccount) {
   #### TODO: Adjust conform right URL ####
   #### TODO: Send token together in the request ####
   # Temporary url
-  url <- paste0("http://localhost:86/app_dev.php/api/test/account/",
-                idUser,
-                "/graphql")
+  url <- "http://localhost:86/app_dev.php/api/graphql"
 
   query <- "{
-      forms{
+      form{
         id,
         name,
         version,
@@ -33,7 +31,10 @@ GetForms <- function(token, idUser) {
     }"
 
   # Request
-  resp <- httr::GET(url, query = list(query = query), encode = "json")
+  resp <- httr::GET(url,
+                    httr::add_headers(Token = token, Account = idAccount),
+                    query = list(query = query),
+                    encode = "json")
 
   #### TODO: Check errors with in the API documentation ####
   # Catch some specific error
@@ -43,14 +44,14 @@ GetForms <- function(token, idUser) {
       paste0('Error 404: Something went wrong.',
              ' If the problem persist, please, contact us.')
     ),
-    '403' = stop(
+    '401' = stop(
       paste0('Error 403: Acess Denied.',
              'Please check your credetials and the valid of your token',
              ' and try again.')
       ),
     '500' = stop(
       paste0('Error 500: Internal Server Error.',
-             'Check your token and idUser if they are correct.')
+             'Check your token and idAccount if they are correct.')
     )
   )
 
@@ -63,6 +64,6 @@ GetForms <- function(token, idUser) {
   }
 
   # Return a data frame with the forms infos
-  resp <- resp$data$forms
+  resp <- resp$data$form
   return(resp)
 }
