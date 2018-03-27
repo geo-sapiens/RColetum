@@ -17,12 +17,13 @@ GetAnswers <- function(token, idAccount, idForm) {
   # Temporary url
   url <- "http://localhost:86/app_dev.php/api/graphql"
 
-  answer_definition <- GetAnswerSchema(token,idUser,idForm)
-  componentsId <- seachIdComponents(answer_definition)
+  form_definition <- GetFormSchema(token,idAccount,idForm)
+  aux <- auxFunction(form_definition)
+  componentsId <- aux[1]
 
   query <- paste0(
     "{
-    answers(formId:",idForm,"){
+      answers(formId:",idForm,"){
       answer{
         ",componentsId,
     "}
@@ -70,7 +71,7 @@ GetAnswers <- function(token, idAccount, idForm) {
   resp <- jsonlite::flatten(resp)
 
   # Rename the coluns, changing the idComponents by the question names
-  names(resp) <- getQuestionNames(answer_definition)
+  names(resp) <- aux[2]
 
   # Return data frame with the answers
   return(resp)
