@@ -19,16 +19,28 @@ seachIdComponents <- function(dataFrame, idComponentsString = NULL) {
                                               idComponentsString)
       idComponentsString <- paste0(idComponentsString,'}')
     } else {
-      # Todo: change the if/else by a switch case ####
-      if (identical(dataFrame[[i,"type"]], 'moneyfield')) {
-        idComponentsString <- paste0(idComponentsString,
-                                     dataFrame[[i,"componentId"]],
-                                     "{value}",
-                                     ",")
-      } else {
-        idComponentsString <- paste0(idComponentsString,
-                                     dataFrame[[i,"componentId"]],",")
-      }
+      switch(
+        toString(dataFrame[[i,"type"]]),
+        'moneyfield' = {
+          idComponentsString <- paste0(idComponentsString,
+                                       dataFrame[[i,"componentId"]],
+                                       "{value}",
+                                       ",")
+        },
+        'coordinatefield' = {
+          idComponentsString <- paste0(idComponentsString,
+                                       dataFrame[[i,"componentId"]],
+                                       "{coordinates}",
+                                       ",")
+        },
+        'separatorfield' = {
+
+        },
+        {
+          idComponentsString <- paste0(idComponentsString,
+                                       dataFrame[[i,"componentId"]],",")
+        }
+      )
     }
 
     i <- i + 1

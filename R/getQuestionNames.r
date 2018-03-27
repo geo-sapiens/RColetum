@@ -12,23 +12,14 @@ getQuestionNames <- function(schema,  groupName = NULL) {
   while (i <= nrow) {
 
     if (!is.null(schema$label[i]) & !is.na(schema$label[i])) {
-      if (is.null(groupName)) {
-        arrayName <- append(arrayName, schema$label[i])
-      } else {
-        arrayName <- append(arrayName, paste0(groupName,'.',schema$label[i]))
-      }
+      arrayName <- append(arrayName, paste0(groupName,schema$label[i]))
     } else {
       if (identical(schema$type[i], 'group')) {
-        if (is.null(groupName)) {
-          arrayName <- append(arrayName,
-                              getQuestionNames(schema$components[i][[1]],
-                                               schema$name[i]))
-        } else {
-          arrayName <- append(arrayName,
-                              getQuestionNames(schema$components[i][[1]],
-                                               paste0(groupName,'.',
-                                                      schema$name[i])))
-        }
+        arrayName <- append(arrayName,
+                            getQuestionNames(schema$components[i][[1]],
+                                             paste0(groupName,
+                                                    schema$name[i],
+                                                    ' > ')))
       }
     }
 
