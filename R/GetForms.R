@@ -4,20 +4,55 @@
 #'
 #' @param token A string access token.
 #' @param idAccount Numeric Id of the account.
+#' @param status Optional filter. That is the state of the form: accept
+#' 'enabled' or 'disabled'.
+#' @param public_answers Optinal filter. If the form acept form anonymously, is
+#' possible use 'true' or 'false'.
+#' @param answer_tracking Optional filter. If the form is saving the local of
+#' fill, is possible use 'true' or 'false'.
 #'
 #' @return A data frame.
 #' @examples
 #' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5)
+#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5,'enabled','true','true')
+#' GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#'          idAccount = 5,
+#'          status = 'enabled',
+#'          public_answers = 'false',
+#'          answer_tracking = 'true'
+#'          )
 #' @export
 
-GetForms <- function(token, idAccount) {
+GetForms <- function(token, idAccount,
+                     status = NULL,
+                     public_answers = NULL,
+                     answer_tracking = NULL) {
   #### TODO: Adjust conform right URL ####
-  #### TODO: Send token together in the request ####
   # Temporary url
   url <- "http://localhost:86/app_dev.php/api/graphql"
 
-  query <- "{
-      form{
+  filters <- NULL
+  if (!is.null(status) | !is.null(public_answers) | !is.null(answer_tracking)) {
+    filters <- '(filters:{'
+
+    if (!is.null(status)) {
+      filters <- paste0(filters,'status:',status,',')
+    }
+
+    if (!is.null(public_answers)) {
+      filters <- paste0(filters,'public_answers:',public_answers,',')
+    }
+
+    if (!is.null(answer_tracking)) {
+      filters <- paste0(filters,'answer_tracking:',answer_tracking)
+    }
+    filters <- paste0(filters,'})')
+  }
+
+  query <- paste0("{
+      form
+      ",filters,"
+      {
         id,
         name,
         version,
@@ -28,7 +63,7 @@ GetForms <- function(token, idAccount) {
         public_answers,
         description
       }
-    }"
+    }")
 
   # Request
   resp <- httr::GET(url,

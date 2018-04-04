@@ -4,12 +4,22 @@
 \alias{GetForms}
 \title{Get infos of all forms.}
 \usage{
-GetForms(token, idAccount)
+GetForms(token, idAccount, status = NULL, public_answers = NULL,
+  answer_tracking = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
 
 \item{idAccount}{Numeric Id of the account.}
+
+\item{status}{Optional filter. That is the state of the form: accept
+'enabled' or 'disabled'.}
+
+\item{public_answers}{Optinal filter. If the form acept form anonymously, is
+possible use 'true' or 'false'.}
+
+\item{answer_tracking}{Optional filter. If the form is saving the local of
+fill, is possible use 'true' or 'false'.}
 }
 \value{
 A data frame.
@@ -19,4 +29,11 @@ Get the principals infos of all forms.
 }
 \examples{
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5)
+GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5,'enabled','true','true')
+GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+         idAccount = 5,
+         status = 'enabled',
+         public_answers = 'false',
+         answer_tracking = 'true'
+         )
 }
