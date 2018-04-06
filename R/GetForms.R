@@ -79,7 +79,7 @@ GetForms <- function(token, idAccount,
       paste0('Error 404: Something went wrong.',
              ' If the problem persist, please, contact us.')
     ),
-    '401' = stop(
+    '403' = stop(
       paste0('Error 403: Acess Denied.',
              'Please check your credetials and the valid of your token',
              ' and try again.')

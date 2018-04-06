@@ -19,11 +19,11 @@ GetAnswers <- function(token, idAccount, idForm) {
 
   form_definition <- GetFormSchema(token,idAccount,idForm)
   aux <- auxFunction(form_definition)
-  componentsId <- aux[1]
+  componentsId <- aux[[1]]
 
   query <- paste0(
     "{
-      answers(formId:",idForm,"){
+      answer(formId:",idForm,"){
       answer{
         ",componentsId,
     "}
@@ -65,13 +65,18 @@ GetAnswers <- function(token, idAccount, idForm) {
   }
 
   # Get just the data frame populated with the data
-  resp <- resp$data$answers$answer
+  resp <- resp$data$answer$answer
 
-  #Unnesting the data frame
+  # Unnesting the data frame
+  ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
 
-  # Rename the coluns, changing the idComponents by the question names
-  names(resp) <- aux[2]
+  # Re-ordened the columns to the original order
+  resp <- dplyr::select(resp, aux[[3]])
+
+  # Rename the columns, changing the idComponents by the question names
+  ## Cases with the repeted names receive a sufix
+  names(resp) <- make.names(aux[[2]],unique = TRUE)
 
   # Return data frame with the answers
   return(resp)
