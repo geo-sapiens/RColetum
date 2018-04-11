@@ -47,7 +47,7 @@ auxFunction <- function(dataFrame,
         'moneyfield' = {
           idComponentsString <- paste0(idComponentsString,
                                        dataFrame$componentId[i],
-                                       "{currency,value}",
+                                       # "{currency,value}",
                                        ",")
           arrayName <- append(arrayName, paste0(groupName,
                                                 dataFrame$label[i],
@@ -71,17 +71,26 @@ auxFunction <- function(dataFrame,
         'coordinatefield' = {
           idComponentsString <- paste0(idComponentsString,
                                        dataFrame$componentId[i],
-                                       "{coordinates}",
+                                       # "{coordinates}",
                                        ",")
           arrayName <- append(arrayName, paste0(groupName,
                                                 dataFrame$label[i],
                                                 '.',
-                                                'coordinates'))
+                                                'x'))
           arrayIdComponent <- append(arrayIdComponent,
                                      paste0(groupIdComponent,
                                             dataFrame$componentId[i],
                                             '.',
-                                            'coordinates'))
+                                            'x'))
+          arrayName <- append(arrayName, paste0(groupName,
+                                                dataFrame$label[i],
+                                                '.',
+                                                'y'))
+          arrayIdComponent <- append(arrayIdComponent,
+                                     paste0(groupIdComponent,
+                                            dataFrame$componentId[i],
+                                            '.',
+                                            'y'))
         },
         'separatorfield' = {
 

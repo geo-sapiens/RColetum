@@ -31,20 +31,53 @@ GetForms <- function(token, idAccount,
   # Temporary url
   url <- "http://localhost:86/app_dev.php/api/graphql"
 
+  # Applying optionals filters
   filters <- NULL
   if (!is.null(status) | !is.null(public_answers) | !is.null(answer_tracking)) {
     filters <- '(filters:{'
 
     if (!is.null(status)) {
-      filters <- paste0(filters,'status:',status,',')
+      status <- tolower(status)
+      # Check if the option is valid
+      if (identical(status,'enabled') | identical(status,'disabled')) {
+        filters <- paste0(filters,'status:',status,',')
+      } else {
+        stop(paste0('The option \'',status,'\' ','are not avaliable.',
+                    'The avaliable options to this filter are: \'enabled\' ',
+                    'or \'disabled\'.'
+                    )
+             )
+      }
     }
 
     if (!is.null(public_answers)) {
-      filters <- paste0(filters,'public_answers:',public_answers,',')
+      public_answers <- tolower(public_answers)
+      # Check if the option is valid
+      if (identical(public_answers,'true') |
+          identical(public_answers,'false')) {
+        filters <- paste0(filters,'public_answers:',public_answers,',')
+      } else {
+        stop(paste0('The option \'',public_answers,'\' ','are not avaliable.',
+                    'The avaliable options to this filter are: \'true\' ',
+                    'or \'false\'.'
+                    )
+             )
+      }
     }
 
     if (!is.null(answer_tracking)) {
-      filters <- paste0(filters,'answer_tracking:',answer_tracking)
+      answer_tracking <- tolower(answer_tracking)
+      # Check if the option is valid
+      if (identical(answer_tracking,'true') |
+          identical(answer_tracking,'false')) {
+        filters <- paste0(filters,'answer_tracking:',answer_tracking)
+      } else {
+        stop(paste0('The option \'',answer_tracking,'\' ','are not avaliable.',
+                    'The avaliable options to this filter are: \'true\' ',
+                    'or \'false\'.'
+                    )
+             )
+      }
     }
     filters <- paste0(filters,'})')
   }
@@ -75,6 +108,9 @@ GetForms <- function(token, idAccount,
   # Catch some specific error
   switch(
     toString(resp$status_code),
+    '401' = stop(
+      'Error 401: Invalid token.'
+    ),
     '404' = stop(
       paste0('Error 404: Something went wrong.',
              ' If the problem persist, please, contact us.')
