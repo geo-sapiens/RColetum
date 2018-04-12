@@ -6,7 +6,7 @@
 #' @param idAccount Numeric Id of the account.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
-#' @param public_answers Optinal filter. If the form acept form anonymously, is
+#' @param public_answers Optinal filter. If the form accept form anonymously, is
 #' possible use 'true' or 'false'.
 #' @param answer_tracking Optional filter. If the form is saving the local of
 #' fill, is possible use 'true' or 'false'.
@@ -42,9 +42,9 @@ GetForms <- function(token, idAccount,
       if (identical(status,'enabled') | identical(status,'disabled')) {
         filters <- paste0(filters,'status:',status,',')
       } else {
-        stop(paste0('The option \'',status,'\' ','are not avaliable.',
-                    'The avaliable options to this filter are: \'enabled\' ',
-                    'or \'disabled\'.'
+        stop(paste0('The option \'',status,'\' are not avaliable for the filter',
+                    ' \'status\'. The avaliable options to this filter are: ',
+                    '\'enabled\' or \'disabled\'.'
                     )
              )
       }
@@ -57,9 +57,9 @@ GetForms <- function(token, idAccount,
           identical(public_answers,'false')) {
         filters <- paste0(filters,'public_answers:',public_answers,',')
       } else {
-        stop(paste0('The option \'',public_answers,'\' ','are not avaliable.',
-                    'The avaliable options to this filter are: \'true\' ',
-                    'or \'false\'.'
+        stop(paste0('The option \'',public_answers,'\' are not avaliable for',
+                    ' the filter \'public_answers\'. The avaliable options to',
+                    ' this filter are: \'true\' or \'false\'.'
                     )
              )
       }
@@ -99,8 +99,8 @@ GetForms <- function(token, idAccount,
     }")
 
   # Request
-  resp <- httr::GET(url,
-                    httr::add_headers(Token = token, Account = idAccount),
+  resp <- httr::GET(url = url,
+                    config = httr::add_headers(Token = token, Account = idAccount),
                     query = list(query = query),
                     encode = "json")
 

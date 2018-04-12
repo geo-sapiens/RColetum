@@ -15,7 +15,7 @@ GetForms(token, idAccount, status = NULL, public_answers = NULL,
 \item{status}{Optional filter. That is the state of the form: accept
 'enabled' or 'disabled'.}
 
-\item{public_answers}{Optinal filter. If the form acept form anonymously, is
+\item{public_answers}{Optinal filter. If the form accept form anonymously, is
 possible use 'true' or 'false'.}
 
 \item{answer_tracking}{Optional filter. If the form is saving the local of

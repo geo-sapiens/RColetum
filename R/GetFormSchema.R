@@ -58,11 +58,11 @@ GetFormSchema <- function(token, idAccount, idForm) {
     }")
 
   # Request
-  form_definition <- httr::GET(url,
-                                 httr::add_headers(Token = token,
+  form_definition <- httr::GET(url = url,
+                               config = httr::add_headers(Token = token,
                                                    Account = idAccount),
-                                 query = list(query = query),
-                                 encode = "json")
+                               query = list(query = query),
+                               encode = "json")
 
   #### TODO: Check errors with in the API documentation ####
   # Catch some specific error

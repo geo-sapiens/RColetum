@@ -6,13 +6,26 @@
 #' @param token A string access token.
 #' @param idAccount Numeric Id of the account.
 #' @param idForm Numeric Id of the required form.
+#' @param formSource Optional filter. Is the origin of the source of the answer
+#' Can use 'web_public', 'web_private' and 'mobile'.
+#' @param createdAfter Optional filter. This parameter filter the answers
+#' that was answered after this date. Is acceptable the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".
+#' @param createdBefore Optional filter. This parameter filter the answers
+#' that was answered before this date. Is acceptable the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".
 #'
 #' @return A data frame.
 #' @examples
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
 #' @export
 
-GetAnswers <- function(token, idAccount, idForm) {
+GetAnswers <- function(token, idAccount, idForm,
+                       formSource = NULL,
+                       createdBefore = NULL,
+                       createdAfter = NULL) {
   #### TODO: Adjust conform right URL ####
   # Temporary url
   url <- "http://localhost:86/app_dev.php/api/graphql"
@@ -21,9 +34,85 @@ GetAnswers <- function(token, idAccount, idForm) {
   aux <- auxFunction(form_definition)
   componentsId <- aux[[1]]
 
+  # Applying optionals filters
+  filters <- NULL
+  if (!is.null(formSource) |
+      !is.null(createdBefore) |
+      !is.null(createdAfter)) {
+
+    filters <- ',filters:{'
+    if (!is.null(formSource)) {
+      formSource <- tolower(formSource)
+      # Check if the option is valid
+      if (identical(formSource,'web_public') | identical(formSource,'web_private') |
+          identical(formSource,'mobile')) {
+        filters <- paste0(filters,'source:',formSource,',')
+      } else {
+        stop(paste0('The option \'',formSource,'\' are not avaliable for the filter',
+                    '\'formSource\'. The avaliable options to this filter are: ',
+                    '\'web_public\' or \'web_private\' or \'mobile\'.'
+                    )
+             )
+      }
+
+    }
+
+    if (!is.null(createdBefore)) {
+      # Check if the option is valid
+      if (is.na(createdBefore[2])) {
+        error <- try(as.Date(createdBefore))
+        if (identical(class(error), "try-error")) {
+          stop(error[1])
+        } else {
+          filters <- paste0(filters,'createdBefore:"',createdBefore,'",')
+        }
+      } else {
+        error <- try(as.Date(createdBefore[1],
+                             format = createdBefore[2]))
+        if (identical(class(error), "try-error")) {
+          stop(error[1])
+        } else {
+          createdBefore <- as.Date(createdBefore[1],format = createdBefore[2])
+          if (is.na(createdBefore)) {
+            stop("Invalid data especification format.")
+          } else {
+            filters <- paste0(filters,'createdBefore:"',createdBefore,'",')
+          }
+        }
+      }
+    }
+
+    if (!is.null(createdAfter)) {
+      # Check if the option is valid
+      if (is.na(createdAfter[2])) {
+        error <- try(as.Date(createdAfter))
+        if (identical(class(error), "try-error")) {
+          stop(error[1])
+        } else {
+          filters <- paste0(filters,'createdAfter:"',createdAfter,'",')
+        }
+      } else {
+        error <- try(as.Date(createdAfter[1],
+                             format = createdAfter[2]))
+        if (identical(class(error), "try-error")) {
+          stop(error[1])
+        } else {
+          createdAfter <- as.Date(createdAfter[1],format = createdAfter[2])
+          if (is.na(createdAfter)) {
+            stop("Invalid data especification format.")
+          } else {
+            filters <- paste0(filters,'createdAfter:"',createdAfter,'",')
+          }
+        }
+      }
+    }
+    filters <- paste0(filters,'}')
+  }
+
+
   query <- paste0(
     "{
-      answer(formId:",idForm,"){
+      answer(formId:",idForm,filters,"){
       answer{
         ",componentsId,
     "}
@@ -32,8 +121,9 @@ GetAnswers <- function(token, idAccount, idForm) {
   )
 
   # Request
-  resp <- httr::GET(url,
-                    httr::add_headers(Token = token, Account = idAccount),
+  resp <- httr::GET(url = url,
+                    config = httr::add_headers(Token = token,
+                                               Account = idAccount),
                     query = list(query = query),
                     encode = "json")
 

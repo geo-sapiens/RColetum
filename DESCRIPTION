@@ -2,7 +2,7 @@ Package: RColetum
 Type: Package
 Title: Access data from Coletum API
 Version: 0.1.0
-Date: 2018-03-06
+Date: 2018-04-12
 Author: André Inacio Smaniotto
 Maintainer: GeoSapiens <geosapiens@geosapiens.com.br>
 Description: Get your data (forms, schemas, answers) from Coletum 
