@@ -20,6 +20,24 @@
 #' @return A data frame.
 #' @examples
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
+#' GetAnswers(token = token,idAccount = 1,
+#'              idForm = idForm,
+#'              formSource = NULL,
+#'              createdAfter = "2012-12-20",
+#'              createdBefore = c("20-12-2018","%d-%m-%Y")
+#'              )
+#' GetAnswers(token = token,idAccount = 1,
+#'              idForm = idForm,
+#'              formSource = web_public,
+#'              createdAfter = c("20-12-2012","%d-%m-%Y"),
+#'              createdBefore = c("20-12-2018","%d-%m-%Y")
+#'              )
+#' GetAnswers(token = token,idAccount = 1,
+#'              idForm = idForm,
+#'              formSource = web_private,
+#'              createdAfter = "2012-12-20",
+#'              createdBefore = "2018-12-20",
+#'              )
 #' @export
 
 GetAnswers <- function(token, idAccount, idForm,
