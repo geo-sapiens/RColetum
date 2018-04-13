@@ -17,9 +17,9 @@ GetFormSchema(token, idAccount, idForm)
 A possible nested data frame.
 }
 \description{
-Get the schema of the questions of a especific form in the shape a nested data
-frame, that contain all the needed information to request the answers of the
-form.
+Get the schema of the questions of a specific form in the shape a nested
+data frame, that contain all the needed information to request the answers
+of the form.
 }
 \examples{
 GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)

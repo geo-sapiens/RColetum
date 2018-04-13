@@ -1,8 +1,8 @@
 #' Get the form schema of a form.
 #'
-#' Get the schema of the questions of a especific form in the shape a nested data
-#' frame, that contain all the needed information to request the answers of the
-#' form.
+#' Get the schema of the questions of a specific form in the shape a nested
+#' data frame, that contain all the needed information to request the answers
+#' of the form.
 #'
 #' @param token A string access token.
 #' @param idAccount Numeric Id of the account.
@@ -84,11 +84,14 @@ GetFormSchema <- function(token, idAccount, idForm) {
   )
 
   # Convert the response to useful object
-  form_definition <- jsonlite::fromJSON(httr::content(form_definition, "text", encoding = "UTF-8"))
+  form_definition <- jsonlite::fromJSON(httr::content(form_definition,
+                                                      "text",
+                                                      encoding = "UTF-8"))
 
   # Catch some another existing warning
   if (!is.null(form_definition$errors$message)) {
-    warning(paste0("You may used a invalid argument: ", form_definition$errors$message))
+    warning(paste0("You may used a invalid argument: ",
+                   form_definition$errors$message))
   }
 
   # Return a nested data frame with the form schema

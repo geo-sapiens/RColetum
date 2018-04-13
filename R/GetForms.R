@@ -100,7 +100,8 @@ GetForms <- function(token, idAccount,
 
   # Request
   resp <- httr::GET(url = url,
-                    config = httr::add_headers(Token = token, Account = idAccount),
+                    config = httr::add_headers(Token = token,
+                                               Account = idAccount),
                     query = list(query = query),
                     encode = "json")
 

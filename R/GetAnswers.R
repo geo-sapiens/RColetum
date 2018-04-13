@@ -1,6 +1,6 @@
 #' Get all the answers of a form.
 #'
-#' Get all the currents answers of a especific form. This function make a call
+#' Get all the currents answers of a specific form. This function make a call
 #' to GetFormSchema().
 #'
 #' @param token A string access token.
@@ -62,13 +62,14 @@ GetAnswers <- function(token, idAccount, idForm,
     if (!is.null(formSource)) {
       formSource <- tolower(formSource)
       # Check if the option is valid
-      if (identical(formSource,'web_public') | identical(formSource,'web_private') |
+      if (identical(formSource,'web_public') |
+          identical(formSource,'web_private') |
           identical(formSource,'mobile')) {
         filters <- paste0(filters,'source:',formSource,',')
       } else {
-        stop(paste0('The option \'',formSource,'\' are not avaliable for the filter',
-                    '\'formSource\'. The avaliable options to this filter are: ',
-                    '\'web_public\' or \'web_private\' or \'mobile\'.'
+        stop(paste0('The option \'',formSource,'\' are not avaliable for the ',
+                    'filter \'formSource\'. The avaliable options to this ',
+                    'filter are: \'web_public\' or \'web_private\' or \'mobile\'.'
                     )
              )
       }
