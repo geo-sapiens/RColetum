@@ -4,8 +4,8 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idAccount, idForm, formSource = NULL,
-  createdBefore = NULL, createdAfter = NULL)
+GetAnswers(token, idAccount, idForm, repetedColunsNames = FALSE,
+  formSource = NULL, createdBefore = NULL, createdAfter = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
@@ -13,6 +13,9 @@ GetAnswers(token, idAccount, idForm, formSource = NULL,
 \item{idAccount}{Numeric Id of the account.}
 
 \item{idForm}{Numeric Id of the required form.}
+
+\item{repetedColunsNames}{Boolean flag, indicates if the repeted columns
+names will stay or if gonna be rename with a suffix.}
 
 \item{formSource}{Optional filter. Is the origin of the source of the answer
 Can use 'web_public', 'web_private' and 'mobile'.}

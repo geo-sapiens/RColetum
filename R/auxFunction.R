@@ -1,6 +1,6 @@
 # Auxiliar function
 # Is used to get the idComponents and the question name of each answer from the
-# answer schema .
+# answer schema.
 #
 # The idComponents is necessary to be possible use to get the answers after.
 # The arrayIdComponent works to re-ordened the coluns, after flatten.
@@ -30,7 +30,7 @@ auxFunction <- function(dataFrame,
                          idComponentsString,
                          paste0(groupName,
                                 dataFrame$name[i],
-                                ' > '),
+                                '.'),
                          paste0(groupIdComponent,
                                 dataFrame$componentId[i],
                                 '.'))

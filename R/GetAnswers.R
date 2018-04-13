@@ -6,6 +6,8 @@
 #' @param token A string access token.
 #' @param idAccount Numeric Id of the account.
 #' @param idForm Numeric Id of the required form.
+#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
+#' names will stay or if gonna be rename with a suffix.
 #' @param formSource Optional filter. Is the origin of the source of the answer
 #' Can use 'web_public', 'web_private' and 'mobile'.
 #' @param createdAfter Optional filter. This parameter filter the answers
@@ -40,13 +42,10 @@
 #'              )
 #' @export
 
-GetAnswers <- function(token, idAccount, idForm,
+GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
                        formSource = NULL,
                        createdBefore = NULL,
                        createdAfter = NULL) {
-  #### TODO: Adjust conform right URL ####
-  # Temporary url
-  url <- "http://localhost:86/app_dev.php/api/graphql"
 
   form_definition <- GetFormSchema(token,idAccount,idForm)
   aux <- auxFunction(form_definition)
@@ -140,41 +139,16 @@ GetAnswers <- function(token, idAccount, idForm,
   )
 
   # Request
-  resp <- httr::GET(url = url,
-                    config = httr::add_headers(Token = token,
-                                               Account = idAccount),
-                    query = list(query = query),
-                    encode = "json")
-
-  #### TODO: Check errors with in the API documentation ####
-  # Catch some specific error
-  switch(
-    toString(resp$status_code),
-    '404' = stop(
-      paste0('Error 404: Something went wrong.',
-             ' If the problem persist, please, contact us.')
-    ),
-    '403' = stop(
-      paste0('Error 403: Acess Denied.',
-             'Please check your credetials and the valid of your token',
-             ' and try again.')
-    ),
-    '500' = stop(
-      paste0('Error 500: Internal Server Error.',
-             'Check your token and idAccount if they are correct.')
-    )
-  )
-
-  # Convert the response to useful object
-  resp <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
-
-  # Catch some another existing warning
-  if (!is.null(resp$errors$message)) {
-    warning(paste0("You may used a invalid argument: ", resp$errors$message))
-  }
+  resp <- requestFunction(query = query, token = token, idAccount = idAccount)
 
   # Get just the data frame populated with the data
-  resp <- resp$data$answer$answer
+  resp <- resp$answer
+
+  # Check if the form have some answer.
+  if (is.null(resp)) {
+    warning("No answers avaliable. Returning NULL")
+    return(NULL)
+  }
 
   # Unnesting the data frame
   ## This function change the original orders of the columns
@@ -184,8 +158,13 @@ GetAnswers <- function(token, idAccount, idForm,
   resp <- dplyr::select(resp, aux[[3]])
 
   # Rename the columns, changing the idComponents by the question names
-  ## Cases with the repeted names receive a sufix
-  names(resp) <- make.names(aux[[2]],unique = TRUE)
+  ## Check the user preference about repeted names in the columns
+  if (repetedColunsNames) {
+    names(resp) <- aux[[2]]
+  } else {
+    ### Cases with the repeted names receive a sufix
+    names(resp) <- make.names(aux[[2]],unique = TRUE)
+  }
 
   # Return data frame with the answers
   return(resp)

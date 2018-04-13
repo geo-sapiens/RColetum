@@ -14,10 +14,6 @@
 #' @export
 
 GetFormSchema <- function(token, idAccount, idForm) {
-  #### TODO: Adjust conform right URL ####
-  # Temporary url
-  url <- "http://localhost:86/app_dev.php/api/graphql"
-
   #### TODO: Change the query to the conctract form, when avaible. ####
   query <- paste0("{
       form_definition(formId:",idForm,"){
@@ -58,43 +54,7 @@ GetFormSchema <- function(token, idAccount, idForm) {
     }")
 
   # Request
-  form_definition <- httr::GET(url = url,
-                               config = httr::add_headers(Token = token,
-                                                   Account = idAccount),
-                               query = list(query = query),
-                               encode = "json")
+  resp <- requestFunction(query = query, token = token, idAccount = idAccount)
 
-  #### TODO: Check errors with in the API documentation ####
-  # Catch some specific error
-  switch(
-    toString(form_definition$status_code),
-    '404' = stop(
-      paste0('Error 404: Something went wrong.',
-             ' If the problem persist, please, contact us.')
-    ),
-    '403' = stop(
-      paste0('Error 403: Acess Denied.',
-             'Please check your credetials and the valid of your token',
-             ' and try again.')
-    ),
-    '500' = stop(
-      paste0('Error 500: Internal Server Error.',
-             'Check your token and idAccount if they are correct.')
-    )
-  )
-
-  # Convert the response to useful object
-  form_definition <- jsonlite::fromJSON(httr::content(form_definition,
-                                                      "text",
-                                                      encoding = "UTF-8"))
-
-  # Catch some another existing warning
-  if (!is.null(form_definition$errors$message)) {
-    warning(paste0("You may used a invalid argument: ",
-                   form_definition$errors$message))
-  }
-
-  # Return a nested data frame with the form schema
-  form_definition <- form_definition$data$form_definition
-  return(form_definition)
+  return(resp)
 }
