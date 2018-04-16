@@ -45,55 +45,78 @@ auxFunction <- function(dataFrame,
       switch(
         toString(dataFrame$type[i]),
         'moneyfield' = {
-          idComponentsString <- paste0(idComponentsString,
-                                       dataFrame$componentId[i],
-                                       # "{currency,value}",
-                                       ",")
-          arrayName <- append(arrayName, paste0(groupName,
-                                                dataFrame$label[i],
-                                                '.',
-                                                'currency'))
-          arrayName <- append(arrayName, paste0(groupName,
-                                                dataFrame$label[i],
-                                                '.',
-                                                'value'))
-          arrayIdComponent <- append(arrayIdComponent,
-                                     paste0(groupIdComponent,
-                                            dataFrame$componentId[i],
-                                            '.',
-                                            'currency'))
-          arrayIdComponent <- append(arrayIdComponent,
-                                     paste0(groupIdComponent,
-                                            dataFrame$componentId[i],
-                                            '.',
-                                            'value'))
+          # Check if the question accept more than one value.
+          ## Case yes, it's gonna be treat after
+          if (!is.na(dataFrame$maximum[i])) {
+            idComponentsString <- paste0(idComponentsString,
+                                         dataFrame$componentId[i],
+                                         # "{currency,value}",
+                                         ",")
+            arrayName <- append(arrayName, paste0(groupName,
+                                                  dataFrame$label[i],
+                                                  '.',
+                                                  'currency'))
+            arrayName <- append(arrayName, paste0(groupName,
+                                                  dataFrame$label[i],
+                                                  '.',
+                                                  'value'))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i],
+                                              '.',
+                                              'currency'))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i],
+                                              '.',
+                                              'value'))
+          } else {
+            idComponentsString <- paste0(idComponentsString,
+                                         dataFrame$componentId[i],",")
+            arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i]))
+          }
         },
+
         'coordinatefield' = {
-          idComponentsString <- paste0(idComponentsString,
-                                       dataFrame$componentId[i],
-                                       # "{coordinates}",
-                                       ",")
-          arrayName <- append(arrayName, paste0(groupName,
-                                                dataFrame$label[i],
-                                                '.',
-                                                'x'))
-          arrayIdComponent <- append(arrayIdComponent,
-                                     paste0(groupIdComponent,
-                                            dataFrame$componentId[i],
-                                            '.',
-                                            'x'))
-          arrayName <- append(arrayName, paste0(groupName,
-                                                dataFrame$label[i],
-                                                '.',
-                                                'y'))
-          arrayIdComponent <- append(arrayIdComponent,
-                                     paste0(groupIdComponent,
-                                            dataFrame$componentId[i],
-                                            '.',
-                                            'y'))
+          # Check if the question accept more than one value.
+          ## Case yes, it's gonna be treat after
+          if (!is.na(dataFrame$maximum[i])) {
+            idComponentsString <- paste0(idComponentsString,
+                                         dataFrame$componentId[i],
+                                         # "{coordinates}",
+                                         ",")
+            arrayName <- append(arrayName, paste0(groupName,
+                                                  dataFrame$label[i],
+                                                  '.',
+                                                  'x'))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i],
+                                              '.',
+                                              'x'))
+            arrayName <- append(arrayName, paste0(groupName,
+                                                  dataFrame$label[i],
+                                                  '.',
+                                                  'y'))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i],
+                                              '.',
+                                              'y'))
+          } else {
+            idComponentsString <- paste0(idComponentsString,
+                                         dataFrame$componentId[i],",")
+            arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
+            arrayIdComponent <- append(arrayIdComponent,
+                                       paste0(groupIdComponent,
+                                              dataFrame$componentId[i]))
+          }
         },
         'separatorfield' = {
-
+          # do nothing, because isn't a question on form.
         },
         {
           idComponentsString <- paste0(idComponentsString,

@@ -131,7 +131,10 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   query <- paste0(
     "{
       answer(formId:",idForm,filters,"){
-      answer{
+        metaData{
+            friendlyId
+        },
+        answer{
         ",componentsId,
     "}
     }
@@ -142,7 +145,7 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   resp <- requestFunction(query = query, token = token, idAccount = idAccount)
 
   # Get just the data frame populated with the data
-  resp <- resp$answer
+  resp <- resp %>% unname
 
   # Check if the form have some answer.
   if (is.null(resp)) {
@@ -153,6 +156,10 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+
+  # Adjust aux, adding in aux[[2]] e aux[[3]] the colum name to id
+  aux[[2]] <- append(aux[[2]],'id',0)
+  aux[[3]] <- append(aux[[3]],'friendlyId',0)
 
   # Re-ordened the columns to the original order
   resp <- dplyr::select(resp, aux[[3]])

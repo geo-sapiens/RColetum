@@ -41,15 +41,25 @@ GetFormSchema <- function(token, idAccount, idForm) {
                 label,
                 name,
                 type,
-                componentId
+                componentId,
+                minimum,
+                maximum
               },
-              componentId
+              componentId,
+              minimum,
+              maximum
             },
-            componentId
+            componentId,
+            minimum,
+            maximum
           },
-          componentId
+          componentId,
+          minimum,
+          maximum
         },
-        componentId
+        componentId,
+        minimum,
+        maximum
       }
     }")
 

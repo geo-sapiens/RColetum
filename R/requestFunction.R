@@ -25,7 +25,7 @@ requestFunction <- function(query, token, idAccount) {
 
   # Catch some another existing error or warning
   if (!is.null(resp$errors$message)) {
-    warning(paste0("Check careful the result, because something may wents ",
+    warning(paste0("\nCheck careful the result, because something may wents ",
                    "wrong: \n", resp$errors$message))
   }
 
