@@ -167,14 +167,29 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
       j <- 1
       nAux <- length(aux[[4]])
       while (j <= nAux) {
+        namesAux <- NA
+        # check if the column have name
+        if (is.null(names(resp[aux[[4]][j]][[1]][[i]]))) {
+          namesAux <- aux[[4]][j + 1]
+        } else {
+          namesAux <- paste0(aux[[4]][j + 1],
+                             '.', names(resp[aux[[4]][j]][[1]][[i]]))
+        }
+
         # transforming in data frame, because in some types, this is just a array
         resp[aux[[4]][j]][[1]][[i]] <-
-          dplyr::as_data_frame(resp[aux[[4]][j]][[1]][[i]])
-        # adding the columns cod
-        resp[aux[[4]][j]][[1]][[i]] <-
-          dplyr::mutate(resp[aux[[4]][j]][[1]][[i]],cod = cod)
+          as.data.frame(resp[aux[[4]][j]][[1]][[i]], stringsAsFactors = FALSE)
 
-        j <- j + 1
+        # check if has some answer
+        if (length(resp[aux[[4]][j]][[1]][[i]]) != 0) {
+          # renaming the columns
+          names(resp[aux[[4]][j]][[1]][[i]]) <- namesAux
+
+          # adding the columns cod
+          resp[aux[[4]][j]][[1]][[i]] <-
+            dplyr::mutate(resp[aux[[4]][j]][[1]][[i]],cod = cod)
+        }
+        j <- j + 2
       }
 
       i <- i + 1
@@ -182,12 +197,17 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
 
     ## Getting the nested data frames with N answers and unificaing the same
     ## column and add in array each one new data frame
+    ### i: sequencial index do fill the list
+    ### j: the index of aux[[4]], indicatin the colunms to bind
     i <- 1
+    j <- 1
     n <- length(aux[[4]])
     otherDF <- list()
-    while (i <= n) {
-      otherDF[[i]] <- do.call("rbind",resp[aux[[4]][i]][[1]])
+    while (j <= n) {
+      otherDF[[i]] <- do.call("rbind",resp[aux[[4]][j]][[1]])
+
       i <- i + 1
+      j <- j + 2
     }
   }
 

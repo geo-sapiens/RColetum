@@ -60,6 +60,8 @@ auxFunction <- function(dataFrame,
         arrayIdComponentNValues <- append(arrayIdComponentNValues,
                                           paste0(groupIdComponent,
                                                  dataFrame$componentId[i]))
+        arrayIdComponentNValues <- append(arrayIdComponentNValues,
+                                          paste0(groupName,dataFrame$label[i]))
       } else {
         switch(
           toString(dataFrame$type[i]),
