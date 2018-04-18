@@ -16,6 +16,7 @@ auxFunction <- function(dataFrame,
                         groupIdComponent = NULL) {
   arrayName <- vector()
   arrayIdComponent <- vector()
+  arrayIdComponentNValues <- vector()
   i <- 1
   nrow <- nrow(dataFrame)
   while (i <= nrow) {
@@ -42,12 +43,27 @@ auxFunction <- function(dataFrame,
       arrayIdComponent <- append(arrayIdComponent, aux[3])
 
     } else {
-      switch(
-        toString(dataFrame$type[i]),
-        'moneyfield' = {
-          # Check if the question accept more than one value.
-          ## Case yes, it's gonna be treat after
-          if (!is.na(dataFrame$maximum[i])) {
+      # Check if the question accept more than one value.
+      ## Case yes, it's gonna be treat after
+      if (is.na(dataFrame$maximum[i]) &
+          !(identical(toString(dataFrame$type[i]),
+                     'agreementfield') |
+           identical(toString(dataFrame$type[i]),
+                     'ratingfield') |
+          identical(toString(dataFrame$type[i]),
+                    'separatorfield') |
+          identical(toString(dataFrame$type[i]),
+                    'selectfield')
+          )) {
+        idComponentsString <- paste0(idComponentsString,
+                                     dataFrame$componentId[i],",")
+        arrayIdComponentNValues <- append(arrayIdComponentNValues,
+                                          paste0(groupIdComponent,
+                                                 dataFrame$componentId[i]))
+      } else {
+        switch(
+          toString(dataFrame$type[i]),
+          'moneyfield' = {
             idComponentsString <- paste0(idComponentsString,
                                          dataFrame$componentId[i],
                                          # "{currency,value}",
@@ -70,20 +86,9 @@ auxFunction <- function(dataFrame,
                                               dataFrame$componentId[i],
                                               '.',
                                               'value'))
-          } else {
-            idComponentsString <- paste0(idComponentsString,
-                                         dataFrame$componentId[i],",")
-            arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i]))
-          }
-        },
+          },
 
-        'coordinatefield' = {
-          # Check if the question accept more than one value.
-          ## Case yes, it's gonna be treat after
-          if (!is.na(dataFrame$maximum[i])) {
+          'coordinatefield' = {
             idComponentsString <- paste0(idComponentsString,
                                          dataFrame$componentId[i],
                                          # "{coordinates}",
@@ -106,7 +111,11 @@ auxFunction <- function(dataFrame,
                                               dataFrame$componentId[i],
                                               '.',
                                               'y'))
-          } else {
+          },
+          'separatorfield' = {
+            # do nothing, because isn't a question on form.
+          },
+          {
             idComponentsString <- paste0(idComponentsString,
                                          dataFrame$componentId[i],",")
             arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
@@ -114,19 +123,8 @@ auxFunction <- function(dataFrame,
                                        paste0(groupIdComponent,
                                               dataFrame$componentId[i]))
           }
-        },
-        'separatorfield' = {
-          # do nothing, because isn't a question on form.
-        },
-        {
-          idComponentsString <- paste0(idComponentsString,
-                                       dataFrame$componentId[i],",")
-          arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
-          arrayIdComponent <- append(arrayIdComponent,
-                                     paste0(groupIdComponent,
-                                            dataFrame$componentId[i]))
-        }
-      )
+        )
+      }
     }
 
     i <- i + 1
@@ -134,5 +132,9 @@ auxFunction <- function(dataFrame,
 
   arrayName <- unlist(arrayName)
   arrayIdComponent <- unlist(arrayIdComponent)
-  return(list(idComponentsString, arrayName, arrayIdComponent))
+  arrayIdComponentNValues <- unlist(arrayIdComponentNValues)
+  return(list(idComponentsString,
+              arrayName,
+              arrayIdComponent,
+              arrayIdComponentNValues))
 }

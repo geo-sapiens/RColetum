@@ -19,7 +19,7 @@
 #' ("YYYY-MM-DD"). Also is possible specify another format, sending together
 #' in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".
 #'
-#' @return A data frame.
+#' @return A list, with one or more data frames.
 #' @examples
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
 #' GetAnswers(token = token,idAccount = 1,
@@ -145,7 +145,7 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   resp <- requestFunction(query = query, token = token, idAccount = idAccount)
 
   # Get just the data frame populated with the data
-  resp <- resp %>% unname
+  resp <- unname(resp)
 
   # Check if the form have some answer.
   if (is.null(resp)) {
@@ -157,8 +157,42 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
 
+  # Check if in this results have some question with N answers
+  if (length(aux[[4]]) != 0) {
+    ## Adding the friendly ID to all data frames nested with N answers
+    i <- 1
+    n <- nrow(resp)
+    while (i <= n) {
+      cod <- resp$friendlyId[i]
+      j <- 1
+      nAux <- length(aux[[4]])
+      while (j <= nAux) {
+        # transforming in data frame, because in some types, this is just a array
+        resp[aux[[4]][j]][[1]][[i]] <-
+          dplyr::as_data_frame(resp[aux[[4]][j]][[1]][[i]])
+        # adding the columns cod
+        resp[aux[[4]][j]][[1]][[i]] <-
+          dplyr::mutate(resp[aux[[4]][j]][[1]][[i]],cod = cod)
+
+        j <- j + 1
+      }
+
+      i <- i + 1
+    }
+
+    ## Getting the nested data frames with N answers and unificaing the same
+    ## column and add in array each one new data frame
+    i <- 1
+    n <- length(aux[[4]])
+    otherDF <- list()
+    while (i <= n) {
+      otherDF[[i]] <- do.call("rbind",resp[aux[[4]][i]][[1]])
+      i <- i + 1
+    }
+  }
+
   # Adjust aux, adding in aux[[2]] e aux[[3]] the colum name to id
-  aux[[2]] <- append(aux[[2]],'id',0)
+  aux[[2]] <- append(aux[[2]],'cod',0)
   aux[[3]] <- append(aux[[3]],'friendlyId',0)
 
   # Re-ordened the columns to the original order
@@ -173,6 +207,10 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
     names(resp) <- make.names(aux[[2]],unique = TRUE)
   }
 
-  # Return data frame with the answers
-  return(resp)
+  # Return data frames with the answers
+  if (length(aux[[4]]) != 0) {
+    return(list(resp,otherDF))
+  } else {
+    return(resp)
+  }
 }

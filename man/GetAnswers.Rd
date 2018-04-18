@@ -31,7 +31,7 @@ that was answered after this date. Is acceptable the ISO8601 format
 in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".}
 }
 \value{
-A data frame.
+A list, with one or more data frames.
 }
 \description{
 Get all the currents answers of a specific form. This function make a call
