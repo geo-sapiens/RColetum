@@ -3,7 +3,6 @@
 #' Get the principals infos of all forms.
 #'
 #' @param token A string access token.
-#' @param idAccount Numeric Id of the account.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
 #' @param public_answers Optinal filter. If the form accept form anonymously, is
@@ -13,17 +12,16 @@
 #'
 #' @return A data frame.
 #' @examples
-#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5)
-#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 5,'enabled','true','true')
+#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
+#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 #' GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-#'          idAccount = 5,
 #'          status = 'enabled',
 #'          public_answers = 'false',
 #'          answer_tracking = 'true'
 #'          )
 #' @export
 
-GetForms <- function(token, idAccount,
+GetForms <- function(token,
                      status = NULL,
                      public_answers = NULL,
                      answer_tracking = NULL) {
@@ -96,7 +94,7 @@ GetForms <- function(token, idAccount,
     }")
 
   # Request
-  resp <- requestFunction(query = query, token = token, idAccount = idAccount)
+  resp <- requestFunction(query = query, token = token)
 
   return(resp)
 }

@@ -4,13 +4,11 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idAccount, idForm, repetedColunsNames = FALSE,
-  formSource = NULL, createdBefore = NULL, createdAfter = NULL)
+GetAnswers(token, idForm, repetedColunsNames = FALSE, formSource = NULL,
+  createdBefore = NULL, createdAfter = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
-
-\item{idAccount}{Numeric Id of the account.}
 
 \item{idForm}{Numeric Id of the required form.}
 
@@ -38,20 +36,20 @@ Get all the currents answers of a specific form. This function make a call
 to GetFormSchema().
 }
 \examples{
-GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
-GetAnswers(token = token,idAccount = 1,
+GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+GetAnswers(token = token,
              idForm = idForm,
              formSource = NULL,
              createdAfter = "2012-12-20",
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = token,idAccount = 1,
+GetAnswers(token = token,
              idForm = idForm,
              formSource = web_public,
              createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = token,idAccount = 1,
+GetAnswers(token = token,
              idForm = idForm,
              formSource = web_private,
              createdAfter = "2012-12-20",

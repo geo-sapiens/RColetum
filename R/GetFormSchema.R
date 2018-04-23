@@ -5,15 +5,14 @@
 #' of the form.
 #'
 #' @param token A string access token.
-#' @param idAccount Numeric Id of the account.
 #' @param idForm Numeric Id of the required form.
 #'
 #' @return A possible nested data frame.
 #' @examples
-#' GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
+#' GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 #' @export
 
-GetFormSchema <- function(token, idAccount, idForm) {
+GetFormSchema <- function(token, idForm) {
   #### TODO: Change the query to the conctract form, when avaible. ####
   query <- paste0("{
       form_definition(formId:",idForm,"){
@@ -47,24 +46,64 @@ GetFormSchema <- function(token, idAccount, idForm) {
               },
               componentId,
               minimum,
-              maximum
+              maximum,
+              options,
+              order,
+              helpBlock,
+              currency,
+              format,
+              choices,
+              rangeMin,
+              rangeMax,
+              step,
+              unit
             },
             componentId,
             minimum,
-            maximum
+            maximum,
+            options,
+            order,
+            helpBlock,
+            currency,
+            format,
+            choices,
+            rangeMin,
+            rangeMax,
+            step,
+            unit
           },
           componentId,
           minimum,
-          maximum
+          maximum,
+          options,
+          order,
+          helpBlock,
+          currency,
+          format,
+          choices,
+          rangeMin,
+          rangeMax,
+          step,
+          unit
         },
         componentId,
         minimum,
-        maximum
+        maximum,
+        options,
+        order,
+        helpBlock,
+        currency,
+        format,
+        choices,
+        rangeMin,
+        rangeMax,
+        step,
+        unit
       }
     }")
 
   # Request
-  resp <- requestFunction(query = query, token = token, idAccount = idAccount)
+  resp <- requestFunction(query = query, token = token)
 
   return(resp)
 }

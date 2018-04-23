@@ -2,15 +2,14 @@
 # Is used to make all the requests to the webservice.
 # Was create to reuse code.
 
-requestFunction <- function(query, token, idAccount) {
+requestFunction <- function(query, token) {
   #### TODO: Adjust conform right URL ####
   # Temporary url
   url <- "http://localhost:86/app_dev.php/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
-                    config = httr::add_headers(Token = token,
-                                               Account = idAccount),
+                    config = httr::add_headers(Token = token),
                     query = list(query = query),
                     encode = "json")
 
@@ -20,7 +19,7 @@ requestFunction <- function(query, token, idAccount) {
 
   # Catch some error from API
   if (!identical(status_code,'200')) {
-    stop(paste0('Error ',resp$errors$code,': ',resp$errors$message))
+    stop(paste0('Error ',resp$code,': ',resp$message))
   }
 
   # Catch some another existing error or warning

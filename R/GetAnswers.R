@@ -4,7 +4,6 @@
 #' to GetFormSchema().
 #'
 #' @param token A string access token.
-#' @param idAccount Numeric Id of the account.
 #' @param idForm Numeric Id of the required form.
 #' @param repetedColunsNames Boolean flag, indicates if the repeted columns
 #' names will stay or if gonna be rename with a suffix.
@@ -21,20 +20,20 @@
 #'
 #' @return A list, with one or more data frames.
 #' @examples
-#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
-#' GetAnswers(token = token,idAccount = 1,
+#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+#' GetAnswers(token = token,
 #'              idForm = idForm,
 #'              formSource = NULL,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = token,idAccount = 1,
+#' GetAnswers(token = token,
 #'              idForm = idForm,
 #'              formSource = web_public,
 #'              createdAfter = c("20-12-2012","%d-%m-%Y"),
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = token,idAccount = 1,
+#' GetAnswers(token = token,
 #'              idForm = idForm,
 #'              formSource = web_private,
 #'              createdAfter = "2012-12-20",
@@ -42,12 +41,12 @@
 #'              )
 #' @export
 
-GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
+GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
                        formSource = NULL,
                        createdBefore = NULL,
                        createdAfter = NULL) {
 
-  form_definition <- GetFormSchema(token,idAccount,idForm)
+  form_definition <- GetFormSchema(token,idForm)
   aux <- auxFunction(form_definition)
   componentsId <- aux[[1]]
 
@@ -142,7 +141,7 @@ GetAnswers <- function(token, idAccount, idForm, repetedColunsNames = FALSE,
   )
 
   # Request
-  resp <- requestFunction(query = query, token = token, idAccount = idAccount)
+  resp <- requestFunction(query = query, token = token)
 
   # Get just the data frame populated with the data
   resp <- unname(resp)

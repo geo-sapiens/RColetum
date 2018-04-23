@@ -4,12 +4,10 @@
 \alias{GetFormSchema}
 \title{Get the form schema of a form.}
 \usage{
-GetFormSchema(token, idAccount, idForm)
+GetFormSchema(token, idForm)
 }
 \arguments{
 \item{token}{A string access token.}
-
-\item{idAccount}{Numeric Id of the account.}
 
 \item{idForm}{Numeric Id of the required form.}
 }
@@ -22,5 +20,5 @@ data frame, that contain all the needed information to request the answers
 of the form.
 }
 \examples{
-GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 1, 3345)
+GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 }
