@@ -12,7 +12,7 @@ Install this package directly in R, using the 'devtools' package:
 
 ```{r}
 install.packages("devtools")
-devtools::install_github("geo-sapins/RColetum")
+devtools::install_github("geo-sapiens/RColetum")
 ```
 ## What you can do
 In this first version of package, is avaliable three main functions to enable
