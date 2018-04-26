@@ -13,10 +13,12 @@
 auxFunction <- function(dataFrame,
                         idComponentsString = NULL,
                         groupName = NULL,
-                        groupIdComponent = NULL) {
+                        groupIdComponent = NULL,
+                        flagGroupN = FALSE) {
   arrayName <- vector()
   arrayIdComponent <- vector()
   arrayIdComponentNValues <- vector()
+
   i <- 1
   nrow <- nrow(dataFrame)
   while (i <= nrow) {
@@ -27,6 +29,12 @@ auxFunction <- function(dataFrame,
         dataFrame$componentId[i],
         '{')
 
+      if (is.na(dataFrame$maximum[i])) {
+        flagGroupN = TRUE
+      } else {
+        flagGroupN = FALSE
+      }
+
       aux <- auxFunction(dataFrame$components[i][[1]],
                          idComponentsString,
                          paste0(groupName,
@@ -34,27 +42,32 @@ auxFunction <- function(dataFrame,
                                 '.'),
                          paste0(groupIdComponent,
                                 dataFrame$componentId[i],
-                                '.'))
+                                '.'),
+                         flagGroupN)
 
       idComponentsString <- aux[1]
       idComponentsString <- paste0(idComponentsString,'}')
 
       arrayName <- append(arrayName, aux[2])
       arrayIdComponent <- append(arrayIdComponent, aux[3])
+      arrayIdComponentNValues <- append(arrayIdComponentNValues, aux[4])
 
     } else {
+      # This variable is used to simulated a switch statement
+      switchCase <- TRUE
+
       # Check if the question accept more than one value.
-      ## Case yes, it's gonna be treat after
-      if (is.na(dataFrame$maximum[i]) &
-          !(identical(toString(dataFrame$type[i]),
-                     'agreementfield') |
-           identical(toString(dataFrame$type[i]),
-                     'ratingfield') |
-          identical(toString(dataFrame$type[i]),
-                    'separatorfield') |
-          identical(toString(dataFrame$type[i]),
-                    'selectfield')
-          )) {
+      if (switchCase &
+          (is.na(dataFrame$maximum[i]) &
+           !(identical(toString(dataFrame$type[i]),
+                       'agreementfield') |
+             identical(toString(dataFrame$type[i]),
+                       'ratingfield') |
+             identical(toString(dataFrame$type[i]),
+                       'separatorfield') |
+             identical(toString(dataFrame$type[i]),
+                       'selectfield'))
+      )) {
         idComponentsString <- paste0(idComponentsString,
                                      dataFrame$componentId[i],",")
         arrayIdComponentNValues <- append(arrayIdComponentNValues,
@@ -62,7 +75,29 @@ auxFunction <- function(dataFrame,
                                                  dataFrame$componentId[i]))
         arrayIdComponentNValues <- append(arrayIdComponentNValues,
                                           paste0(groupName,dataFrame$label[i]))
-      } else {
+        switchCase <- FALSE
+      }
+
+      # Check if is a group with more values
+      if (flagGroupN) {
+
+        idComponentsString <- paste0(idComponentsString,
+                                     dataFrame$componentId[i],",")
+        if (flagGroupN != 2) {
+          #### TODO: Find easily way to remove the point after the group name #
+          arrayIdComponentNValues <- append(arrayIdComponentNValues,
+                                            substring(groupIdComponent,0,
+                                                      nchar(groupIdComponent)-1))
+          arrayIdComponentNValues <- append(arrayIdComponentNValues,
+                                            substring(groupName,0,
+                                                      nchar(groupName)-1))
+          flagGroupN <- flagGroupN + 1
+        }
+
+        switchCase <- FALSE
+      }
+
+      if (switchCase) {
         switch(
           toString(dataFrame$type[i]),
           'moneyfield' = {
@@ -126,6 +161,7 @@ auxFunction <- function(dataFrame,
                                               dataFrame$componentId[i]))
           }
         )
+        switchCase <- FALSE
       }
     }
 

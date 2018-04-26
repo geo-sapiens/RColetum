@@ -194,10 +194,10 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
       i <- i + 1
     }
 
-    ## Getting the nested data frames with N answers and unificaing the same
+    ## Getting the nested data frames with N answers and unificating the same
     ## column and add in array each one new data frame
     ### i: sequencial index do fill the list
-    ### j: the index of aux[[4]], indicatin the colunms to bind
+    ### j: the index of aux[[4]], indicating the colunms to bind
     i <- 1
     j <- 1
     n <- length(aux[[4]])
