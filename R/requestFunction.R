@@ -15,7 +15,12 @@ requestFunction <- function(query, token) {
 
   # Convert the response to useful object
   status_code <- toString(resp$status_code)
-  resp <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"))
+  resp <-
+    jsonlite::fromJSON(
+      httr::content(resp, "text", encoding = "UTF-8"),
+      simplifyVector = TRUE,
+      simplifyDataFrame = TRUE
+      )
 
   # Catch some error from API
   if (!identical(status_code,'200')) {

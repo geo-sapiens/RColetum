@@ -155,81 +155,10 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+  resp <- prepareAnswerDF(resp,'principal')
 
-  # Check if in this results have some question with N answers
-  if (length(aux[[4]]) != 0) {
-    ## Adding the friendly ID to all data frames nested with N answers
-    i <- 1
-    n <- nrow(resp)
-    while (i <= n) {
-      cod <- resp$friendlyId[i]
-      j <- 1
-      nAux <- length(aux[[4]])
-      while (j <= nAux) {
-        namesAux <- NA
-        # check if the column have name
-        if (is.null(names(resp[aux[[4]][j]][[1]][[i]]))) {
-          namesAux <- aux[[4]][j + 1]
-        } else {
-          namesAux <- paste0(aux[[4]][j + 1],
-                             '.', names(resp[aux[[4]][j]][[1]][[i]]))
-        }
-
-        # transforming in data frame, because in some types, this is just a array
-        resp[aux[[4]][j]][[1]][[i]] <-
-          as.data.frame(resp[aux[[4]][j]][[1]][[i]], stringsAsFactors = FALSE)
-
-        # check if has some answer
-        if (length(resp[aux[[4]][j]][[1]][[i]]) != 0) {
-          # renaming the columns
-          names(resp[aux[[4]][j]][[1]][[i]]) <- namesAux
-
-          # adding the columns cod
-          resp[aux[[4]][j]][[1]][[i]] <-
-            dplyr::mutate(resp[aux[[4]][j]][[1]][[i]],cod = cod)
-        }
-        j <- j + 2
-      }
-
-      i <- i + 1
-    }
-
-    ## Getting the nested data frames with N answers and unificating the same
-    ## column and add in array each one new data frame
-    ### i: sequencial index do fill the list
-    ### j: the index of aux[[4]], indicating the colunms to bind
-    i <- 1
-    j <- 1
-    n <- length(aux[[4]])
-    otherDF <- list()
-    while (j <= n) {
-      otherDF[[i]] <- do.call("rbind",resp[aux[[4]][j]][[1]])
-
-      i <- i + 1
-      j <- j + 2
-    }
-  }
-
-  # Adjust aux, adding in aux[[2]] e aux[[3]] the colum name to id
-  aux[[2]] <- append(aux[[2]],'cod',0)
-  aux[[3]] <- append(aux[[3]],'friendlyId',0)
-
-  # Re-ordened the columns to the original order
-  resp <- dplyr::select(resp, aux[[3]])
-
-  # Rename the columns, changing the idComponents by the question names
-  ## Check the user preference about repeted names in the columns
-  if (repetedColunsNames) {
-    names(resp) <- aux[[2]]
-  } else {
-    ### Cases with the repeted names receive a sufix
-    names(resp) <- make.names(aux[[2]],unique = TRUE)
-  }
 
   # Return data frames with the answers
-  if (length(aux[[4]]) != 0) {
-    return(list(resp,otherDF))
-  } else {
-    return(resp)
-  }
+  return(resp)
+
 }
