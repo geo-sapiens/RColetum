@@ -24,7 +24,12 @@ requestFunction <- function(query, token) {
 
   # Catch some error from API
   if (!identical(status_code,'200')) {
-    stop(paste0('Error ',resp$code,': ',resp$message))
+    if (!is.null(resp$code)) {
+      stop(paste0('Error ',resp$code,': ',resp$message))
+    } else {
+      stop(paste0('Error ',resp$errors$code,': ',resp$errors$message))
+    }
+
   }
 
   # Catch some another existing error or warning
