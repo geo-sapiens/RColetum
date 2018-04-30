@@ -155,6 +155,7 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+  resp <- dplyr::rename(resp, id = friendlyId)
   resp <- prepareAnswerDF(resp,'principal')
 
 
