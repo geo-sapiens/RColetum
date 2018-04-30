@@ -24,8 +24,14 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
         if (is.list(dataFrame[i,j])) {
           aux <- NULL
           if (is.data.frame(dataFrame[i,j][[1]])) {
-            aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
-                                      parent_cod = dataFrame[i,"id"])
+            # aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
+            #                           parent_cod = dataFrame[i,"id"])
+            if (nrow(dataFrame[i,j][[1]]) != 0) {
+              aux[[1]] <- cbind(dataFrame[i,j][[1]],
+                                parent_cod = dataFrame[i,"id"],
+                                stringsAsFactors = FALSE)
+            }
+
           } else {
             if (length(dataFrame[i,j][[1]]) != 0) {
               aux[[1]] <- data.frame(dataFrame[i,"id"],dataFrame[i,j],
@@ -51,6 +57,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     n <- length(otherDF)
 
     while (i <= n) {
+      otherDF[[i]] <- lapply(otherDF[[i]],jsonlite::flatten)
       otherDF[[i]] <- do.call("rbind",otherDF[[i]])
       otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
                                     id = rownames(otherDF[[i]]))
