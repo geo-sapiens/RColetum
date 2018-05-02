@@ -47,7 +47,7 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
                        createdAfter = NULL) {
 
   form_definition <- GetFormSchema(token,idForm)
-  aux <- auxFunction2(form_definition)
+  aux <- auxFunction(form_definition)
   componentsId <- aux[[1]]
 
   # Applying optionals filters
