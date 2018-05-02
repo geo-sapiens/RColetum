@@ -66,7 +66,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
     # Removing the columns with N answers from the principal Data Frame
     if (length(otherDF) != 0) {
-      dataFrame <- dplyr::select(dataFrame,-one_of(names(otherDF)))
+      dataFrame <- dplyr::select(dataFrame,-dplyr::one_of(names(otherDF)))
     }
 
     if (first) {
