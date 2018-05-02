@@ -8,7 +8,7 @@
 # Recursively, gets the idComponentes and the question name of all components,
 # including from the nested components.
 
-auxFunction2 <- function(dataFrame, idComponentsString = NULL) {
+auxFunction <- function(dataFrame, idComponentsString = NULL) {
 
   dictionary <- data.frame(matrix(ncol = 3, nrow = 0),stringsAsFactors = FALSE)
   names(dictionary) <- c('idComponent', 'label', 'order')
@@ -35,7 +35,7 @@ auxFunction2 <- function(dataFrame, idComponentsString = NULL) {
         flagGroupN = FALSE
       }
 
-      aux <- auxFunction2(dataFrame$components[i][[1]],
+      aux <- auxFunction(dataFrame$components[i][[1]],
                          idComponentsString)
 
       idComponentsString <- aux[[1]]
