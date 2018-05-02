@@ -47,7 +47,7 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
                        createdAfter = NULL) {
 
   form_definition <- GetFormSchema(token,idForm)
-  aux <- auxFunction(form_definition)
+  aux <- auxFunction2(form_definition)
   componentsId <- aux[[1]]
 
   # Applying optionals filters
@@ -141,7 +141,7 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
   )
 
   # Request
-  resp <- requestFunction(query = query, token = token)
+  resp <- requestFunction(query = query, token = token, dictionary = aux[[2]])
 
   # Get just the data frame populated with the data
   resp <- unname(resp)
@@ -160,6 +160,10 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
 
 
   # Return data frames with the answers
-  return(resp)
+  if (length(resp[[2]]) > 0) {
+    return(resp)
+  } else {
+    return(resp[[1]])
+  }
 
 }

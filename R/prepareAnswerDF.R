@@ -28,8 +28,11 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
             #                           parent_cod = dataFrame[i,"id"])
             if (nrow(dataFrame[i,j][[1]]) != 0) {
               aux[[1]] <- cbind(dataFrame[i,j][[1]],
-                                parent_cod = dataFrame[i,"id"],
+                                'temp' = dataFrame[i,"id"],
                                 stringsAsFactors = FALSE)
+              # Rename just the temp column
+              names(aux[[1]])[names(aux[[1]]) == 'temp'] <-
+                paste0(dataFrameName,'_cod')
             }
 
           } else {
