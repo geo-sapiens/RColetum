@@ -1,24 +1,17 @@
 # Auxiliar function
-# Is used to get the idComponents and the question name of each answer from the
-# answer schema.
+# Is used to get the idComponents and create a dictionary with the componentId
+# and the question name of each answer from the answer schema.
 #
 # The idComponents is necessary to be possible use to get the answers after.
-# The arrayIdComponent works to re-ordened the coluns, after flatten.
-# The questions names is useful to rename the coluns of dataframe of answers
-# in the end.
+# The dictionary is necessary to rename the columns from idComponents to labels.
 #
 # Recursively, gets the idComponentes and the question name of all components,
 # including from the nested components.
 
-auxFunction <- function(dataFrame,
-                        idComponentsString = NULL,
-                        groupName = NULL,
-                        groupIdComponent = NULL,
-                        flagGroupN = FALSE) {
-  arrayName <- vector()
-  arrayIdComponent <- vector()
-  arrayIdComponentNValues <- vector()
+auxFunction <- function(dataFrame, idComponentsString = NULL) {
 
+  dictionary <- data.frame(matrix(ncol = 3, nrow = 0),stringsAsFactors = FALSE)
+  names(dictionary) <- c('idComponent', 'label', 'order')
   i <- 1
   nrow <- nrow(dataFrame)
   while (i <= nrow) {
@@ -29,6 +22,13 @@ auxFunction <- function(dataFrame,
         dataFrame$componentId[i],
         '{')
 
+      dictionary <- rbind(dictionary,
+                          data.frame('idComponent' = dataFrame$componentId[i],
+                                     'label' = dataFrame$name[i],
+                                     'order' = dataFrame$order[i],
+                                     stringsAsFactors = FALSE),
+                          stringsAsFactors = FALSE)
+
       if (is.na(dataFrame$maximum[i])) {
         flagGroupN = TRUE
       } else {
@@ -36,143 +36,31 @@ auxFunction <- function(dataFrame,
       }
 
       aux <- auxFunction(dataFrame$components[i][[1]],
-                         idComponentsString,
-                         paste0(groupName,
-                                dataFrame$name[i],
-                                '.'),
-                         paste0(groupIdComponent,
-                                dataFrame$componentId[i],
-                                '.'),
-                         flagGroupN)
+                         idComponentsString)
 
-      idComponentsString <- aux[1]
+      idComponentsString <- aux[[1]]
       idComponentsString <- paste0(idComponentsString,'}')
 
-      arrayName <- append(arrayName, aux[2])
-      arrayIdComponent <- append(arrayIdComponent, aux[3])
-      arrayIdComponentNValues <- append(arrayIdComponentNValues, aux[4])
+      dictionary <- rbind(dictionary,aux[[2]],
+                          stringsAsFactors = FALSE)
 
     } else {
-      # This variable is used to simulated a switch statement
-      switchCase <- TRUE
-
-      # Check if the question accept more than one value.
-      if (switchCase &
-          (is.na(dataFrame$maximum[i]) &
-           !(identical(toString(dataFrame$type[i]),
-                       'agreementfield') |
-             identical(toString(dataFrame$type[i]),
-                       'ratingfield') |
-             identical(toString(dataFrame$type[i]),
-                       'separatorfield') |
-             identical(toString(dataFrame$type[i]),
-                       'selectfield'))
-      )) {
+      if (identical(toString(dataFrame$type[i]), 'separatorfield')) {
+        # do nothing, because isn't a question on form.
+      } else {
         idComponentsString <- paste0(idComponentsString,
                                      dataFrame$componentId[i],",")
-        arrayIdComponentNValues <- append(arrayIdComponentNValues,
-                                          paste0(groupIdComponent,
-                                                 dataFrame$componentId[i]))
-        arrayIdComponentNValues <- append(arrayIdComponentNValues,
-                                          paste0(groupName,dataFrame$label[i]))
-        switchCase <- FALSE
-      }
 
-      # Check if is a group with more values
-      if (flagGroupN) {
-
-        idComponentsString <- paste0(idComponentsString,
-                                     dataFrame$componentId[i],",")
-        if (flagGroupN != 2) {
-          #### TODO: Find easily way to remove the point after the group name #
-          arrayIdComponentNValues <- append(arrayIdComponentNValues,
-                                            substring(groupIdComponent,0,
-                                                      nchar(groupIdComponent)-1))
-          arrayIdComponentNValues <- append(arrayIdComponentNValues,
-                                            substring(groupName,0,
-                                                      nchar(groupName)-1))
-          flagGroupN <- flagGroupN + 1
-        }
-
-        switchCase <- FALSE
-      }
-
-      if (switchCase) {
-        switch(
-          toString(dataFrame$type[i]),
-          'moneyfield' = {
-            idComponentsString <- paste0(idComponentsString,
-                                         dataFrame$componentId[i],
-                                         # "{currency,value}",
-                                         ",")
-            arrayName <- append(arrayName, paste0(groupName,
-                                                  dataFrame$label[i],
-                                                  '.',
-                                                  'currency'))
-            arrayName <- append(arrayName, paste0(groupName,
-                                                  dataFrame$label[i],
-                                                  '.',
-                                                  'value'))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i],
-                                              '.',
-                                              'currency'))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i],
-                                              '.',
-                                              'value'))
-          },
-
-          'coordinatefield' = {
-            idComponentsString <- paste0(idComponentsString,
-                                         dataFrame$componentId[i],
-                                         # "{coordinates}",
-                                         ",")
-            arrayName <- append(arrayName, paste0(groupName,
-                                                  dataFrame$label[i],
-                                                  '.',
-                                                  'x'))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i],
-                                              '.',
-                                              'x'))
-            arrayName <- append(arrayName, paste0(groupName,
-                                                  dataFrame$label[i],
-                                                  '.',
-                                                  'y'))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i],
-                                              '.',
-                                              'y'))
-          },
-          'separatorfield' = {
-            # do nothing, because isn't a question on form.
-          },
-          {
-            idComponentsString <- paste0(idComponentsString,
-                                         dataFrame$componentId[i],",")
-            arrayName <- append(arrayName, paste0(groupName,dataFrame$label[i]))
-            arrayIdComponent <- append(arrayIdComponent,
-                                       paste0(groupIdComponent,
-                                              dataFrame$componentId[i]))
-          }
-        )
-        switchCase <- FALSE
+        dictionary <- rbind(dictionary,
+                            data.frame('idComponent' = dataFrame$componentId[i],
+                                       'label' = dataFrame$label[i],
+                                       'order' = dataFrame$order[i],
+                                       stringsAsFactors = FALSE),
+                            stringsAsFactors = FALSE)
       }
     }
 
     i <- i + 1
   }
-
-  arrayName <- unlist(arrayName)
-  arrayIdComponent <- unlist(arrayIdComponent)
-  arrayIdComponentNValues <- unlist(arrayIdComponentNValues)
-  return(list(idComponentsString,
-              arrayName,
-              arrayIdComponent,
-              arrayIdComponentNValues))
+  return(list(idComponentsString,dictionary))
 }

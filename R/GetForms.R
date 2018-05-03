@@ -89,7 +89,15 @@ GetForms <- function(token,
         answer_tracking,
         tracking_path,
         public_answers,
-        description
+        description,
+        success_message,
+        top_color,
+        bottom_color,
+        public_limit,
+        public_answers_limit,
+        public_background_object_name,
+        public_background_content_type,
+        public_background_size
       }
     }")
 

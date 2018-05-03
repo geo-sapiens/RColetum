@@ -20,21 +20,25 @@ GetFormSchema <- function(token, idForm) {
         label,
         name,
         type,
+        componentId,
         components{
           formId,
           label,
           name,
           type,
+          componentId,
           components{
             formId,
             label,
             name,
             type,
+            componentId,
             components{
               formId,
               label,
               name,
               type,
+              componentId,
               components{
                 formId,
                 label,
@@ -44,7 +48,6 @@ GetFormSchema <- function(token, idForm) {
                 minimum,
                 maximum
               },
-              componentId,
               minimum,
               maximum,
               options,
@@ -58,7 +61,6 @@ GetFormSchema <- function(token, idForm) {
               step,
               unit
             },
-            componentId,
             minimum,
             maximum,
             options,
@@ -72,7 +74,6 @@ GetFormSchema <- function(token, idForm) {
             step,
             unit
           },
-          componentId,
           minimum,
           maximum,
           options,
@@ -86,7 +87,6 @@ GetFormSchema <- function(token, idForm) {
           step,
           unit
         },
-        componentId,
         minimum,
         maximum,
         options,
