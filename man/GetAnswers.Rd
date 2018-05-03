@@ -4,8 +4,8 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idForm, formSource = NULL, createdBefore = NULL,
-  createdAfter = NULL)
+GetAnswers(token, idForm, formSource = NULL, createdAfter = NULL,
+  createdBefore = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
@@ -15,22 +15,22 @@ GetAnswers(token, idForm, formSource = NULL, createdBefore = NULL,
 \item{formSource}{Optional filter. Is the origin of the source of the answer
 Can use 'web_public', 'web_private' and 'mobile'.}
 
-\item{createdBefore}{Optional filter. This parameter filter the answers
-that was answered before this date. Is acceptable the ISO8601 format
-("YYYY-MM-DD"). Also is possible specify another format, sending together
-in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".}
-
 \item{createdAfter}{Optional filter. This parameter filter the answers
 that was answered after this date. Is acceptable the ISO8601 format
 ("YYYY-MM-DD"). Also is possible specify another format, sending together
-in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".}
+in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".}
+
+\item{createdBefore}{Optional filter. This parameter filter the answers
+that was answered before this date. Is acceptable the ISO8601 format
+("YYYY-MM-DD"). Also is possible specify another format, sending together
+in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".}
 }
 \value{
 A list, with one or more data frames.
 }
 \description{
 Get all the currents answers of a specific form. This function make a call
-to GetFormSchema().
+to GetFormSchema.
 }
 \examples{
 GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)

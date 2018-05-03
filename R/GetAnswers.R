@@ -1,7 +1,7 @@
 #' Get all the answers of a form.
 #'
 #' Get all the currents answers of a specific form. This function make a call
-#' to GetFormSchema().
+#' to GetFormSchema.
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
@@ -10,11 +10,11 @@
 #' @param createdAfter Optional filter. This parameter filter the answers
 #' that was answered after this date. Is acceptable the ISO8601 format
 #' ("YYYY-MM-DD"). Also is possible specify another format, sending together
-#' in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".
+#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".
 #' @param createdBefore Optional filter. This parameter filter the answers
 #' that was answered before this date. Is acceptable the ISO8601 format
 #' ("YYYY-MM-DD"). Also is possible specify another format, sending together
-#' in a vector in the R especification, for example, "%d-%m-%Y" to "25-10-1995".
+#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".
 #'
 #' @return A list, with one or more data frames.
 #' @examples
@@ -39,10 +39,11 @@
 #'              )
 #' @export
 
-GetAnswers <- function(token, idForm,
+GetAnswers <- function(token,
+                       idForm,
                        formSource = NULL,
-                       createdBefore = NULL,
-                       createdAfter = NULL) {
+                       createdAfter = NULL,
+                       createdBefore = NULL) {
 
   form_definition <- GetFormSchema(token,idForm)
   aux <- auxFunction(form_definition)
