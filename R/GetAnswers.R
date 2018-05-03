@@ -5,8 +5,6 @@
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
-#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
-#' names will stay or if gonna be rename with a suffix.
 #' @param formSource Optional filter. Is the origin of the source of the answer
 #' Can use 'web_public', 'web_private' and 'mobile'.
 #' @param createdAfter Optional filter. This parameter filter the answers
@@ -41,7 +39,7 @@
 #'              )
 #' @export
 
-GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
+GetAnswers <- function(token, idForm,
                        formSource = NULL,
                        createdBefore = NULL,
                        createdAfter = NULL) {
@@ -155,7 +153,10 @@ GetAnswers <- function(token, idForm, repetedColunsNames = FALSE,
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+
+  # Standardization of column id
   resp <- dplyr::rename(resp, id = friendlyId)
+  # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'principal')
 
 

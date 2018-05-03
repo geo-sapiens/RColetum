@@ -1,3 +1,10 @@
+# This function separeted the questions N from the principal data frame
+#
+# The main loop, pass through all the register in the data frame and verify if
+# is another data frame or a list. In both cases, this element is moved to the
+# another list called complementaryDF. All elements in the complementary DF
+# pass through this procediment too.
+
 prepareAnswerDF <- function(dataFrame, dataFrameName) {
   complementaryDF <- list()
 
