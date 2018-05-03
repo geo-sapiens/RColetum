@@ -4,8 +4,7 @@ An R package to get information from [COLETUM](www.coletum.com).
 
 ## Prerequisites
 To be able to use this package, first you need access your Coletum account by
-the navegator to get your account id and generate your authenticated token in
-Webservice page.
+the navegator to generate your authenticated token in Webservice page.
 
 ### Install RColetum
 Install this package directly in R, using the 'devtools' package: 
@@ -25,7 +24,8 @@ in your account;
 This schema contains informations about the ids, names, types, hierarquy and 
 others of each question, thats can be used to get the answers posteriorly.
 
-* `GetAnswers` return a data frame with all the answers of a specific form. 
+* `GetAnswers` return one or more data frames with all the answers of a specific 
+form. 
 This function make a call to `GetFormsSchema` and use the result to automatic
 generate the exact query for any form, takes the result and mount the data frame
 in a friendly way.
