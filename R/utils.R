@@ -193,7 +193,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
     while (i <= n) {
       otherDF[[i]] <- lapply(otherDF[[i]],jsonlite::flatten)
-      otherDF[[i]] <- do.call("rbind",otherDF[[i]])
+      otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
       otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
                                     id = rownames(otherDF[[i]]))
       i <- i + 1
