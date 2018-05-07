@@ -2,9 +2,9 @@ Package: RColetum
 Type: Package
 Title: Access your Coletum's data from API
 Version: 0.0.0.9000
-Date: 2018-05-03
-Author: André I. Smaniotto
-Maintainer: GeoSapiens <geosapiens@geosapiens.com.br>
+Date: 2018-05-07
+Author: André I. Smaniotto [aut, cre]
+Maintainer: André I. Smaniotto <smaniotto@geosapiens.com.br>
 Description: Get your data (forms, schemas, answers) from Coletum 
     <https://coletum.com> to handle and analyse.
 License: What license is it under???

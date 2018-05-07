@@ -130,7 +130,12 @@ GetAnswers <- function(token,
     "{
       answer(formId:",idForm,filters,"){
         metaData{
-            friendlyId
+            transaction,
+            userName,
+            source,
+            friendlyId,
+            createdAt,
+            createdAtCoordinates
         },
         answer{
         ",componentsId,
