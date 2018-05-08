@@ -41,9 +41,9 @@ requestFunction <- function(query, token, dictionary = NULL) {
   # Catch some error from API
   if (!identical(status_code,'200')) {
     if (!is.null(resp$code)) {
-      stop(paste0('Error ',resp$code,': ',resp$message,'\n'))
+      stop(paste0('Error ',status_code,': ',resp$message,'\n'))
     } else {
-      stop(paste0('Error ',resp$errors$code,': ',resp$errors$message,'\n'))
+      stop(paste0('Error ',status_code,': ',resp$errors$message,'\n'))
     }
 
   }
