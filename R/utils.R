@@ -178,8 +178,32 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     n <- length(otherDF)
 
     while (i <= n) {
+      # Registering the order of the names, because in next step, will lost
+      ordered <- lapply(otherDF[[i]],names)
+      # Unnesting the data frames
+      ## The function flatten changes the original orders of the columns
       otherDF[[i]] <- lapply(otherDF[[i]],jsonlite::flatten)
+
+      # Reordening the columns names
+      j <- 1
+      nDF <- length(ordered)
+      while (j <= nDF) {
+        reordered <-
+          lapply(ordered[[j]],
+                 grep,
+                 names(otherDF[[i]][[j]]),
+                 value = TRUE) %>%
+          unlist()
+
+        otherDF[[i]][[j]] <- otherDF[[i]][[j]] %>%
+          dplyr::select(reordered)
+
+        j <- j + 1
+      }
+
+      # Bind the data frames
       otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
+      # Add the id
       otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
                                     id = rownames(otherDF[[i]]))
       i <- i + 1

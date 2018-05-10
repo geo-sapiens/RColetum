@@ -159,9 +159,30 @@ GetAnswers <- function(token,
     return(NULL)
   }
 
+  # Registering the order of the names, because in next step, will lost
+  orderNames <- names(resp[[2]])
+
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+
+  # Reordening the columns names
+  reorderNames <- lapply(orderNames,
+                         grep,
+                         names(resp), value = TRUE) %>%
+    unlist()
+  ## Adding the metaData fields
+  reorderNames <- c('friendlyId',
+                    reorderNames,
+                    'transaction',
+                    'userName',
+                    'source',
+                    'createdAt',
+                    'createdAtCoordinates.latitude',
+                    'createdAtCoordinates.longitude')
+  ### Reordering
+  resp <- resp %>%
+    dplyr::select(reorderNames)
 
   # Standardization of column id
   resp <- dplyr::rename(resp, id = friendlyId)
