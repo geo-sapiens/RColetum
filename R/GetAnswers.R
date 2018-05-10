@@ -145,7 +145,7 @@ GetAnswers <- function(token,
   )
 
   # Request
-  resp <- requestFunction(query = query, token = token, dictionary = aux[[2]])
+  resp <- requestFunction(query = query, token = token)
 
   # Get just the data frame populated with the data
   resp <- unname(resp)
@@ -165,6 +165,8 @@ GetAnswers <- function(token,
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'principal')
 
+  # Renaming the columns names from componentId to the label of the question
+  resp <- renameColumns(resp,aux[[2]])
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {

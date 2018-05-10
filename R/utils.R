@@ -1,4 +1,4 @@
-requestFunction <- function(query, token, dictionary = NULL) {
+requestFunction <- function(query, token) {
   # Request function
   # Is used to make all the requests to the webservice.
 
@@ -17,23 +17,9 @@ requestFunction <- function(query, token, dictionary = NULL) {
   # Get the json content from the response
   jsonContent <- httr::content(resp, "text", encoding = "UTF-8")
 
-  # Translate the columns of Json, if necessary
-  if (!is.null(dictionary)) {
-    # Make the labels unique, to work in jsonlite::fromJSON
-    dictionary$label <- gsub('\\.','_',
-                             make.names(dictionary$label,unique = TRUE))
-
-    i <- 1
-    n <- nrow(dictionary)
-    while (i <= n) {
-      jsonContent <- gsub(dictionary[i,1],dictionary[i,2],jsonContent)
-      i <- i + 1
-    }
-  }
-
   # Convert the response to useful object
   resp <- jsonlite::fromJSON(
-    jsonContent,
+    txt = jsonContent,
     simplifyVector = TRUE,
     simplifyDataFrame = TRUE
   )
@@ -216,4 +202,40 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
   }
   return(list(DFPrincipal,complementaryDF))
+}
+
+renameColumns <- function(dataFrame, dictionary) {
+  # This function rename all the columns names from the componentId to the
+  # label of the question, according with the parameter dictionary.
+  names(dataFrame[[1]]) <- newNames(names(dataFrame[[1]]),
+                                    dictionary)
+  names(dataFrame[[2]]) <- newNames(names(dataFrame[[2]]),
+                                    dictionary)
+
+  i <- 1
+  iMax <- length(dataFrame[[2]])
+  while (i <= iMax) {
+    names(dataFrame[[2]][[i]]) <- newNames(names(dataFrame[[2]][[i]]),
+                                           dictionary)
+
+    i <- i + 1
+  }
+
+  return(dataFrame)
+}
+
+newNames <- function(oldNames, dictionary) {
+  return(sapply(oldNames,
+                function(x,dictionary){
+                  i <- 1
+                  n <- nrow(dictionary)
+                  while (i <= n) {
+                    x <- gsub(dictionary[i,1],
+                              dictionary[i,2],
+                              x)
+                    i <- i + 1
+                  }
+                  return(x)
+                },
+                dictionary))
 }
