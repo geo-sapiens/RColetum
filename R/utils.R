@@ -2,9 +2,8 @@ requestFunction <- function(query, token, dictionary = NULL) {
   # Request function
   # Is used to make all the requests to the webservice.
 
-  #### TODO: Adjust conform right URL ####
-  # Temporary url
-  url <- "http://localhost:86/app_dev.php/api/graphql"
+  # API's URL
+  url <- "http://www.coletum.com/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
