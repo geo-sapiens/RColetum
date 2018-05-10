@@ -5,6 +5,8 @@
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
+#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
+#' names will stay or if gonna be rename with a suffix.
 #' @param formSource Optional filter. Is the origin of the source of the answer
 #' Can use 'web_public', 'web_private' and 'mobile'.
 #' @param createdAfter Optional filter. This parameter filter the answers
@@ -41,6 +43,7 @@
 
 GetAnswers <- function(token,
                        idForm,
+                       repetedColunsNames = FALSE,
                        formSource = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL) {
@@ -164,6 +167,12 @@ GetAnswers <- function(token,
   resp <- dplyr::rename(resp, id = friendlyId)
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'principal')
+
+  ## Check the user preference about repeted names in the columns
+  if (!repetedColunsNames) {
+    ### Cases with the repeted names receive a sufix
+    aux[[2]]$label <- make.unique(aux[[2]]$label,sep = '_')
+  }
 
   # Renaming the columns names from componentId to the label of the question
   resp <- renameColumns(resp,aux[[2]])
