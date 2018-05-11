@@ -22,25 +22,21 @@ GetFormSchema <- function(token, idForm) {
         type,
         componentId,
         components{
-          formId,
           label,
           name,
           type,
           componentId,
           components{
-            formId,
             label,
             name,
             type,
             componentId,
             components{
-              formId,
               label,
               name,
               type,
               componentId,
               components{
-                formId,
                 label,
                 name,
                 type,
