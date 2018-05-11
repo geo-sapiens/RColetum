@@ -154,7 +154,7 @@ GetAnswers <- function(token,
   resp <- unname(resp)
 
   # Check if the form have some answer.
-  if (is.null(resp)) {
+  if (length(resp) == 0) {
     warning("No answers avaliable. Returning NULL")
     return(NULL)
   }
