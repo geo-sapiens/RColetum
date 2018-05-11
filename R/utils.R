@@ -1,4 +1,4 @@
-requestFunction <- function(query, token, dictionary = NULL) {
+requestFunction <- function(query, token) {
   # Request function
   # Is used to make all the requests to the webservice.
 
@@ -16,23 +16,9 @@ requestFunction <- function(query, token, dictionary = NULL) {
   # Get the json content from the response
   jsonContent <- httr::content(resp, "text", encoding = "UTF-8")
 
-  # Translate the columns of Json, if necessary
-  if (!is.null(dictionary)) {
-    # Make the labels unique, to work in jsonlite::fromJSON
-    dictionary$label <- gsub('\\.','_',
-                             make.names(dictionary$label,unique = TRUE))
-
-    i <- 1
-    n <- nrow(dictionary)
-    while (i <= n) {
-      jsonContent <- gsub(dictionary[i,1],dictionary[i,2],jsonContent)
-      i <- i + 1
-    }
-  }
-
   # Convert the response to useful object
   resp <- jsonlite::fromJSON(
-    jsonContent,
+    txt = jsonContent,
     simplifyVector = TRUE,
     simplifyDataFrame = TRUE
   )
@@ -191,8 +177,32 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     n <- length(otherDF)
 
     while (i <= n) {
+      # Registering the order of the names, because in next step, will lost
+      ordered <- lapply(otherDF[[i]],names)
+      # Unnesting the data frames
+      ## The function flatten changes the original orders of the columns
       otherDF[[i]] <- lapply(otherDF[[i]],jsonlite::flatten)
+
+      # Reordening the columns names
+      j <- 1
+      nDF <- length(ordered)
+      while (j <= nDF) {
+        reordered <-
+          lapply(ordered[[j]],
+                 grep,
+                 names(otherDF[[i]][[j]]),
+                 value = TRUE) %>%
+          unlist()
+
+        otherDF[[i]][[j]] <- otherDF[[i]][[j]] %>%
+          dplyr::select(reordered)
+
+        j <- j + 1
+      }
+
+      # Bind the data frames
       otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
+      # Add the id
       otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
                                     id = rownames(otherDF[[i]]))
       i <- i + 1
@@ -215,4 +225,40 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
   }
   return(list(DFPrincipal,complementaryDF))
+}
+
+renameColumns <- function(dataFrame, dictionary) {
+  # This function rename all the columns names from the componentId to the
+  # label of the question, according with the parameter dictionary.
+  names(dataFrame[[1]]) <- newNames(names(dataFrame[[1]]),
+                                    dictionary)
+  names(dataFrame[[2]]) <- newNames(names(dataFrame[[2]]),
+                                    dictionary)
+
+  i <- 1
+  iMax <- length(dataFrame[[2]])
+  while (i <= iMax) {
+    names(dataFrame[[2]][[i]]) <- newNames(names(dataFrame[[2]][[i]]),
+                                           dictionary)
+
+    i <- i + 1
+  }
+
+  return(dataFrame)
+}
+
+newNames <- function(oldNames, dictionary) {
+  return(sapply(oldNames,
+                function(x,dictionary){
+                  i <- 1
+                  n <- nrow(dictionary)
+                  while (i <= n) {
+                    x <- gsub(dictionary[i,1],
+                              dictionary[i,2],
+                              x)
+                    i <- i + 1
+                  }
+                  return(x)
+                },
+                dictionary))
 }

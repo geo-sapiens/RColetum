@@ -5,6 +5,8 @@
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
+#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
+#' names will stay or if gonna be rename with a suffix.
 #' @param formSource Optional filter. Is the origin of the source of the answer
 #' Can use 'web_public', 'web_private' and 'mobile'.
 #' @param createdAfter Optional filter. This parameter filter the answers
@@ -41,6 +43,7 @@
 
 GetAnswers <- function(token,
                        idForm,
+                       repetedColunsNames = FALSE,
                        formSource = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL) {
@@ -145,26 +148,55 @@ GetAnswers <- function(token,
   )
 
   # Request
-  resp <- requestFunction(query = query, token = token, dictionary = aux[[2]])
+  resp <- requestFunction(query = query, token = token)
 
   # Get just the data frame populated with the data
   resp <- unname(resp)
 
   # Check if the form have some answer.
-  if (is.null(resp)) {
+  if (length(resp) == 0) {
     warning("No answers avaliable. Returning NULL")
     return(NULL)
   }
 
+  # Registering the order of the names, because in next step, will lost
+  orderNames <- names(resp[[2]])
+
   # Unnesting the data frame
   ## This function change the original orders of the columns
   resp <- jsonlite::flatten(resp)
+
+  # Reordening the columns names
+  reorderNames <- lapply(orderNames,
+                         grep,
+                         names(resp), value = TRUE) %>%
+    unlist()
+  ## Adding the metaData fields
+  reorderNames <- c('friendlyId',
+                    reorderNames,
+                    'transaction',
+                    'userName',
+                    'source',
+                    'createdAt',
+                    'createdAtCoordinates.latitude',
+                    'createdAtCoordinates.longitude')
+  ### Reordering
+  resp <- resp %>%
+    dplyr::select(reorderNames)
 
   # Standardization of column id
   resp <- dplyr::rename(resp, id = friendlyId)
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'principal')
 
+  ## Check the user preference about repeted names in the columns
+  if (!repetedColunsNames) {
+    ### Cases with the repeted names receive a sufix
+    aux[[2]]$label <- make.unique(aux[[2]]$label,sep = '_')
+  }
+
+  # Renaming the columns names from componentId to the label of the question
+  resp <- renameColumns(resp,aux[[2]])
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {
