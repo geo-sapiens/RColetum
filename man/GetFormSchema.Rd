@@ -20,5 +20,7 @@ data frame, that contain all the needed information to request the answers
 of the form.
 }
 \examples{
+\dontrun{
 GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+}
 }

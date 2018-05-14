@@ -26,6 +26,7 @@ A data frame.
 Get the principals infos of all forms.
 }
 \examples{
+\dontrun{
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
@@ -33,4 +34,5 @@ GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
          public_answers = 'false',
          answer_tracking = 'true'
          )
+}
 }

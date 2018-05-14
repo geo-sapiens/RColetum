@@ -25,6 +25,16 @@ personalize with filters and take just what you need.
 Useful links:
 \itemize{
   \item \url{https://github.com/geo-sapiens/RColetum}
+  \item Report bugs at \url{https://github.com/geo-sapiens/RColetum/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: André Smaniotto \email{smaniotto@geosapiens.com}
+
+Other contributors:
+\itemize{
+  \item GeoSapiens [copyright holder, funder]
 }
 
 }

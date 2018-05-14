@@ -12,6 +12,7 @@
 #'
 #' @return A data frame.
 #' @examples
+#' \dontrun{
 #' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
 #' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 #' GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
@@ -19,6 +20,7 @@
 #'          public_answers = 'false',
 #'          answer_tracking = 'true'
 #'          )
+#'}
 #' @export
 
 GetForms <- function(token,
@@ -37,9 +39,9 @@ GetForms <- function(token,
       if (identical(status,'enabled') | identical(status,'disabled')) {
         filters <- paste0(filters,'status:',status,',')
       } else {
-        stop(paste0('The option \'',status,'\' are not avaliable for the filter',
-                    ' \'status\'. The avaliable options to this filter are: ',
-                    '\'enabled\' or \'disabled\'.'
+        stop(paste0('The option \'',status,'\' are not avaliable for the ',
+                    'filter \'status\'. The avaliable options to this filter ',
+                    'are: \'enabled\' or \'disabled\'.'
                     )
              )
       }

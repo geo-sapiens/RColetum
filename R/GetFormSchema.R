@@ -9,7 +9,9 @@
 #'
 #' @return A possible nested data frame.
 #' @examples
+#' \dontrun{
 #' GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+#' }
 #' @export
 
 GetFormSchema <- function(token, idForm) {

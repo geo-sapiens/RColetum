@@ -12,14 +12,17 @@
 #' @param createdAfter Optional filter. This parameter filter the answers
 #' that was answered after this date. Is acceptable the ISO8601 format
 #' ("YYYY-MM-DD"). Also is possible specify another format, sending together
-#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".
+#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
+#' "25-10-1995".
 #' @param createdBefore Optional filter. This parameter filter the answers
 #' that was answered before this date. Is acceptable the ISO8601 format
 #' ("YYYY-MM-DD"). Also is possible specify another format, sending together
-#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to "25-10-1995".
+#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
+#' "25-10-1995".
 #'
 #' @return A list, with one or more data frames.
 #' @examples
+#' \dontrun{
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 #' GetAnswers(token = token,
 #'              idForm = idForm,
@@ -39,6 +42,7 @@
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = "2018-12-20",
 #'              )
+#'}
 #' @export
 
 GetAnswers <- function(token,
@@ -69,7 +73,8 @@ GetAnswers <- function(token,
       } else {
         stop(paste0('The option \'',formSource,'\' are not avaliable for the ',
                     'filter \'formSource\'. The avaliable options to this ',
-                    'filter are: \'web_public\' or \'web_private\' or \'mobile\'.'
+                    'filter are: \'web_public\' or \'web_private\' or ',
+                    '\'mobile\'.'
                     )
              )
       }
@@ -167,10 +172,10 @@ GetAnswers <- function(token,
   resp <- jsonlite::flatten(resp)
 
   # Reordening the columns names
-  reorderNames <- lapply(orderNames,
-                         grep,
-                         names(resp), value = TRUE) %>%
-    unlist()
+  reorderNames <- unlist(lapply(orderNames,
+                                grep,
+                                names(resp), value = TRUE))
+
   ## Adding the metaData fields
   reorderNames <- c('friendlyId',
                     reorderNames,
@@ -181,11 +186,10 @@ GetAnswers <- function(token,
                     'createdAtCoordinates.latitude',
                     'createdAtCoordinates.longitude')
   ### Reordering
-  resp <- resp %>%
-    dplyr::select(reorderNames)
+  resp <- dplyr::select(resp,reorderNames)
 
   # Standardization of column id
-  resp <- dplyr::rename(resp, id = friendlyId)
+  resp <- dplyr::rename(resp, id = 'friendlyId')
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'principal')
 

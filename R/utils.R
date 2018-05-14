@@ -48,7 +48,8 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
   # and the question name of each answer from the answer schema.
   #
   # The idComponents is necessary to be possible use to get the answers after.
-  # The dictionary is necessary to rename the columns from idComponents to labels.
+  # The dictionary is necessary to rename the columns from idComponents to
+  # labels.
   #
   # Recursively, gets the idComponentes and the question name of all components,
   # including from the nested components.
@@ -73,9 +74,9 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
                           stringsAsFactors = FALSE)
 
       if (is.na(dataFrame$maximum[i])) {
-        flagGroupN = TRUE
+        flagGroupN <- TRUE
       } else {
-        flagGroupN = FALSE
+        flagGroupN <- FALSE
       }
 
       aux <- auxFunction(dataFrame$components[i][[1]],
@@ -161,8 +162,9 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
             }
           }
 
-          otherDF[[names(dataFrame[j])]] <- append(otherDF[[names(dataFrame[j])]],
-                                                   aux)
+          otherDF[[names(dataFrame[j])]] <-
+            append(otherDF[[names(dataFrame[j])]],
+                   aux)
 
         }
 
@@ -188,14 +190,12 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
       nDF <- length(ordered)
       while (j <= nDF) {
         reordered <-
-          lapply(ordered[[j]],
-                 grep,
-                 names(otherDF[[i]][[j]]),
-                 value = TRUE) %>%
-          unlist()
+          unlist(lapply(ordered[[j]],
+                        grep,
+                        names(otherDF[[i]][[j]]),
+                        value = TRUE))
 
-        otherDF[[i]][[j]] <- otherDF[[i]][[j]] %>%
-          dplyr::select(reordered)
+        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]],reordered)
 
         j <- j + 1
       }
@@ -248,7 +248,7 @@ renameColumns <- function(dataFrame, dictionary) {
 }
 
 newNames <- function(oldNames, dictionary) {
-  return(sapply(oldNames,
+  return(vapply(oldNames,
                 function(x,dictionary){
                   i <- 1
                   n <- nrow(dictionary)
@@ -260,5 +260,6 @@ newNames <- function(oldNames, dictionary) {
                   }
                   return(x)
                 },
+                "",
                 dictionary))
 }

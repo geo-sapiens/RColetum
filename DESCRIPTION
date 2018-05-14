@@ -2,13 +2,16 @@ Package: RColetum
 Type: Package
 Title: Access your Coletum's data from API
 Version: 0.0.0.9000
-Date: 2018-05-10
-Author: André I. Smaniotto [aut, cre]
+Authors@R: c(
+    person("André", "Smaniotto", , "smaniotto@geosapiens.com", c("aut", "cre")),
+    person("GeoSapiens", role = c("cph", "fnd"))
+    )
 Maintainer: André I. Smaniotto <smaniotto@geosapiens.com.br>
 Description: Get your data (forms, schemas, answers) from Coletum 
     <https://coletum.com> to handle and analyse.
 License: What license is it under???
 URL: https://github.com/geo-sapiens/RColetum
+BugReports: https://github.com/geo-sapiens/RColetum/issues
 Encoding: UTF-8
 LazyData: true
 Imports:
