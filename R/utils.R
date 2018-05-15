@@ -73,12 +73,6 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
                                      stringsAsFactors = FALSE),
                           stringsAsFactors = FALSE)
 
-      if (is.na(dataFrame$maximum[i])) {
-        flagGroupN <- TRUE
-      } else {
-        flagGroupN <- FALSE
-      }
-
       aux <- auxFunction(dataFrame$components[i][[1]],
                          idComponentsString)
 
