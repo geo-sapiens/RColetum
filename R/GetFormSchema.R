@@ -103,5 +103,9 @@ GetFormSchema <- function(token, idForm) {
   # Request
   resp <- requestFunction(query = query, token = token)
 
+  if (length(resp) == 0) {
+    stop("Form not found.")
+  }
+
   return(resp)
 }

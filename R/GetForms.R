@@ -105,5 +105,10 @@ GetForms <- function(token,
   # Request
   resp <- requestFunction(query = query, token = token)
 
+  if (length(resp) == 0) {
+    warning("No forms avaliable. Returning NULL")
+    return(NULL)
+  }
+
   return(resp)
 }
