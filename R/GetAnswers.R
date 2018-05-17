@@ -1,22 +1,25 @@
 #' Get all the answers of a form.
 #'
-#' Get all the currents answers of a specific form. This function make a call
-#' to GetFormSchema.
+#' Get all the currents answers of a specific form. This function makes a call
+#' to GetFormSchema and spent 2 quotas.
 #'
-#' @param token A string access token.
+#' @param token String access token.
 #' @param idForm Numeric Id of the required form.
-#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
-#' names will stay or if gonna be rename with a suffix.
+#' @param nameForm String name of the required form. Just is used when an idForm
+#' is not supplied. When this parameter is used, are spent extra one access
+#' quota.
+#' @param repetedColunsNames Boolean flag, indicates if the repeated columns
+#' names will stay or if gonna be renamed with a suffix.
 #' @param formSource Optional filter. Is the origin of the source of the answer
-#' Can use 'web_public', 'web_private' and 'mobile'.
-#' @param createdAfter Optional filter. This parameter filter the answers
-#' that was answered after this date. Is acceptable the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' can use 'web_public', 'web_private' and 'mobile'.
+#' @param createdAfter Optional filter. This parameter filters the answers that
+#' were answered after this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
 #' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 #' "25-10-1995".
-#' @param createdBefore Optional filter. This parameter filter the answers
-#' that was answered before this date. Is acceptable the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' @param createdBefore Optional filter. This parameter filters the answers
+#' that were answered before this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
 #' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 #' "25-10-1995".
 #'
@@ -47,14 +50,24 @@
 
 GetAnswers <- function(token,
                        idForm,
+                       nameForm,
                        repetedColunsNames = FALSE,
                        formSource = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL) {
 
+  if (missing(idForm)) {
+    idForm <- searchFormIdByName(nameForm,token)
+  }
+
   form_definition <- GetFormSchema(token,idForm)
   aux <- auxFunction(form_definition)
   componentsId <- aux[[1]]
+  # Add substituition to friendlyId to id
+  aux[[2]] <- dplyr::bind_rows(c(idComponent = 'friendlyId',
+                                 label = 'id',
+                                 order = ''),
+                               aux[[2]])
 
   # Applying optionals filters
   filters <- NULL
@@ -189,9 +202,9 @@ GetAnswers <- function(token,
   resp <- dplyr::select(resp,reorderNames)
 
   # Standardization of column id
-  resp <- dplyr::rename(resp, id = 'friendlyId')
+  resp <- dplyr::rename(resp, answer_id = 'friendlyId')
   # This function will remove the N questions from the principal Data Frame
-  resp <- prepareAnswerDF(resp,'principal')
+  resp <- prepareAnswerDF(resp,'answer')
 
   ## Check the user preference about repeted names in the columns
   if (!repetedColunsNames) {

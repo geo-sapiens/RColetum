@@ -2,19 +2,19 @@
 % Please edit documentation in R/GetForms.R
 \name{GetForms}
 \alias{GetForms}
-\title{Get infos of all forms.}
+\title{Get info of all forms.}
 \usage{
 GetForms(token, status = NULL, public_answers = NULL,
   answer_tracking = NULL)
 }
 \arguments{
-\item{token}{A string access token.}
+\item{token}{String access token.}
 
 \item{status}{Optional filter. That is the state of the form: accept
 'enabled' or 'disabled'.}
 
-\item{public_answers}{Optinal filter. If the form accept form anonymously, is
-possible use 'true' or 'false'.}
+\item{public_answers}{Optional filter. If the form accepts answers
+anonymously, are possible to use 'true' or 'false'.}
 
 \item{answer_tracking}{Optional filter. If the form is saving the local of
 fill, is possible use 'true' or 'false'.}
@@ -23,7 +23,7 @@ fill, is possible use 'true' or 'false'.}
 A data frame.
 }
 \description{
-Get the principals infos of all forms.
+Get the principals info of all forms.
 }
 \examples{
 \dontrun{

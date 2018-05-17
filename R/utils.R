@@ -135,23 +135,24 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
         if (is.list(dataFrame[i,j])) {
           aux <- NULL
+          columnId <- paste0(dataFrameName,'_id')
           if (is.data.frame(dataFrame[i,j][[1]])) {
             # aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
             #                           parent_cod = dataFrame[i,"id"])
             if (nrow(dataFrame[i,j][[1]]) != 0) {
               aux[[1]] <- cbind(dataFrame[i,j][[1]],
-                                'temp' = dataFrame[i,"id"],
+                                'temp' = dataFrame[i,columnId],
                                 stringsAsFactors = FALSE)
               # Rename just the temp column
               names(aux[[1]])[names(aux[[1]]) == 'temp'] <-
-                paste0(dataFrameName,'_cod')
+                paste0(dataFrameName,'_id')
             }
 
           } else {
             if (length(dataFrame[i,j][[1]]) != 0) {
-              aux[[1]] <- data.frame(dataFrame[i,"id"],dataFrame[i,j],
+              aux[[1]] <- data.frame(dataFrame[i,columnId],dataFrame[i,j],
                                      stringsAsFactors = FALSE)
-              names(aux[[1]]) <- c(paste0(dataFrameName,'_cod'),
+              names(aux[[1]]) <- c(paste0(dataFrameName,'_id'),
                                    names(dataFrame[j]))
             }
           }
@@ -171,6 +172,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     # Binding all iqual data frames
     i <- 1
     n <- length(otherDF)
+    dfNames <- paste0(names(otherDF),"_id")
 
     while (i <= n) {
       # Registering the order of the names, because in next step, will lost
@@ -198,7 +200,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
       otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
       # Add the id
       otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
-                                    id = rownames(otherDF[[i]]))
+                                    !!dfNames[i] := rownames(otherDF[[i]]))
       i <- i + 1
     }
 
@@ -257,3 +259,24 @@ newNames <- function(oldNames, dictionary) {
                 "",
                 dictionary))
 }
+
+searchFormIdByName <- function(nameForm,token) {
+  forms <- GetForms(token)
+  idForm <- forms$id[forms$name == nameForm]
+
+  switch(as.character(length(idForm)),
+          '0' = {
+            stop('Name not found.')
+          },
+          '1' = {
+            idForm <- as.numeric(idForm)
+          },
+          '2' = {
+            stop("More than one result found. FormIds: ",toString(idForm))
+          }
+
+  )
+
+  return(idForm)
+}
+

@@ -4,19 +4,23 @@
 \alias{GetFormSchema}
 \title{Get the form schema of a form.}
 \usage{
-GetFormSchema(token, idForm)
+GetFormSchema(token, idForm, nameForm = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
 
 \item{idForm}{Numeric Id of the required form.}
+
+\item{nameForm}{String name of the required form. Just is used when an idForm
+are not supplied. When this parameter is used, are spent extra one access
+quota.}
 }
 \value{
 A possible nested data frame.
 }
 \description{
 Get the schema of the questions of a specific form in the shape a nested
-data frame, that contain all the needed information to request the answers
+data frame, that contains all the needed information to request the answers
 of the form.
 }
 \examples{

@@ -1,12 +1,12 @@
-#' Get infos of all forms.
+#' Get info of all forms.
 #'
-#' Get the principals infos of all forms.
+#' Get the principals info of all forms.
 #'
-#' @param token A string access token.
+#' @param token String access token.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
-#' @param public_answers Optinal filter. If the form accept form anonymously, is
-#' possible use 'true' or 'false'.
+#' @param public_answers Optional filter. If the form accepts answers
+#' anonymously, are possible to use 'true' or 'false'.
 #' @param answer_tracking Optional filter. If the form is saving the local of
 #' fill, is possible use 'true' or 'false'.
 #'

@@ -4,29 +4,33 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idForm, repetedColunsNames = FALSE, formSource = NULL,
-  createdAfter = NULL, createdBefore = NULL)
+GetAnswers(token, idForm, nameForm, repetedColunsNames = FALSE,
+  formSource = NULL, createdAfter = NULL, createdBefore = NULL)
 }
 \arguments{
-\item{token}{A string access token.}
+\item{token}{String access token.}
 
 \item{idForm}{Numeric Id of the required form.}
 
-\item{repetedColunsNames}{Boolean flag, indicates if the repeted columns
-names will stay or if gonna be rename with a suffix.}
+\item{nameForm}{String name of the required form. Just is used when an idForm
+is not supplied. When this parameter is used, are spent extra one access
+quota.}
+
+\item{repetedColunsNames}{Boolean flag, indicates if the repeated columns
+names will stay or if gonna be renamed with a suffix.}
 
 \item{formSource}{Optional filter. Is the origin of the source of the answer
-Can use 'web_public', 'web_private' and 'mobile'.}
+can use 'web_public', 'web_private' and 'mobile'.}
 
-\item{createdAfter}{Optional filter. This parameter filter the answers
-that was answered after this date. Is acceptable the ISO8601 format
-("YYYY-MM-DD"). Also is possible specify another format, sending together
+\item{createdAfter}{Optional filter. This parameter filters the answers that
+were answered after this date. Is acceptable in the ISO8601 format
+("YYYY-MM-DD"). Also is possible to specify another format, sending together
 in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 "25-10-1995".}
 
-\item{createdBefore}{Optional filter. This parameter filter the answers
-that was answered before this date. Is acceptable the ISO8601 format
-("YYYY-MM-DD"). Also is possible specify another format, sending together
+\item{createdBefore}{Optional filter. This parameter filters the answers
+that were answered before this date. Is acceptable in the ISO8601 format
+("YYYY-MM-DD"). Also is possible to specify another format, sending together
 in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 "25-10-1995".}
 }
@@ -34,8 +38,8 @@ in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 A list, with one or more data frames.
 }
 \description{
-Get all the currents answers of a specific form. This function make a call
-to GetFormSchema.
+Get all the currents answers of a specific form. This function makes a call
+to GetFormSchema and spent 2 quotas.
 }
 \examples{
 \dontrun{

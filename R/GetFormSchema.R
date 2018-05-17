@@ -1,11 +1,14 @@
 #' Get the form schema of a form.
 #'
 #' Get the schema of the questions of a specific form in the shape a nested
-#' data frame, that contain all the needed information to request the answers
+#' data frame, that contains all the needed information to request the answers
 #' of the form.
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
+#' @param nameForm String name of the required form. Just is used when an idForm
+#' are not supplied. When this parameter is used, are spent extra one access
+#' quota.
 #'
 #' @return A possible nested data frame.
 #' @examples
@@ -14,7 +17,12 @@
 #' }
 #' @export
 
-GetFormSchema <- function(token, idForm) {
+GetFormSchema <- function(token, idForm, nameForm = NULL) {
+
+  if (missing(idForm)) {
+    idForm <- searchFormIdByName(nameForm,token)
+  }
+
   #### TODO: Change the query to the conctract form, when avaible. ####
   query <- paste0("{
       form_definition(formId:",idForm,"){
