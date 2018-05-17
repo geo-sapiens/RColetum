@@ -39,7 +39,7 @@ A list, with one or more data frames.
 }
 \description{
 Get all the currents answers of a specific form. This function makes a call
-to GetFormSchema and spent 2 quotas.
+to GetFormStructure and spent 2 quotas.
 }
 \examples{
 \dontrun{

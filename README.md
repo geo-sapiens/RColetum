@@ -20,13 +20,14 @@ to get your main data from [COLETUM](https://coletum.com):
 * `GetForms` allowed to get the principal information about each form avaliable
 in your account;
 
-* `GetFormsSchema` this function works to get the schema from a specific form. 
-This schema contains informations about the ids, names, types, hierarquy and 
-others of each question, thats can be used to get the answers posteriorly.
+* `GetFormStructure` this function works to get the structure from a specific 
+form. This structure contains informations about the ids, names, types, 
+hierarquy and others of each question, thats can be used to get the answers 
+posteriorly.
 
 * `GetAnswers` return one or more data frames with all the answers of a specific 
 form. 
-This function make a call to `GetFormsSchema` and use the result to automatic
+This function make a call to `GetFormStructure` and use the result to automatic
 generate the exact query for any form, takes the result and mount the data frame
 in a friendly way.
 

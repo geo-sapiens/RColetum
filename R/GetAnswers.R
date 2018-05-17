@@ -1,7 +1,7 @@
 #' Get all the answers of a form.
 #'
 #' Get all the currents answers of a specific form. This function makes a call
-#' to GetFormSchema and spent 2 quotas.
+#' to GetFormStructure and spent 2 quotas.
 #'
 #' @param token String access token.
 #' @param idForm Numeric Id of the required form.
@@ -60,8 +60,8 @@ GetAnswers <- function(token,
     idForm <- searchFormIdByName(nameForm,token)
   }
 
-  form_definition <- GetFormSchema(token,idForm)
-  aux <- auxFunction(form_definition)
+  form_structure <- GetFormStructure(token,idForm)
+  aux <- auxFunction(form_structure)
   componentsId <- aux[[1]]
   # Add substituition to friendlyId to id
   aux[[2]] <- dplyr::bind_rows(c(idComponent = 'friendlyId',
@@ -152,7 +152,6 @@ GetAnswers <- function(token,
       answer(formId:",idForm,filters,"){
         metaData{
             friendlyId,
-            transaction,
             userName,
             source,
             createdAt,
@@ -192,7 +191,6 @@ GetAnswers <- function(token,
   ## Adding the metaData fields
   reorderNames <- c('friendlyId',
                     reorderNames,
-                    'transaction',
                     'userName',
                     'source',
                     'createdAt',
@@ -213,7 +211,7 @@ GetAnswers <- function(token,
   }
 
   # Renaming the columns names from componentId to the label of the question
-  resp <- renameColumns(resp,aux[[2]])
+  # resp <- renameColumns(resp,aux[[2]])
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {

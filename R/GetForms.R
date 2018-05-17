@@ -85,20 +85,10 @@ GetForms <- function(token,
       {
         id,
         name,
-        version,
         status,
         category,
         answer_tracking,
-        public_answers,
-        description,
-        success_message,
-        top_color,
-        bottom_color,
-        public_limit,
-        public_answers_limit,
-        public_background_object_name,
-        public_background_content_type,
-        public_background_size
+        public_answers
       }
     }")
 

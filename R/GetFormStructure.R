@@ -1,6 +1,6 @@
-#' Get the form schema of a form.
+#' Get the form structure of a form.
 #'
-#' Get the schema of the questions of a specific form in the shape a nested
+#' Get the structure of the questions of a specific form in the shape a nested
 #' data frame, that contains all the needed information to request the answers
 #' of the form.
 #'
@@ -17,7 +17,7 @@
 #' }
 #' @export
 
-GetFormSchema <- function(token, idForm, nameForm = NULL) {
+GetFormStructure <- function(token, idForm, nameForm = NULL) {
 
   if (missing(idForm)) {
     idForm <- searchFormIdByName(nameForm,token)
@@ -26,85 +26,44 @@ GetFormSchema <- function(token, idForm, nameForm = NULL) {
   #### TODO: Change the query to the conctract form, when avaible. ####
   query <- paste0("{
       form_definition(formId:",idForm,"){
-        formId,
         label,
         name,
-        type,
         componentId,
+        type,
+        helpBlock,
+        order,
         components{
           label,
           name,
-          type,
           componentId,
+          type,
+          helpBlock,
+          order,
           components{
             label,
             name,
             type,
             componentId,
+            helpBlock,
+            order,
             components{
               label,
               name,
-              type,
               componentId,
+              type,
+              helpBlock,
+              order,
               components{
                 label,
                 name,
-                type,
                 componentId,
-                minimum,
-                maximum
+                type,
+                helpBlock,
+                order
               },
-              minimum,
-              maximum,
-              options,
-              order,
-              helpBlock,
-              currency,
-              format,
-              choices,
-              rangeMin,
-              rangeMax,
-              step,
-              unit
             },
-            minimum,
-            maximum,
-            options,
-            order,
-            helpBlock,
-            currency,
-            format,
-            choices,
-            rangeMin,
-            rangeMax,
-            step,
-            unit
           },
-          minimum,
-          maximum,
-          options,
-          order,
-          helpBlock,
-          currency,
-          format,
-          choices,
-          rangeMin,
-          rangeMax,
-          step,
-          unit
         },
-        minimum,
-        maximum,
-        options,
-        order,
-        helpBlock,
-        currency,
-        format,
-        choices,
-        rangeMin,
-        rangeMax,
-        step,
-        unit
       }
     }")
 
