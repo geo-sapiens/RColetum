@@ -211,7 +211,7 @@ GetAnswers <- function(token,
   }
 
   # Renaming the columns names from componentId to the label of the question
-  # resp <- renameColumns(resp,aux[[2]])
+  resp <- renameColumns(resp,aux[[2]])
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {
