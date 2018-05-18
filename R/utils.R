@@ -83,19 +83,15 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
                           stringsAsFactors = FALSE)
 
     } else {
-      if (identical(toString(dataFrame$type[i]), 'separatorfield')) {
-        # do nothing, because isn't a question on form.
-      } else {
-        idComponentsString <- paste0(idComponentsString,
-                                     dataFrame$componentId[i],",")
+      idComponentsString <- paste0(idComponentsString,
+                                   dataFrame$componentId[i],",")
 
-        dictionary <- rbind(dictionary,
-                            data.frame('idComponent' = dataFrame$componentId[i],
-                                       'label' = dataFrame$label[i],
-                                       'order' = dataFrame$order[i],
-                                       stringsAsFactors = FALSE),
-                            stringsAsFactors = FALSE)
-      }
+      dictionary <- rbind(dictionary,
+                          data.frame('idComponent' = dataFrame$componentId[i],
+                                     'label' = dataFrame$label[i],
+                                     'order' = dataFrame$order[i],
+                                     stringsAsFactors = FALSE),
+                          stringsAsFactors = FALSE)
     }
 
     i <- i + 1
@@ -135,23 +131,24 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
         if (is.list(dataFrame[i,j])) {
           aux <- NULL
+          columnId <- paste0(dataFrameName,'_id')
           if (is.data.frame(dataFrame[i,j][[1]])) {
             # aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
             #                           parent_cod = dataFrame[i,"id"])
             if (nrow(dataFrame[i,j][[1]]) != 0) {
               aux[[1]] <- cbind(dataFrame[i,j][[1]],
-                                'temp' = dataFrame[i,"id"],
+                                'temp' = dataFrame[i,columnId],
                                 stringsAsFactors = FALSE)
               # Rename just the temp column
               names(aux[[1]])[names(aux[[1]]) == 'temp'] <-
-                paste0(dataFrameName,'_cod')
+                paste0(dataFrameName,'_id')
             }
 
           } else {
             if (length(dataFrame[i,j][[1]]) != 0) {
-              aux[[1]] <- data.frame(dataFrame[i,"id"],dataFrame[i,j],
+              aux[[1]] <- data.frame(dataFrame[i,columnId],dataFrame[i,j],
                                      stringsAsFactors = FALSE)
-              names(aux[[1]]) <- c(paste0(dataFrameName,'_cod'),
+              names(aux[[1]]) <- c(paste0(dataFrameName,'_id'),
                                    names(dataFrame[j]))
             }
           }
@@ -171,6 +168,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     # Binding all iqual data frames
     i <- 1
     n <- length(otherDF)
+    dfNames <- paste0(names(otherDF),"_id")
 
     while (i <= n) {
       # Registering the order of the names, because in next step, will lost
@@ -197,8 +195,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
       # Bind the data frames
       otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
       # Add the id
-      otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
-                                    id = rownames(otherDF[[i]]))
+      otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
       i <- i + 1
     }
 
@@ -221,39 +218,23 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
   return(list(DFPrincipal,complementaryDF))
 }
 
-renameColumns <- function(dataFrame, dictionary) {
-  # This function rename all the columns names from the componentId to the
-  # label of the question, according with the parameter dictionary.
-  names(dataFrame[[1]]) <- newNames(names(dataFrame[[1]]),
-                                    dictionary)
-  names(dataFrame[[2]]) <- newNames(names(dataFrame[[2]]),
-                                    dictionary)
+searchFormIdByName <- function(nameForm,token) {
+  forms <- GetForms(token)
+  idForm <- forms$id[forms$name == nameForm]
 
-  i <- 1
-  iMax <- length(dataFrame[[2]])
-  while (i <= iMax) {
-    names(dataFrame[[2]][[i]]) <- newNames(names(dataFrame[[2]][[i]]),
-                                           dictionary)
+  switch(as.character(length(idForm)),
+          '0' = {
+            stop('Name not found.')
+          },
+          '1' = {
+            idForm <- as.numeric(idForm)
+          },
+          '2' = {
+            stop("More than one result found. FormIds: ",toString(idForm))
+          }
 
-    i <- i + 1
-  }
+  )
 
-  return(dataFrame)
+  return(idForm)
 }
 
-newNames <- function(oldNames, dictionary) {
-  return(vapply(oldNames,
-                function(x,dictionary){
-                  i <- 1
-                  n <- nrow(dictionary)
-                  while (i <= n) {
-                    x <- gsub(dictionary[i,1],
-                              dictionary[i,2],
-                              x)
-                    i <- i + 1
-                  }
-                  return(x)
-                },
-                "",
-                dictionary))
-}

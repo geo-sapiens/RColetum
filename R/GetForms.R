@@ -1,14 +1,17 @@
-#' Get infos of all forms.
+#' Get info of all forms.
 #'
-#' Get the principals infos of all forms.
+#' Get the principals info of all forms.
 #'
-#' @param token A string access token.
+#' To get more details about the fields provided by the result, please visit the
+#' \href{https://linkapiary}{API documentation}.
+#'
+#' @param token String access token.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
-#' @param public_answers Optinal filter. If the form accept form anonymously, is
-#' possible use 'true' or 'false'.
-#' @param answer_tracking Optional filter. If the form is saving the local of
-#' fill, is possible use 'true' or 'false'.
+#' @param public_answers Optional filter. Indicates if the form is public or
+#' not, is possible to use 'true' or 'false'.
+#' @param answer_tracking Optional filter. Indicates if the form is saving the
+#' local of fill, is possible use 'true' or 'false'.
 #'
 #' @return A data frame.
 #' @examples
@@ -85,25 +88,20 @@ GetForms <- function(token,
       {
         id,
         name,
-        version,
         status,
         category,
         answer_tracking,
-        public_answers,
-        description,
-        success_message,
-        top_color,
-        bottom_color,
-        public_limit,
-        public_answers_limit,
-        public_background_object_name,
-        public_background_content_type,
-        public_background_size
+        public_answers
       }
     }")
 
   # Request
   resp <- requestFunction(query = query, token = token)
+
+  if (length(resp) == 0) {
+    warning("No forms avaliable. Returning NULL")
+    return(NULL)
+  }
 
   return(resp)
 }

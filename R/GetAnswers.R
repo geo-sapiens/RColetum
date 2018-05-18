@@ -1,22 +1,26 @@
 #' Get all the answers of a form.
 #'
-#' Get all the currents answers of a specific form. This function make a call
-#' to GetFormSchema.
+#' Get all the currents answers of a specific form. This function makes a call
+#' to GetFormStructure and spent 2 quotas.
 #'
-#' @param token A string access token.
+#' To get more details about the fields provided by the result, please visit the
+#' \href{https://linkapiary}{API documentation}.
+#'
+#' @param token String access token.
 #' @param idForm Numeric Id of the required form.
-#' @param repetedColunsNames Boolean flag, indicates if the repeted columns
-#' names will stay or if gonna be rename with a suffix.
-#' @param formSource Optional filter. Is the origin of the source of the answer
-#' Can use 'web_public', 'web_private' and 'mobile'.
-#' @param createdAfter Optional filter. This parameter filter the answers
-#' that was answered after this date. Is acceptable the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' @param nameForm String name of the required form. Just is used when an idForm
+#' is not supplied. When this parameter is used, are spent extra one access
+#' quota.
+#' @param source Optional filter. Is the the source of the answer and can use
+#' 'web_public', 'web_private' or 'mobile'.
+#' @param createdAfter Optional filter. This parameter filters the answers that
+#' were answered after this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
 #' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 #' "25-10-1995".
-#' @param createdBefore Optional filter. This parameter filter the answers
-#' that was answered before this date. Is acceptable the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible specify another format, sending together
+#' @param createdBefore Optional filter. This parameter filters the answers
+#' that were answered before this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
 #' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
 #' "25-10-1995".
 #'
@@ -26,19 +30,19 @@
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 #' GetAnswers(token = token,
 #'              idForm = idForm,
-#'              formSource = NULL,
+#'              source = NULL,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
 #' GetAnswers(token = token,
 #'              idForm = idForm,
-#'              formSource = web_public,
+#'              source = web_public,
 #'              createdAfter = c("20-12-2012","%d-%m-%Y"),
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
 #' GetAnswers(token = token,
 #'              idForm = idForm,
-#'              formSource = web_private,
+#'              source = web_private,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = "2018-12-20",
 #'              )
@@ -47,36 +51,52 @@
 
 GetAnswers <- function(token,
                        idForm,
-                       repetedColunsNames = FALSE,
-                       formSource = NULL,
+                       nameForm = NULL,
+                       source = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL) {
 
-  form_definition <- GetFormSchema(token,idForm)
-  aux <- auxFunction(form_definition)
+    if (missing(idForm)) {
+      if (!is.null(nameForm)) {
+        idForm <- searchFormIdByName(nameForm,token)
+      } else {
+        stop('IdForm or nameForm should be provided.')
+      }
+    } else {
+      if (!is.null(nameForm)) {
+        warning('The idForm and nameForm are provided. Ignoring the nameForm.')
+      }
+    }
+
+  form_structure <- GetFormStructure(token,idForm)
+  aux <- auxFunction(form_structure)
   componentsId <- aux[[1]]
+  # Add substituition to friendlyId to id
+  aux[[2]] <- dplyr::bind_rows(c(idComponent = 'friendlyId',
+                                 label = 'id',
+                                 order = ''),
+                               aux[[2]])
 
   # Applying optionals filters
   filters <- NULL
-  if (!is.null(formSource) |
+  if (!is.null(source) |
       !is.null(createdBefore) |
       !is.null(createdAfter)) {
 
     filters <- ',filters:{'
-    if (!is.null(formSource)) {
-      formSource <- tolower(formSource)
+    if (!is.null(source)) {
+      source <- tolower(source)
       # Check if the option is valid
-      if (identical(formSource,'web_public') |
-          identical(formSource,'web_private') |
-          identical(formSource,'mobile')) {
-        filters <- paste0(filters,'source:',formSource,',')
+      if (identical(source,'web_public') |
+          identical(source,'web_private') |
+          identical(source,'mobile')) {
+        filters <- paste0(filters,'source:',source,',')
       } else {
-        stop(paste0('The option \'',formSource,'\' are not avaliable for the ',
-                    'filter \'formSource\'. The avaliable options to this ',
+        stop(paste0('The option \'',source,'\' are not avaliable for the ',
+                    'filter \'source\'. The avaliable options to this ',
                     'filter are: \'web_public\' or \'web_private\' or ',
-                    '\'mobile\'.'
-                    )
-             )
+                    '\'mobile\'.')
+        )
       }
 
     }
@@ -139,7 +159,6 @@ GetAnswers <- function(token,
       answer(formId:",idForm,filters,"){
         metaData{
             friendlyId,
-            transaction,
             userName,
             source,
             createdAt,
@@ -179,7 +198,6 @@ GetAnswers <- function(token,
   ## Adding the metaData fields
   reorderNames <- c('friendlyId',
                     reorderNames,
-                    'transaction',
                     'userName',
                     'source',
                     'createdAt',
@@ -189,18 +207,9 @@ GetAnswers <- function(token,
   resp <- dplyr::select(resp,reorderNames)
 
   # Standardization of column id
-  resp <- dplyr::rename(resp, id = 'friendlyId')
+  resp <- dplyr::rename(resp, answer_id = 'friendlyId')
   # This function will remove the N questions from the principal Data Frame
-  resp <- prepareAnswerDF(resp,'principal')
-
-  ## Check the user preference about repeted names in the columns
-  if (!repetedColunsNames) {
-    ### Cases with the repeted names receive a sufix
-    aux[[2]]$label <- make.unique(aux[[2]]$label,sep = '_')
-  }
-
-  # Renaming the columns names from componentId to the label of the question
-  resp <- renameColumns(resp,aux[[2]])
+  resp <- prepareAnswerDF(resp,'answer')
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {
