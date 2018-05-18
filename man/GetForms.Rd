@@ -13,17 +13,21 @@ GetForms(token, status = NULL, public_answers = NULL,
 \item{status}{Optional filter. That is the state of the form: accept
 'enabled' or 'disabled'.}
 
-\item{public_answers}{Optional filter. If the form accepts answers
-anonymously, are possible to use 'true' or 'false'.}
+\item{public_answers}{Optional filter. Indicates if the form is public or
+not, is possible to use 'true' or 'false'.}
 
-\item{answer_tracking}{Optional filter. If the form is saving the local of
-fill, is possible use 'true' or 'false'.}
+\item{answer_tracking}{Optional filter. Indicates if the form is saving the
+local of fill, is possible use 'true' or 'false'.}
 }
 \value{
 A data frame.
 }
 \description{
 Get the principals info of all forms.
+}
+\details{
+To get more details about the fields provided by the result, please visit the
+\href{https://linkapiary}{API documentation}.
 }
 \examples{
 \dontrun{

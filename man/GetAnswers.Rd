@@ -4,8 +4,8 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idForm, nameForm, repetedColunsNames = FALSE,
-  formSource = NULL, createdAfter = NULL, createdBefore = NULL)
+GetAnswers(token, idForm, nameForm = NULL, source = NULL,
+  createdAfter = NULL, createdBefore = NULL)
 }
 \arguments{
 \item{token}{String access token.}
@@ -16,11 +16,8 @@ GetAnswers(token, idForm, nameForm, repetedColunsNames = FALSE,
 is not supplied. When this parameter is used, are spent extra one access
 quota.}
 
-\item{repetedColunsNames}{Boolean flag, indicates if the repeated columns
-names will stay or if gonna be renamed with a suffix.}
-
-\item{formSource}{Optional filter. Is the origin of the source of the answer
-can use 'web_public', 'web_private' and 'mobile'.}
+\item{source}{Optional filter. Is the the source of the answer and can use
+'web_public', 'web_private' or 'mobile'.}
 
 \item{createdAfter}{Optional filter. This parameter filters the answers that
 were answered after this date. Is acceptable in the ISO8601 format
@@ -41,24 +38,28 @@ A list, with one or more data frames.
 Get all the currents answers of a specific form. This function makes a call
 to GetFormStructure and spent 2 quotas.
 }
+\details{
+To get more details about the fields provided by the result, please visit the
+\href{https://linkapiary}{API documentation}.
+}
 \examples{
 \dontrun{
 GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 GetAnswers(token = token,
              idForm = idForm,
-             formSource = NULL,
+             source = NULL,
              createdAfter = "2012-12-20",
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
 GetAnswers(token = token,
              idForm = idForm,
-             formSource = web_public,
+             source = web_public,
              createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
 GetAnswers(token = token,
              idForm = idForm,
-             formSource = web_private,
+             source = web_private,
              createdAfter = "2012-12-20",
              createdBefore = "2018-12-20",
              )

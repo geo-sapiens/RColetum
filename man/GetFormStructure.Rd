@@ -4,7 +4,7 @@
 \alias{GetFormStructure}
 \title{Get the form structure of a form.}
 \usage{
-GetFormStructure(token, idForm, nameForm = NULL)
+GetFormStructure(token, idForm, nameForm = NULL, componentId = NULL)
 }
 \arguments{
 \item{token}{A string access token.}
@@ -14,6 +14,9 @@ GetFormStructure(token, idForm, nameForm = NULL)
 \item{nameForm}{String name of the required form. Just is used when an idForm
 are not supplied. When this parameter is used, are spent extra one access
 quota.}
+
+\item{componentId}{Optional filter. That is the field identifier, it's
+possible use to filter to get a specific field.}
 }
 \value{
 A possible nested data frame.
@@ -22,6 +25,10 @@ A possible nested data frame.
 Get the structure of the questions of a specific form in the shape a nested
 data frame, that contains all the needed information to request the answers
 of the form.
+}
+\details{
+To get more details about the fields provided by the result, please visit the
+\href{https://linkapiary}{API documentation}.
 }
 \examples{
 \dontrun{

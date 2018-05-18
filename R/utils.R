@@ -83,19 +83,15 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
                           stringsAsFactors = FALSE)
 
     } else {
-      if (identical(toString(dataFrame$type[i]), 'separatorfield')) {
-        # do nothing, because isn't a question on form.
-      } else {
-        idComponentsString <- paste0(idComponentsString,
-                                     dataFrame$componentId[i],",")
+      idComponentsString <- paste0(idComponentsString,
+                                   dataFrame$componentId[i],",")
 
-        dictionary <- rbind(dictionary,
-                            data.frame('idComponent' = dataFrame$componentId[i],
-                                       'label' = dataFrame$label[i],
-                                       'order' = dataFrame$order[i],
-                                       stringsAsFactors = FALSE),
-                            stringsAsFactors = FALSE)
-      }
+      dictionary <- rbind(dictionary,
+                          data.frame('idComponent' = dataFrame$componentId[i],
+                                     'label' = dataFrame$label[i],
+                                     'order' = dataFrame$order[i],
+                                     stringsAsFactors = FALSE),
+                          stringsAsFactors = FALSE)
     }
 
     i <- i + 1
@@ -199,8 +195,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
       # Bind the data frames
       otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
       # Add the id
-      otherDF[[i]] <- dplyr::mutate(otherDF[[i]],
-                                    !!dfNames[i] := rownames(otherDF[[i]]))
+      otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
       i <- i + 1
     }
 
@@ -221,43 +216,6 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
   }
   return(list(DFPrincipal,complementaryDF))
-}
-
-renameColumns <- function(dataFrame, dictionary) {
-  # This function rename all the columns names from the componentId to the
-  # label of the question, according with the parameter dictionary.
-  names(dataFrame[[1]]) <- newNames(names(dataFrame[[1]]),
-                                    dictionary)
-  names(dataFrame[[2]]) <- newNames(names(dataFrame[[2]]),
-                                    dictionary)
-
-  i <- 1
-  iMax <- length(dataFrame[[2]])
-  while (i <= iMax) {
-    names(dataFrame[[2]][[i]]) <- newNames(names(dataFrame[[2]][[i]]),
-                                           dictionary)
-
-    i <- i + 1
-  }
-
-  return(dataFrame)
-}
-
-newNames <- function(oldNames, dictionary) {
-  return(vapply(oldNames,
-                function(x,dictionary){
-                  i <- 1
-                  n <- nrow(dictionary)
-                  while (i <= n) {
-                    x <- gsub(dictionary[i,1],
-                              dictionary[i,2],
-                              x)
-                    i <- i + 1
-                  }
-                  return(x)
-                },
-                "",
-                dictionary))
 }
 
 searchFormIdByName <- function(nameForm,token) {

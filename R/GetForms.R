@@ -2,13 +2,16 @@
 #'
 #' Get the principals info of all forms.
 #'
+#' To get more details about the fields provided by the result, please visit the
+#' \href{https://linkapiary}{API documentation}.
+#'
 #' @param token String access token.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
-#' @param public_answers Optional filter. If the form accepts answers
-#' anonymously, are possible to use 'true' or 'false'.
-#' @param answer_tracking Optional filter. If the form is saving the local of
-#' fill, is possible use 'true' or 'false'.
+#' @param public_answers Optional filter. Indicates if the form is public or
+#' not, is possible to use 'true' or 'false'.
+#' @param answer_tracking Optional filter. Indicates if the form is saving the
+#' local of fill, is possible use 'true' or 'false'.
 #'
 #' @return A data frame.
 #' @examples

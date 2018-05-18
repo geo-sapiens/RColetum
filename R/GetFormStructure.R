@@ -4,11 +4,16 @@
 #' data frame, that contains all the needed information to request the answers
 #' of the form.
 #'
+#' To get more details about the fields provided by the result, please visit the
+#' \href{https://linkapiary}{API documentation}.
+#'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
 #' @param nameForm String name of the required form. Just is used when an idForm
 #' are not supplied. When this parameter is used, are spent extra one access
 #' quota.
+#' @param componentId Optional filter. That is the field identifier, it's
+#' possible use to filter to get a specific field.
 #'
 #' @return A possible nested data frame.
 #' @examples
@@ -17,15 +22,32 @@
 #' }
 #' @export
 
-GetFormStructure <- function(token, idForm, nameForm = NULL) {
+GetFormStructure <- function(token, idForm, nameForm = NULL,
+                             componentId = NULL) {
 
   if (missing(idForm)) {
-    idForm <- searchFormIdByName(nameForm,token)
+    if (!is.null(nameForm)) {
+      idForm <- searchFormIdByName(nameForm,token)
+    } else {
+      stop('IdForm or nameForm should be provided.')
+    }
+  } else {
+    if (!is.null(nameForm)) {
+      warning('The idForm and nameForm are provided. Ignoring the nameForm.')
+    }
   }
 
-  #### TODO: Change the query to the conctract form, when avaible. ####
+  # Applying optional filter
+  filters <- NULL
+  if (!is.null(componentId)) {
+    componentId <- toString(componentId)
+    filters <- ',filters:{'
+    filters <- paste0(filters,'componentId:',componentId)
+    filters <- paste0(filters,'}')
+  }
+
   query <- paste0("{
-      form_definition(formId:",idForm,"){
+      form_structure(formId:",idForm,filters,"){
         label,
         name,
         componentId,
