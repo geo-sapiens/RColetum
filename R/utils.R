@@ -3,7 +3,7 @@ requestFunction <- function(query, token) {
   # Is used to make all the requests to the webservice.
 
   # API's URL
-  url <- "http://www.coletum.com/api/graphql"
+  url <- "http://localhost:86/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
@@ -236,5 +236,21 @@ searchFormIdByName <- function(nameForm,token) {
   )
 
   return(idForm)
+}
+
+createSingleDataFrame <- function(dataFrame) {
+  singleDataFrame <- dataFrame[[1]]
+  i <- 1
+  n <- length(dataFrame[[2]])
+
+  while (i <= n) {
+    singleDataFrame <- dplyr::full_join(singleDataFrame,
+                                 dataFrame[[2]][[i]])
+
+    i <- i + 1
+  }
+
+  return(singleDataFrame)
+
 }
 

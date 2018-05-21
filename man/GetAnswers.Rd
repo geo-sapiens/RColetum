@@ -4,8 +4,8 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idForm, nameForm = NULL, source = NULL,
-  createdAfter = NULL, createdBefore = NULL)
+GetAnswers(token, idForm, nameForm = NULL, singleDataFrame = FALSE,
+  source = NULL, createdAfter = NULL, createdBefore = NULL)
 }
 \arguments{
 \item{token}{String access token.}
@@ -15,6 +15,10 @@ GetAnswers(token, idForm, nameForm = NULL, source = NULL,
 \item{nameForm}{String name of the required form. Just is used when an idForm
 is not supplied. When this parameter is used, are spent extra one access
 quota.}
+
+\item{singleDataFrame}{Boolean flag. Indicates the preference to create a
+single data frame with all the answers. In this case, is possible to have
+repeated values, according to the multiplicity of relationships.}
 
 \item{source}{Optional filter. Is the the source of the answer and can use
 'web_public', 'web_private' or 'mobile'.}
@@ -45,7 +49,7 @@ To get more details about the fields provided by the result, please visit the
 \examples{
 \dontrun{
 GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
-GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123')
+GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123', TRUE)
 GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
              nameForm = 'form 123')
 GetAnswers(token = token,
@@ -62,6 +66,7 @@ GetAnswers(token = token,
              )
 GetAnswers(token = token,
              idForm = idForm,
+             singleDataFrame = TRUE,
              source = web_private,
              createdAfter = "2012-12-20",
              createdBefore = "2018-12-20",

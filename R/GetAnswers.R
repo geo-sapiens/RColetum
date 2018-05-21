@@ -11,6 +11,9 @@
 #' @param nameForm String name of the required form. Just is used when an idForm
 #' is not supplied. When this parameter is used, are spent extra one access
 #' quota.
+#' @param singleDataFrame Boolean flag. Indicates the preference to create a
+#' single data frame with all the answers. In this case, is possible to have
+#' repeated values, according to the multiplicity of relationships.
 #' @param source Optional filter. Is the the source of the answer and can use
 #' 'web_public', 'web_private' or 'mobile'.
 #' @param createdAfter Optional filter. This parameter filters the answers that
@@ -28,24 +31,25 @@
 #' @examples
 #' \dontrun{
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
-#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123')
+#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123', TRUE)
 #' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
 #'              nameForm = 'form 123')
-#' GetAnswers(token = token,
-#'              idForm = idForm,
+#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#'              idForm = 3345,
 #'              source = NULL,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = token,
-#'              idForm = idForm,
-#'              source = web_public,
+#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#'              idForm = 3345,
+#'              source = 'web_public',
 #'              createdAfter = c("20-12-2012","%d-%m-%Y"),
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = token,
-#'              idForm = idForm,
-#'              source = web_private,
+#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#'              idForm = 3345,
+#'              singleDataFrame = TRUE,
+#'              source = 'web_private',
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = "2018-12-20",
 #'              )
@@ -55,6 +59,7 @@
 GetAnswers <- function(token,
                        idForm,
                        nameForm = NULL,
+                       singleDataFrame = FALSE,
                        source = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL) {
@@ -213,6 +218,10 @@ GetAnswers <- function(token,
   resp <- dplyr::rename(resp, answer_id = 'friendlyId')
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'answer')
+
+  if (singleDataFrame) {
+    resp <- createSingleDataFrame(resp)
+  }
 
   # Return data frames with the answers
   if (length(resp[[2]]) > 0) {
