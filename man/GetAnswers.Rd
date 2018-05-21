@@ -52,22 +52,22 @@ GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
 GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123', TRUE)
 GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
              nameForm = 'form 123')
-GetAnswers(token = token,
-             idForm = idForm,
+GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+             idForm = 3345,
              source = NULL,
              createdAfter = "2012-12-20",
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = token,
-             idForm = idForm,
-             source = web_public,
+GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+             idForm = 3345,
+             source = 'web_public',
              createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = token,
-             idForm = idForm,
+GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+             idForm = 3345,
              singleDataFrame = TRUE,
-             source = web_private,
+             source = 'web_private',
              createdAfter = "2012-12-20",
              createdBefore = "2018-12-20",
              )

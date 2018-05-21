@@ -34,9 +34,9 @@ To get more details about the fields provided by the result, please visit the
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-         status = 'enabled',
-         public_answers = 'false',
-         answer_tracking = 'true'
+           status = 'enabled',
+           public_answers = 'false',
+           answer_tracking = 'true'
          )
 }
 }

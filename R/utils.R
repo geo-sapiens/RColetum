@@ -3,7 +3,7 @@ requestFunction <- function(query, token) {
   # Is used to make all the requests to the webservice.
 
   # API's URL
-  url <- "http://localhost:86/api/graphql"
+  url <- "http://www.coletum.com/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
