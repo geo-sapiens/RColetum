@@ -4,8 +4,8 @@
 \alias{GetForms}
 \title{Get info of all forms.}
 \usage{
-GetForms(token, status = NULL, public_answers = NULL,
-  answer_tracking = NULL)
+GetForms(token, status = NULL, publicAnswers = NULL,
+  answerTracking = NULL)
 }
 \arguments{
 \item{token}{String access token.}
@@ -13,10 +13,10 @@ GetForms(token, status = NULL, public_answers = NULL,
 \item{status}{Optional filter. That is the state of the form: accept
 'enabled' or 'disabled'.}
 
-\item{public_answers}{Optional filter. Indicates if the form is public or
+\item{publicAnswers}{Optional filter. Indicates if the form is public or
 not, is possible to use 'true' or 'false'.}
 
-\item{answer_tracking}{Optional filter. Indicates if the form is saving the
+\item{answerTracking}{Optional filter. Indicates if the form is saving the
 local of fill, is possible use 'true' or 'false'.}
 }
 \value{
@@ -35,8 +35,8 @@ GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
 GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
            status = 'enabled',
-           public_answers = 'false',
-           answer_tracking = 'true'
+           publicAnswers = 'false',
+           answerTracking = 'true'
          )
 }
 }

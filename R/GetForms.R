@@ -8,9 +8,9 @@
 #' @param token String access token.
 #' @param status Optional filter. That is the state of the form: accept
 #' 'enabled' or 'disabled'.
-#' @param public_answers Optional filter. Indicates if the form is public or
+#' @param publicAnswers Optional filter. Indicates if the form is public or
 #' not, is possible to use 'true' or 'false'.
-#' @param answer_tracking Optional filter. Indicates if the form is saving the
+#' @param answerTracking Optional filter. Indicates if the form is saving the
 #' local of fill, is possible use 'true' or 'false'.
 #'
 #' @return A data frame.
@@ -20,20 +20,20 @@
 #' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
 #' GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
 #'            status = 'enabled',
-#'            public_answers = 'false',
-#'            answer_tracking = 'true'
+#'            publicAnswers = 'false',
+#'            answerTracking = 'true'
 #'          )
 #'}
 #' @export
 
 GetForms <- function(token,
                      status = NULL,
-                     public_answers = NULL,
-                     answer_tracking = NULL) {
+                     publicAnswers = NULL,
+                     answerTracking = NULL) {
 
   # Applying optionals filters
   filters <- NULL
-  if (!is.null(status) | !is.null(public_answers) | !is.null(answer_tracking)) {
+  if (!is.null(status) | !is.null(publicAnswers) | !is.null(answerTracking)) {
     filters <- '(filters:{'
 
     if (!is.null(status)) {
@@ -50,29 +50,29 @@ GetForms <- function(token,
       }
     }
 
-    if (!is.null(public_answers)) {
-      public_answers <- tolower(public_answers)
+    if (!is.null(publicAnswers)) {
+      publicAnswers <- tolower(publicAnswers)
       # Check if the option is valid
-      if (identical(public_answers,'true') |
-          identical(public_answers,'false')) {
-        filters <- paste0(filters,'public_answers:',public_answers,',')
+      if (identical(publicAnswers,'true') |
+          identical(publicAnswers,'false')) {
+        filters <- paste0(filters,'publicAnswers:',publicAnswers,',')
       } else {
-        stop(paste0('The option \'',public_answers,'\' are not avaliable for',
-                    ' the filter \'public_answers\'. The avaliable options to',
+        stop(paste0('The option \'',publicAnswers,'\' are not avaliable for',
+                    ' the filter \'publicAnswers\'. The avaliable options to',
                     ' this filter are: \'true\' or \'false\'.'
                     )
              )
       }
     }
 
-    if (!is.null(answer_tracking)) {
-      answer_tracking <- tolower(answer_tracking)
+    if (!is.null(answerTracking)) {
+      answerTracking <- tolower(answerTracking)
       # Check if the option is valid
-      if (identical(answer_tracking,'true') |
-          identical(answer_tracking,'false')) {
-        filters <- paste0(filters,'answer_tracking:',answer_tracking)
+      if (identical(answerTracking,'true') |
+          identical(answerTracking,'false')) {
+        filters <- paste0(filters,'answerTracking:',answerTracking)
       } else {
-        stop(paste0('The option \'',answer_tracking,'\' ','are not avaliable.',
+        stop(paste0('The option \'',answerTracking,'\' ','are not avaliable.',
                     'The avaliable options to this filter are: \'true\' ',
                     'or \'false\'.'
                     )
@@ -90,8 +90,8 @@ GetForms <- function(token,
         name,
         status,
         category,
-        answer_tracking,
-        public_answers
+        answerTracking,
+        publicAnswers
       }
     }")
 
