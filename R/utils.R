@@ -107,6 +107,9 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
   # another list called complementaryDF. All elements in the complementary DF
   # pass through this procediment too.
 
+  dictionary <- data.frame(matrix(ncol = 2, nrow = 0),stringsAsFactors = FALSE)
+  names(dictionary) <- c('dfName', 'parentDfName')
+
   complementaryDF <- list()
 
   first <- TRUE
@@ -156,6 +159,11 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
           otherDF[[names(dataFrame[j])]] <-
             append(otherDF[[names(dataFrame[j])]],
                    aux)
+          dictionary <- rbind(dictionary,
+                              data.frame('dfName' = names(dataFrame[j]),
+                                         'parentDfName' = dataFrameName,
+                                         stringsAsFactors = FALSE),
+                              stringsAsFactors = FALSE)
 
         }
 
@@ -215,7 +223,8 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     }
 
   }
-  return(list(DFPrincipal,complementaryDF))
+  dictionary <- dplyr::distinct(dictionary)
+  return(list(dictionary = dictionary,DFPrincipal,complementaryDF))
 }
 
 searchFormIdByName <- function(nameForm,token) {
@@ -238,14 +247,34 @@ searchFormIdByName <- function(nameForm,token) {
   return(idForm)
 }
 
-createSingleDataFrame <- function(dataFrame) {
+createSingleDataFrame <- function(dataFrame, dictionary) {
+  dataFrame <- append(list(answer = dataFrame[[1]]), dataFrame[[2]])
+  names(dataFrame[[1]]) <- paste0(names(dataFrame[1]),
+                                  '.',
+                                  names(dataFrame[[1]]))
   singleDataFrame <- dataFrame[[1]]
-  i <- 1
-  n <- length(dataFrame[[2]])
+  i <- 2
+  n <- length(dataFrame)
 
   while (i <= n) {
+    names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
+                                    '.',
+                                    names(dataFrame[[i]]))
+    parentKey <- paste0(
+      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
+      '.',
+      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
+      '_id')
+    dFKey <- paste0(
+      names(dataFrame[i]),
+      '.',
+      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],'_id')
+
     singleDataFrame <- dplyr::full_join(singleDataFrame,
-                                 dataFrame[[2]][[i]])
+                                        dataFrame[[i]],
+                                        # Using setNames, is necessery invert
+                                        # the order
+                                        by = setNames(dFKey,parentKey))
 
     i <- i + 1
   }

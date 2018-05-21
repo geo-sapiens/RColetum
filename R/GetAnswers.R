@@ -219,8 +219,12 @@ GetAnswers <- function(token,
   # This function will remove the N questions from the principal Data Frame
   resp <- prepareAnswerDF(resp,'answer')
 
+  # Extracting dictionary
+  dictionary <- resp$dictionary
+  resp$dictionary <- NULL
+
   if (singleDataFrame) {
-    resp <- createSingleDataFrame(resp)
+    resp <- createSingleDataFrame(resp,dictionary)
   }
 
   # Return data frames with the answers
