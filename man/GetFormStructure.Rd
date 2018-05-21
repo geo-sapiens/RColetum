@@ -28,10 +28,13 @@ of the form.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://linkapiary}{API documentation}.
+\href{https://coletum.docs.apiary.io/#reference/0/formularios/definicao-de-formulario}{API documentation}.
 }
 \examples{
 \dontrun{
 GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+GetFormSchema('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123')
+GetFormSchema(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+                nameForm = 'form 123')
 }
 }

@@ -27,7 +27,7 @@ Get the principals info of all forms.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://linkapiary}{API documentation}.
+\href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
 }
 \examples{
 \dontrun{

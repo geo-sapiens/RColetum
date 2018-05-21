@@ -3,7 +3,7 @@
 #' Get the principals info of all forms.
 #'
 #' To get more details about the fields provided by the result, please visit the
-#' \href{https://linkapiary}{API documentation}.
+#' \href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
 #'
 #' @param token String access token.
 #' @param status Optional filter. That is the state of the form: accept

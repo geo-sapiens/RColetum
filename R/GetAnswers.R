@@ -4,7 +4,7 @@
 #' to GetFormStructure and spent 2 quotas.
 #'
 #' To get more details about the fields provided by the result, please visit the
-#' \href{https://linkapiary}{API documentation}.
+#' \href{https://coletum.docs.apiary.io/#reference/0/preenchimentos/listar-preenchimentos}{API documentation}.
 #'
 #' @param token String access token.
 #' @param idForm Numeric Id of the required form.
@@ -28,6 +28,9 @@
 #' @examples
 #' \dontrun{
 #' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
+#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123')
+#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#'              nameForm = 'form 123')
 #' GetAnswers(token = token,
 #'              idForm = idForm,
 #'              source = NULL,

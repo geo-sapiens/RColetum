@@ -10,7 +10,7 @@ authenticated token in Webservice page.
 If you don't have an account, [SIGN UP NOW](https://coletum.com/register/).
 
 For instructions to generate your token, please visit the
-[API documentation](https://linkapiary).
+[API documentation](https://coletum.docs.apiary.io/).
 
 ## How to install RColetum
 Install this package directly in R, using the 'devtools' package:
@@ -31,8 +31,8 @@ myForms <- GetForms("YOUR_TOKEN_HERE")
 ```
 
 * `GetFormStructure` this function get the structure from a specific form. This
-structure contains information about the ids, names, types, hierarchy and 
-others of each question, that's can be used to get the answers posteriorly;
+structure contains information about the names, types, hierarchy and others of 
+each question, that's can be used to get the answers posteriorly;
 ```{r}
 myFormStructure <- GetFormStructure("YOUR_TOKEN_HERE", FORM_ID)
 ```
