@@ -15,7 +15,7 @@
 #' single data frame with all the answers. In this case, is possible to have
 #' repeated values, according to the multiplicity of relationships.
 #' @param source Optional filter. Is the the source of the answer and can use
-#' 'web_public', 'web_private' or 'mobile'.
+#' "web_public", "web_private" or "mobile".
 #' @param createdAfter Optional filter. This parameter filters the answers that
 #' were answered after this date. Is acceptable in the ISO8601 format
 #' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
@@ -29,26 +29,26 @@
 #'
 #' @return A list, with one or more data frames.
 #' @examples
-#' GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', 5705)
-#' GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', ,'RColetum Test - Iris', TRUE)
-#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
-#'              nameForm = 'RColetum Test - Iris')
-#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#' GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
+#' GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", ,"RColetum Test - Iris", TRUE)
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+#'              nameForm = "RColetum Test - Iris")
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
 #'              source = NULL,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
-#'              source = 'web_public',
+#'              source = "web_public",
 #'              createdAfter = c("20-12-2012","%d-%m-%Y"),
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
 #'              singleDataFrame = TRUE,
-#'              source = 'web_private',
+#'              source = "web_private",
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = "2018-12-20",
 #'              )
@@ -64,23 +64,23 @@ GetAnswers <- function(token,
 
     if (missing(idForm)) {
       if (!is.null(nameForm)) {
-        idForm <- searchFormIdByName(nameForm,token)
+        idForm <- searchFormIdByName(nameForm, token)
       } else {
-        stop('IdForm or nameForm should be provided.')
+        stop("IdForm or nameForm should be provided.")
       }
     } else {
       if (!is.null(nameForm)) {
-        warning('The idForm and nameForm are provided. Ignoring the nameForm.')
+        warning("The idForm and nameForm are provided. Ignoring the nameForm.")
       }
     }
 
-  form_structure <- GetFormStructure(token,idForm)
+  form_structure <- GetFormStructure(token, idForm)
   aux <- auxFunction(form_structure)
   componentsId <- aux[[1]]
   # Add substituition to friendlyId to id
-  aux[[2]] <- dplyr::bind_rows(c(idComponent = 'friendlyId',
-                                 label = 'id',
-                                 order = ''),
+  aux[[2]] <- dplyr::bind_rows(c(idComponent = "friendlyId",
+                                 label = "id",
+                                 order = ""),
                                aux[[2]])
 
   # Applying optionals filters
@@ -89,19 +89,19 @@ GetAnswers <- function(token,
       !is.null(createdBefore) |
       !is.null(createdAfter)) {
 
-    filters <- ',filters:{'
+    filters <- ",filters:{"
     if (!is.null(source)) {
       source <- tolower(source)
       # Check if the option is valid
-      if (identical(source,'web_public') |
-          identical(source,'web_private') |
-          identical(source,'mobile')) {
-        filters <- paste0(filters,'source:',source,',')
+      if (identical(source, "web_public") |
+          identical(source, "web_private") |
+          identical(source, "mobile")) {
+        filters <- paste0(filters, "source:", source, ",")
       } else {
-        stop(paste0('The option \'',source,'\' are not avaliable for the ',
-                    'filter \'source\'. The avaliable options to this ',
-                    'filter are: \'web_public\' or \'web_private\' or ',
-                    '\'mobile\'.')
+        stop(paste0("The option '", source, "' are not avaliable for the ",
+                    "filter 'source'. The avaliable options to this ",
+                    "filter are: 'web_public' or 'web_private' or ",
+                    "'mobile'.")
         )
       }
 
@@ -114,7 +114,7 @@ GetAnswers <- function(token,
         if (identical(class(error), "try-error")) {
           stop(error[1])
         } else {
-          filters <- paste0(filters,'createdBefore:"',createdBefore,'",')
+          filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
         }
       } else {
         error <- try(as.Date(createdBefore[1],
@@ -122,11 +122,11 @@ GetAnswers <- function(token,
         if (identical(class(error), "try-error")) {
           stop(error[1])
         } else {
-          createdBefore <- as.Date(createdBefore[1],format = createdBefore[2])
+          createdBefore <- as.Date(createdBefore[1], format = createdBefore[2])
           if (is.na(createdBefore)) {
             stop("Invalid data especification format.")
           } else {
-            filters <- paste0(filters,'createdBefore:"',createdBefore,'",')
+            filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
           }
         }
       }
@@ -139,7 +139,7 @@ GetAnswers <- function(token,
         if (identical(class(error), "try-error")) {
           stop(error[1])
         } else {
-          filters <- paste0(filters,'createdAfter:"',createdAfter,'",')
+          filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
         }
       } else {
         error <- try(as.Date(createdAfter[1],
@@ -147,22 +147,22 @@ GetAnswers <- function(token,
         if (identical(class(error), "try-error")) {
           stop(error[1])
         } else {
-          createdAfter <- as.Date(createdAfter[1],format = createdAfter[2])
+          createdAfter <- as.Date(createdAfter[1], format = createdAfter[2])
           if (is.na(createdAfter)) {
             stop("Invalid data especification format.")
           } else {
-            filters <- paste0(filters,'createdAfter:"',createdAfter,'",')
+            filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
           }
         }
       }
     }
-    filters <- paste0(filters,'}')
+    filters <- paste0(filters, "}")
   }
 
 
   query <- paste0(
     "{
-      answer(formId:",idForm,filters,"){
+      answer(formId:", idForm, filters, "){
         metaData{
             friendlyId,
             userName,
@@ -171,7 +171,7 @@ GetAnswers <- function(token,
             createdAtCoordinates
         },
         answer{
-        ",componentsId,
+        ", componentsId,
     "}
     }
   }"
@@ -202,27 +202,27 @@ GetAnswers <- function(token,
                                 names(resp), value = TRUE))
 
   ## Adding the metaData fields
-  reorderNames <- c('friendlyId',
+  reorderNames <- c("friendlyId",
                     reorderNames,
-                    'userName',
-                    'source',
-                    'createdAt',
-                    'createdAtCoordinates.latitude',
-                    'createdAtCoordinates.longitude')
+                    "userName",
+                    "source",
+                    "createdAt",
+                    "createdAtCoordinates.latitude",
+                    "createdAtCoordinates.longitude")
   ### Reordering
-  resp <- dplyr::select(resp,reorderNames)
+  resp <- dplyr::select(resp, reorderNames)
 
   # Standardization of column id
-  resp <- dplyr::rename(resp, answer_id = 'friendlyId')
+  resp <- dplyr::rename(resp, answer_id = "friendlyId")
   # This function will remove the N questions from the principal Data Frame
-  resp <- prepareAnswerDF(resp,'answer')
+  resp <- prepareAnswerDF(resp, "answer")
 
   # Extracting dictionary
   dictionary <- resp$dictionary
   resp$dictionary <- NULL
 
   if (singleDataFrame) {
-    resp <- createSingleDataFrame(resp,dictionary)
+    resp <- createSingleDataFrame(resp, dictionary)
   }
 
   # Return data frames with the answers

@@ -11,13 +11,13 @@ GetForms(token, status = NULL, publicAnswers = NULL,
 \item{token}{String access token.}
 
 \item{status}{Optional filter. That is the state of the form: accept
-'enabled' or 'disabled'.}
+"enabled" or "disabled".}
 
 \item{publicAnswers}{Optional filter. Indicates if the form is public or
-not, is possible to use 'true' or 'false'.}
+not, is possible to use "true" or "false".}
 
 \item{answerTracking}{Optional filter. Indicates if the form is saving the
-local of fill, is possible use 'true' or 'false'.}
+local of fill, is possible use "true" or "false".}
 }
 \value{
 A data frame.
@@ -30,11 +30,11 @@ To get more details about the fields provided by the result, please visit the
 \href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
 }
 \examples{
-GetForms('cizio7xeohwgc8k4g4koo008kkoocwg')
-GetForms('cizio7xeohwgc8k4g4koo008kkoocwg','enabled','true','true')
-GetForms(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
-           status = 'enabled',
-           publicAnswers = 'false',
-           answerTracking = 'true'
+GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
+GetForms("cizio7xeohwgc8k4g4koo008kkoocwg","enabled","true","true")
+GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+           status = "enabled",
+           publicAnswers = "false",
+           answerTracking = "true"
          )
 }

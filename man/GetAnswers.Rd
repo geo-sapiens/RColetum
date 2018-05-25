@@ -21,7 +21,7 @@ single data frame with all the answers. In this case, is possible to have
 repeated values, according to the multiplicity of relationships.}
 
 \item{source}{Optional filter. Is the the source of the answer and can use
-'web_public', 'web_private' or 'mobile'.}
+"web_public", "web_private" or "mobile".}
 
 \item{createdAfter}{Optional filter. This parameter filters the answers that
 were answered after this date. Is acceptable in the ISO8601 format
@@ -47,26 +47,26 @@ To get more details about the fields provided by the result, please visit the
 \href{https://coletum.docs.apiary.io/#reference/0/preenchimentos/listar-preenchimentos}{API documentation}.
 }
 \examples{
-GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', 5705)
-GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', ,'RColetum Test - Iris', TRUE)
-GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
-             nameForm = 'RColetum Test - Iris')
-GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
+GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", ,"RColetum Test - Iris", TRUE)
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             nameForm = "RColetum Test - Iris")
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              source = NULL,
              createdAfter = "2012-12-20",
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
-             source = 'web_public',
+             source = "web_public",
              createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")
              )
-GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              singleDataFrame = TRUE,
-             source = 'web_private',
+             source = "web_private",
              createdAfter = "2012-12-20",
              createdBefore = "2018-12-20",
              )

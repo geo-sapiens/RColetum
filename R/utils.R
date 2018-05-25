@@ -24,11 +24,11 @@ requestFunction <- function(query, token) {
   )
 
   # Catch some error from API
-  if (!identical(status_code,'200')) {
+  if (!identical(status_code, "200")) {
     if (!is.null(resp$code)) {
-      stop(paste0('Error ',status_code,': ',resp$message,'\n'))
+      stop(paste0("Error ", status_code, ": ", resp$message, "\n"))
     } else {
-      stop(paste0('Error ',status_code,': ',resp$errors$message,'\n'))
+      stop(paste0("Error ", status_code, ": ", resp$errors$message, "\n"))
     }
 
   }
@@ -54,22 +54,22 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
   # Recursively, gets the idComponentes and the question name of all components,
   # including from the nested components.
 
-  dictionary <- data.frame(matrix(ncol = 3, nrow = 0),stringsAsFactors = FALSE)
-  names(dictionary) <- c('idComponent', 'label', 'order')
+  dictionary <- data.frame(matrix(ncol = 3, nrow = 0), stringsAsFactors = FALSE)
+  names(dictionary) <- c("idComponent", "label", "order")
   i <- 1
   nrow <- nrow(dataFrame)
   while (i <= nrow) {
 
-    if (identical(dataFrame$type[i], 'group')) {
+    if (identical(dataFrame$type[i], "group")) {
       idComponentsString <- paste0(
         idComponentsString,
         dataFrame$componentId[i],
-        '{')
+        "{")
 
       dictionary <- rbind(dictionary,
-                          data.frame('idComponent' = dataFrame$componentId[i],
-                                     'label' = dataFrame$name[i],
-                                     'order' = dataFrame$order[i],
+                          data.frame("idComponent" = dataFrame$componentId[i],
+                                     "label" = dataFrame$name[i],
+                                     "order" = dataFrame$order[i],
                                      stringsAsFactors = FALSE),
                           stringsAsFactors = FALSE)
 
@@ -77,26 +77,26 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
                          idComponentsString)
 
       idComponentsString <- aux[[1]]
-      idComponentsString <- paste0(idComponentsString,'}')
+      idComponentsString <- paste0(idComponentsString, "}")
 
-      dictionary <- rbind(dictionary,aux[[2]],
+      dictionary <- rbind(dictionary, aux[[2]],
                           stringsAsFactors = FALSE)
 
     } else {
       idComponentsString <- paste0(idComponentsString,
-                                   dataFrame$componentId[i],",")
+                                   dataFrame$componentId[i], ",")
 
       dictionary <- rbind(dictionary,
-                          data.frame('idComponent' = dataFrame$componentId[i],
-                                     'label' = dataFrame$label[i],
-                                     'order' = dataFrame$order[i],
+                          data.frame("idComponent" = dataFrame$componentId[i],
+                                     "label" = dataFrame$label[i],
+                                     "order" = dataFrame$order[i],
                                      stringsAsFactors = FALSE),
                           stringsAsFactors = FALSE)
     }
 
     i <- i + 1
   }
-  return(list(idComponentsString,dictionary))
+  return(list(idComponentsString, dictionary))
 }
 
 prepareAnswerDF <- function(dataFrame, dataFrameName) {
@@ -107,8 +107,8 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
   # another list called complementaryDF. All elements in the complementary DF
   # pass through this procediment too.
 
-  dictionary <- data.frame(matrix(ncol = 2, nrow = 0),stringsAsFactors = FALSE)
-  names(dictionary) <- c('dfName', 'parentDfName')
+  dictionary <- data.frame(matrix(ncol = 2, nrow = 0), stringsAsFactors = FALSE)
+  names(dictionary) <- c("dfName", "parentDfName")
 
   complementaryDF <- list()
 
@@ -129,29 +129,29 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     while (i <= nRow) {
 
       j <- 1
-      nCol <- length(dataFrame[i,])
+      nCol <- length(dataFrame[i, ])
       while (j <= nCol) {
 
-        if (is.list(dataFrame[i,j])) {
+        if (is.list(dataFrame[i, j])) {
           aux <- NULL
-          columnId <- paste0(dataFrameName,'_id')
-          if (is.data.frame(dataFrame[i,j][[1]])) {
+          columnId <- paste0(dataFrameName, "_id")
+          if (is.data.frame(dataFrame[i, j][[1]])) {
             # aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
             #                           parent_cod = dataFrame[i,"id"])
-            if (nrow(dataFrame[i,j][[1]]) != 0) {
-              aux[[1]] <- cbind(dataFrame[i,j][[1]],
-                                'temp' = dataFrame[i,columnId],
+            if (nrow(dataFrame[i, j][[1]]) != 0) {
+              aux[[1]] <- cbind(dataFrame[i, j][[1]],
+                                "temp" = dataFrame[i, columnId],
                                 stringsAsFactors = FALSE)
               # Rename just the temp column
-              names(aux[[1]])[names(aux[[1]]) == 'temp'] <-
-                paste0(dataFrameName,'_id')
+              names(aux[[1]])[names(aux[[1]]) == "temp"] <-
+                paste0(dataFrameName, "_id")
             }
 
           } else {
-            if (length(dataFrame[i,j][[1]]) != 0) {
-              aux[[1]] <- data.frame(dataFrame[i,columnId],dataFrame[i,j],
+            if (length(dataFrame[i, j][[1]]) != 0) {
+              aux[[1]] <- data.frame(dataFrame[i, columnId], dataFrame[i, j],
                                      stringsAsFactors = FALSE)
-              names(aux[[1]]) <- c(paste0(dataFrameName,'_id'),
+              names(aux[[1]]) <- c(paste0(dataFrameName, "_id"),
                                    names(dataFrame[j]))
             }
           }
@@ -160,8 +160,8 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
             append(otherDF[[names(dataFrame[j])]],
                    aux)
           dictionary <- rbind(dictionary,
-                              data.frame('dfName' = names(dataFrame[j]),
-                                         'parentDfName' = dataFrameName,
+                              data.frame("dfName" = names(dataFrame[j]),
+                                         "parentDfName" = dataFrameName,
                                          stringsAsFactors = FALSE),
                               stringsAsFactors = FALSE)
 
@@ -176,14 +176,14 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     # Binding all iqual data frames
     i <- 1
     n <- length(otherDF)
-    dfNames <- paste0(names(otherDF),"_id")
+    dfNames <- paste0(names(otherDF), "_id")
 
     while (i <= n) {
       # Registering the order of the names, because in next step, will lost
-      ordered <- lapply(otherDF[[i]],names)
+      ordered <- lapply(otherDF[[i]], names)
       # Unnesting the data frames
       ## The function flatten changes the original orders of the columns
-      otherDF[[i]] <- lapply(otherDF[[i]],jsonlite::flatten)
+      otherDF[[i]] <- lapply(otherDF[[i]], jsonlite::flatten)
 
       # Reordening the columns names
       j <- 1
@@ -195,13 +195,13 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
                         names(otherDF[[i]][[j]]),
                         value = TRUE))
 
-        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]],reordered)
+        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], reordered)
 
         j <- j + 1
       }
 
       # Bind the data frames
-      otherDF[[i]] <- do.call(dplyr::bind_rows,otherDF[[i]])
+      otherDF[[i]] <- do.call(dplyr::bind_rows, otherDF[[i]])
       # Add the id
       otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
       i <- i + 1
@@ -209,7 +209,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
     # Removing the columns with N answers from the principal Data Frame
     if (length(otherDF) != 0) {
-      dataFrame <- dplyr::select(dataFrame,-dplyr::one_of(names(otherDF)))
+      dataFrame <- dplyr::select(dataFrame, -dplyr::one_of(names(otherDF)))
     }
 
     if (first) {
@@ -218,28 +218,28 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
       first <- FALSE
     } else {
       complementaryDF[[otherI]] <- dataFrame
-      complementaryDF <- append(complementaryDF,otherDF)
+      complementaryDF <- append(complementaryDF, otherDF)
       otherI <- otherI + 1
     }
 
   }
   dictionary <- dplyr::distinct(dictionary)
-  return(list(dictionary = dictionary,DFPrincipal,complementaryDF))
+  return(list(dictionary = dictionary, DFPrincipal, complementaryDF))
 }
 
-searchFormIdByName <- function(nameForm,token) {
+searchFormIdByName <- function(nameForm, token) {
   forms <- GetForms(token)
   idForm <- forms$id[forms$name == nameForm]
 
   switch(as.character(length(idForm)),
-          '0' = {
-            stop('Name not found.')
+          "0" = {
+            stop("Name not found.")
           },
-          '1' = {
+          "1" = {
             idForm <- as.numeric(idForm)
           },
-          '2' = {
-            stop("More than one result found. FormIds: ",toString(idForm))
+          "2" = {
+            stop("More than one result found. FormIds: ", toString(idForm))
           }
 
   )
@@ -250,7 +250,7 @@ searchFormIdByName <- function(nameForm,token) {
 createSingleDataFrame <- function(dataFrame, dictionary) {
   dataFrame <- append(list(answer = dataFrame[[1]]), dataFrame[[2]])
   names(dataFrame[[1]]) <- paste0(names(dataFrame[1]),
-                                  '.',
+                                  ".",
                                   names(dataFrame[[1]]))
   singleDataFrame <- dataFrame[[1]]
   i <- 2
@@ -258,23 +258,23 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
 
   while (i <= n) {
     names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
-                                    '.',
+                                    ".",
                                     names(dataFrame[[i]]))
     parentKey <- paste0(
       dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-      '.',
+      ".",
       dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-      '_id')
+      "_id")
     dFKey <- paste0(
       names(dataFrame[i]),
-      '.',
-      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],'_id')
+      ".",
+      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])], "_id")
 
     singleDataFrame <- dplyr::full_join(singleDataFrame,
                                         dataFrame[[i]],
                                         # Using setNames, is necessery invert
                                         # the order
-                                        by = stats::setNames(dFKey,parentKey))
+                                        by = stats::setNames(dFKey, parentKey))
 
     i <- i + 1
   }
@@ -282,4 +282,3 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
   return(singleDataFrame)
 
 }
-

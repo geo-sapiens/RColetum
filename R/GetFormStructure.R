@@ -17,10 +17,10 @@
 #'
 #' @return A possible nested data frame.
 #' @examples
-#' GetFormStructure('cizio7xeohwgc8k4g4koo008kkoocwg', 5705)
-#' GetFormStructure('cizio7xeohwgc8k4g4koo008kkoocwg', , 'RColetum Test - Iris')
-#' GetFormStructure(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
-#'                 nameForm = 'RColetum Test - Iris')
+#' GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
+#' GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", , "RColetum Test - Iris")
+#' GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+#'                 nameForm = "RColetum Test - Iris")
 #' @export
 
 GetFormStructure <- function(token, idForm, nameForm = NULL,
@@ -28,13 +28,13 @@ GetFormStructure <- function(token, idForm, nameForm = NULL,
 
   if (missing(idForm)) {
     if (!is.null(nameForm)) {
-      idForm <- searchFormIdByName(nameForm,token)
+      idForm <- searchFormIdByName(nameForm, token)
     } else {
-      stop('IdForm or nameForm should be provided.')
+      stop("IdForm or nameForm should be provided.")
     }
   } else {
     if (!is.null(nameForm)) {
-      warning('The idForm and nameForm are provided. Ignoring the nameForm.')
+      warning("The idForm and nameForm are provided. Ignoring the nameForm.")
     }
   }
 
@@ -42,13 +42,13 @@ GetFormStructure <- function(token, idForm, nameForm = NULL,
   filters <- NULL
   if (!is.null(componentId)) {
     componentId <- toString(componentId)
-    filters <- ',filters:{'
-    filters <- paste0(filters,'componentId:',componentId)
-    filters <- paste0(filters,'}')
+    filters <- ",filters:{"
+    filters <- paste0(filters, "componentId:", componentId)
+    filters <- paste0(filters, "}")
   }
 
   query <- paste0("{
-      form_structure(formId:",idForm,filters,"){
+      form_structure(formId:", idForm, filters, "){
         label,
         name,
         componentId,
