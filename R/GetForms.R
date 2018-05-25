@@ -15,15 +15,13 @@
 #'
 #' @return A data frame.
 #' @examples
-#' \dontrun{
-#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
-#' GetForms('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9','enabled','true','true')
-#' GetForms(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+#' GetForms('cizio7xeohwgc8k4g4koo008kkoocwg')
+#' GetForms('cizio7xeohwgc8k4g4koo008kkoocwg','enabled','true','true')
+#' GetForms(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
 #'            status = 'enabled',
 #'            publicAnswers = 'false',
 #'            answerTracking = 'true'
 #'          )
-#'}
 #' @export
 
 GetForms <- function(token,

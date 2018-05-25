@@ -274,7 +274,7 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
                                         dataFrame[[i]],
                                         # Using setNames, is necessery invert
                                         # the order
-                                        by = setNames(dFKey,parentKey))
+                                        by = stats::setNames(dFKey,parentKey))
 
     i <- i + 1
   }

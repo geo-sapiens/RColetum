@@ -29,31 +29,29 @@
 #'
 #' @return A list, with one or more data frames.
 #' @examples
-#' \dontrun{
-#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', 3345)
-#' GetAnswers('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9', ,'form 123', TRUE)
-#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-#'              nameForm = 'form 123')
-#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-#'              idForm = 3345,
+#' GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', 5705)
+#' GetAnswers('cizio7xeohwgc8k4g4koo008kkoocwg', ,'RColetum Test - Iris', TRUE)
+#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#'              nameForm = 'RColetum Test - Iris')
+#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#'              idForm = 5705,
 #'              source = NULL,
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-#'              idForm = 3345,
+#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#'              idForm = 5705,
 #'              source = 'web_public',
 #'              createdAfter = c("20-12-2012","%d-%m-%Y"),
 #'              createdBefore = c("20-12-2018","%d-%m-%Y")
 #'              )
-#' GetAnswers(token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
-#'              idForm = 3345,
+#' GetAnswers(token = 'cizio7xeohwgc8k4g4koo008kkoocwg',
+#'              idForm = 5705,
 #'              singleDataFrame = TRUE,
 #'              source = 'web_private',
 #'              createdAfter = "2012-12-20",
 #'              createdBefore = "2018-12-20",
 #'              )
-#'}
 #' @export
 
 GetAnswers <- function(token,
