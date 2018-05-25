@@ -1,0 +1,4 @@
+language: r
+sudo: required
+
+cran: http://cran-r.c3sl.ufpr.br/

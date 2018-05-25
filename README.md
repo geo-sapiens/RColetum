@@ -1,5 +1,7 @@
 # RColetum
 
+[![Build Status](https://travis-ci.org/geo-sapiens/RColetum.svg)](https://travis-ci.org/geo-sapiens/RColetum)
+
 An R package to get information from [COLETUM](https://coletum.com).
 
 ## Prerequisites
