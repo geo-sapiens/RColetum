@@ -101,5 +101,8 @@ GetForms <- function(token,
     return(NULL)
   }
 
+  # Patronization of the type of category
+  resp <- dplyr::mutate(resp, category = as.character(category))
+
   return(resp)
 }
