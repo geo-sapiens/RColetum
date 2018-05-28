@@ -28,7 +28,11 @@ requestFunction <- function(query, token) {
     if (!is.null(resp$code)) {
       stop(paste0("Error ", status_code, ": ", resp$message, "\n"))
     } else {
-      stop(paste0("Error ", status_code, ": ", resp$errors$message, "\n"))
+      if (!is.null(resp$errors)) {
+        stop(paste0("Error ", status_code, ": ", resp$errors$message, "\n"))
+      } else {
+        stop(paste0("Error ", status_code, ": ", resp$error$message, "\n"))
+      }
     }
 
   }
