@@ -70,24 +70,24 @@ test_that("GetFormStructure in simple form", {
   \"order\":\"0\",\"components\":null},{\"label\":\"Width\",\"name\":null,
   \"componentId\":\"width66143\",\"type\":\"floatfield\",\"helpBlock\":null,
   \"order\":\"1\",\"components\":null}]}]}}"
-  myFormStructure <-
+  myExpectedFormStructure <-
     jsonlite::fromJSON(
       txt = myExpectedFormStructureStringJson,
       simplifyVector = TRUE,
       simplifyDataFrame = TRUE
     )
-  myFormStructure <- myFormStructure$data[[1]]
+  myExpectedFormStructure <- myExpectedFormStructure$data[[1]]
 
   myFullFormStructure <-
     GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
-  expect_equal(myFullFormStructure, myFormStructure)
+  expect_equal(myFullFormStructure, myExpectedFormStructure)
 
   myFormStructureFiltered <-
     GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                      idForm = 5705,
                      componentId = "width66140")
   myFormStructureFiltered2 <-
-    dplyr::filter(myFormStructure$components[[2]],
+    dplyr::filter(myExpectedFormStructure$components[[2]],
                   componentId == "width66140")
   expect_equal(myFormStructureFiltered, myFormStructureFiltered2)
 
@@ -128,24 +128,25 @@ test_that("GetFormStructure in complex and nested form", {
   {\"label\":\"Instruments\",\"name\":null,\"componentId\":\"instruments66446\",
   \"type\":\"relationalfield\",\"helpBlock\":null,\"order\":\"1\",
   \"components\":null}]}]}]}]}}"
-  myComplexNestedFormStructure <-
+  myExpectedComplexNestedFormStructure <-
     jsonlite::fromJSON(
       txt = myExpectedFormStructureStringJson,
       simplifyVector = TRUE,
       simplifyDataFrame = TRUE
     )
-  myComplexNestedFormStructure <- myComplexNestedFormStructure$data[[1]]
+  myExpectedComplexNestedFormStructure <-
+    myExpectedComplexNestedFormStructure$data[[1]]
 
   myFullFormStructure <-
     GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
-  expect_equal(myComplexNestedFormStructure, myFullFormStructure)
+  expect_equal(myExpectedComplexNestedFormStructure, myFullFormStructure)
 
   myFilteredFormStructure <-
     GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                      idForm = 5722,
                      componentId = "past66435")
   myFilteredFormStructure2 <-
-    dplyr::filter(myComplexNestedFormStructure$components[[4]],
+    dplyr::filter(myExpectedComplexNestedFormStructure$components[[4]],
                   componentId == "past66435")
   expect_equal(myFilteredFormStructure, myFilteredFormStructure2)
 

@@ -1,5 +1,38 @@
 context("GetForms")
 
+# Create the expected Forms.
+myExpectedFormsStringJson <-
+  "{\"data\":{\"form\":[{\"id\":\"5704\",
+\"name\":\"API Doc - Filmes preferidos\",\"status\":\"enabled\",
+\"category\":null,\"answerTracking\":true,\"publicAnswers\":false},
+{\"id\":\"5722\",\"name\":\"RColetum Test - Classic Rocks\",
+\"status\":\"enabled\",\"category\":\"RColetum Tests\",
+\"answerTracking\":false,\"publicAnswers\":false},{\"id\":\"5721\",
+\"name\":\"RColetum Test - Classic Rocks (genres)\",\"status\":\"disabled\",
+\"category\":null,\"answerTracking\":false,\"publicAnswers\":false},
+  {\"id\":\"5723\",\"name\":\"RColetum Test - Classic Rocks (instruments)\",
+  \"status\":\"disabled\",\"category\":null,\"answerTracking\":false,
+  \"publicAnswers\":false},{\"id\":\"5705\",\"name\":\"RColetum Test - Iris\",
+  \"status\":\"enabled\",\"category\":\"RColetum Tests\",
+  \"answerTracking\":false,\"publicAnswers\":false},{\"id\":\"5713\",
+  \"name\":\"RColetum Test - Star Wars\",\"status\":\"enabled\",
+  \"category\":\"RColetum Tests\",\"answerTracking\":false,
+  \"publicAnswers\":false},{\"id\":\"5712\",
+  \"name\":\"RColetum Test - Star Wars (films)\",\"status\":\"disabled\",
+  \"category\":null,\"answerTracking\":false,\"publicAnswers\":false},
+  {\"id\":\"5711\",\"name\":\"RColetum Test - Star Wars (species)\",
+  \"status\":\"disabled\",\"category\":null,\"answerTracking\":false,
+  \"publicAnswers\":false},{\"id\":\"5719\",\"name\":\"RColetum Test - Storms\",
+  \"status\":\"enabled\",\"category\":\"RColetum Tests\",
+  \"answerTracking\":false,\"publicAnswers\":false}]}}"
+myExpectedForms <-
+  jsonlite::fromJSON(
+    txt = myExpectedFormsStringJson,
+    simplifyVector = TRUE,
+    simplifyDataFrame = TRUE
+  )
+myExpectedForms <- myExpectedForms$data[[1]]
+
 test_that("error by wrong token", {
   expect_error(
     GetForms("notexisttoken"),
@@ -37,76 +70,40 @@ test_that("error in using incorrection the filters", {
 })
 
 test_that("GetForms with no filter", {
-  myForms <- GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
-  myForms2 <-
-    data.frame(id = c("5704", "5722", "5721", "5723", "5705", "5713", "5712",
-                      "5711", "5719"),
-               name = c("API Doc - Filmes preferidos",
-                        "RColetum Test - Classic Rocks",
-                        "RColetum Test - Classic Rocks (genres)",
-                        "RColetum Test - Classic Rocks (instruments)",
-                        "RColetum Test - Iris", "RColetum Test - Star Wars",
-                        "RColetum Test - Star Wars (films)",
-                        "RColetum Test - Star Wars (species)",
-                        "RColetum Test - Storms"),
-               status = c("enabled", "enabled", "disabled", "disabled",
-                          "enabled", "enabled", "disabled", "disabled",
-                          "enabled"),
-               category = c(NA, "RColetum Tests", NA, NA, "RColetum Tests",
-                            "RColetum Tests", NA, NA, "RColetum Tests"),
-               answerTracking = c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                                  FALSE, FALSE, FALSE),
-               publicAnswers = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                                 FALSE, FALSE,FALSE),
-               stringsAsFactors = FALSE)
-  expect_equal(myForms,myForms2)
+    myForms <- GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
+  expect_equal(myForms,myExpectedForms)
 })
 
 test_that("Get forms with the filters", {
-  myFormsFull <-
-    data.frame(id = c("5704", "5722", "5721", "5723", "5705", "5713", "5712",
-                      "5711", "5719"),
-               name = c("API Doc - Filmes preferidos",
-                        "RColetum Test - Classic Rocks",
-                        "RColetum Test - Classic Rocks (genres)",
-                        "RColetum Test - Classic Rocks (instruments)",
-                        "RColetum Test - Iris", "RColetum Test - Star Wars",
-                        "RColetum Test - Star Wars (films)",
-                        "RColetum Test - Star Wars (species)",
-                        "RColetum Test - Storms"),
-               status = c("enabled", "enabled", "disabled", "disabled",
-                          "enabled", "enabled", "disabled", "disabled",
-                          "enabled"),
-               category = c(NA, "RColetum Tests", NA, NA, "RColetum Tests",
-                            "RColetum Tests", NA, NA, "RColetum Tests"),
-               answerTracking = c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                                  FALSE, FALSE, FALSE),
-               publicAnswers = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                                 FALSE, FALSE,FALSE),
-               stringsAsFactors = FALSE)
 
-  myFormnsDisabled <-
+    myFormnsDisabled <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = 'disabled')
   myFormnsDisabled2 <-
-    dplyr::filter(myFormsFull, status == "disabled")
+    dplyr::mutate(
+      dplyr::filter(myExpectedForms, status == "disabled"),
+      category = as.logical(category)
+    )
   expect_equal(myFormnsDisabled,myFormnsDisabled2)
 
   myFormnsEnabled <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = 'enabled')
   myFormnsEnabled2 <-
-    dplyr::filter(myFormsFull, status == "enabled")
+    dplyr::filter(myExpectedForms, status == "enabled")
   expect_equal(myFormnsEnabled,myFormnsEnabled2)
 
   myFormsAnswerTracking <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = TRUE)
   myFormsAnswerTracking2 <-
-    dplyr::filter(myFormsFull, answerTracking == TRUE)
+    dplyr::mutate(
+      dplyr::filter(myExpectedForms, answerTracking == TRUE),
+      category = as.logical(category)
+      )
   expect_equal(myFormsAnswerTracking, myFormsAnswerTracking2)
 
   myFormsAnswerNotTracking <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = FALSE)
   myFormsAnswerNotTracking2 <-
-    dplyr::filter(myFormsFull, answerTracking == FALSE)
+    dplyr::filter(myExpectedForms, answerTracking == FALSE)
   expect_equal(myFormsAnswerNotTracking, myFormsAnswerNotTracking2)
 
   myFormsPublicAnswers <-
@@ -116,18 +113,18 @@ test_that("Get forms with the filters", {
   myFormsNotPublicAnswers <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = FALSE)
   myFormsNotPublicAnswers2 <-
-    dplyr::filter(myFormsFull, publicAnswers == FALSE)
+    dplyr::filter(myExpectedForms, publicAnswers == FALSE)
   expect_equal(myFormsNotPublicAnswers,myFormsNotPublicAnswers2)
 
   myFormsMistFilters <- GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                                  status = "enabled",
                                  publicAnswers = FALSE,
                                  answerTracking = FALSE)
-  myFormsMistFilters2 <-
-    dplyr::filter(myFormsFull,
+  myFormsMixFilters2 <-
+    dplyr::filter(myExpectedForms,
                   status == "enabled",
                   publicAnswers == FALSE,
                   answerTracking == FALSE)
-  expect_equal(myFormsMistFilters,myFormsMistFilters2)
+  expect_equal(myFormsMistFilters,myFormsMixFilters2)
 
 })
