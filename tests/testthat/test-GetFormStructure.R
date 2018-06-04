@@ -54,29 +54,50 @@ test_that("Warming when is informed the idForm and nameForm", {
 })
 
 test_that("GetFormStructure in simple form", {
-  myExpectedFormStructureStringJson <-
-    "{\"data\":{\"form_structure\":[{\"label\":\"Specie\",\"name\":null,
-  \"componentId\":\"specie66137\",\"type\":\"selectfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":null,\"name\":\"Sepal\",
-  \"componentId\":\"sepal66138\",\"type\":\"group\",\"helpBlock\":null,
-  \"order\":\"1\",\"components\":[{\"label\":\"Length\",\"name\":null,
-  \"componentId\":\"length66139\",\"type\":\"floatfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":\"Width\",\"name\":null,
-  \"componentId\":\"width66140\",\"type\":\"floatfield\",\"helpBlock\":null,
-  \"order\":\"1\",\"components\":null}]},{\"label\":null,\"name\":\"Petal\",
-  \"componentId\":\"petal66141\",\"type\":\"group\",\"helpBlock\":null,
-  \"order\":\"2\",\"components\":[{\"label\":\"Length\",\"name\":null,
-  \"componentId\":\"length66142\",\"type\":\"floatfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":\"Width\",\"name\":null,
-  \"componentId\":\"width66143\",\"type\":\"floatfield\",\"helpBlock\":null,
-  \"order\":\"1\",\"components\":null}]}]}}"
+  # Create the data frame to compare (long command creation)
+  ## Created using dput()
   myExpectedFormStructure <-
-    jsonlite::fromJSON(
-      txt = myExpectedFormStructureStringJson,
-      simplifyVector = TRUE,
-      simplifyDataFrame = TRUE
-    )
-  myExpectedFormStructure <- myExpectedFormStructure$data[[1]]
+    structure(
+      list(label = c("Specie", NA, NA),
+           name = c(NA, "Sepal", "Petal"),
+           componentId = c("specie66137", "sepal66138", "petal66141"),
+           type = c("selectfield", "group", "group"),
+           helpBlock = c(NA, NA, NA),
+           order = c("0", "1", "2"),
+           components =
+             list(NULL,
+                  structure(
+                    list(label = c("Length", "Width"),
+                         name = c(NA, NA),
+                         componentId = c("length66139", "width66140"),
+                         type = c("floatfield", "floatfield"),
+                         helpBlock = c(NA, NA),
+                         order = c("0", "1"),
+                         components = c(NA, NA)),
+                    .Names =
+                      c("label", "name", "componentId", "type", "helpBlock",
+                        "order", "components"),
+                    class = "data.frame", row.names = 1:2),
+                  structure(
+                    list(label = c("Length", "Width"),
+                         name = c(NA, NA),
+                         componentId = c("length66142", "width66143"),
+                         type = c("floatfield", "floatfield"),
+                         helpBlock = c(NA, NA),
+                         order = c("0", "1"),
+                         components = c(NA, NA)),
+                    .Names =
+                      c("label", "name", "componentId", "type", "helpBlock",
+                        "order", "components"),
+                    class = "data.frame",
+                    row.names = 1:2))
+           ),
+      .Names =
+        c("label", "name", "componentId", "type", "helpBlock", "order",
+          "components"),
+      class = "data.frame",
+      row.names = c(NA, 3L)
+      )
 
   myFullFormStructure <-
     GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
@@ -94,48 +115,103 @@ test_that("GetFormStructure in simple form", {
   })
 
 test_that("GetFormStructure in complex and nested form", {
-  myExpectedFormStructureStringJson <-
-    "{\"data\":{\"form_structure\":[{\"label\":\"Artist name\",\"name\":null,
-  \"componentId\":\"artistName66429\",\"type\":\"textfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":\"Active\",\"name\":null,
-  \"componentId\":\"active66430\",\"type\":\"agreementfield\",
-  \"helpBlock\":null,\"order\":\"1\",\"components\":null},{\"label\":null,
-  \"name\":\"Origin localition\",\"componentId\":\"originLocalition66431\",
-  \"type\":\"group\",\"helpBlock\":null,\"order\":\"2\",
-  \"components\":[{\"label\":\"Country\",\"name\":null,
-  \"componentId\":\"country66432\",\"type\":\"countryfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null}]},{\"label\":null,\"name\":\"Members\",
-  \"componentId\":\"members66433\",\"type\":\"group\",\"helpBlock\":null,
-  \"order\":\"3\",\"components\":[{\"label\":\"Active\",\"name\":null,
-  \"componentId\":\"active66434\",\"type\":\"textfield\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":\"Past\",\"name\":null,
-  \"componentId\":\"past66435\",\"type\":\"textfield\",\"helpBlock\":null,
-  \"order\":\"1\",\"components\":null}]},{\"label\":null,\"name\":\"Music\",
-  \"componentId\":\"music66436\",\"type\":\"group\",\"helpBlock\":null,
-  \"order\":\"4\",\"components\":[{\"label\":null,\"name\":\"Album\",
-  \"componentId\":\"album66437\",\"type\":\"group\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":[{\"label\":\"Name\",\"name\":null,
-  \"type\":\"textfield\",\"componentId\":\"name66438\",\"helpBlock\":null,
-  \"order\":\"0\",\"components\":null},{\"label\":\"Year\",\"name\":null,
-  \"type\":\"integerfield\",\"componentId\":\"year66439\",\"helpBlock\":null,
-  \"order\":\"1\",\"components\":null},{\"label\":\"Genres\",\"name\":null,
-  \"type\":\"relationalfield\",\"componentId\":\"genres66441\",
-  \"helpBlock\":null,\"order\":\"2\",\"components\":null},{\"label\":null,
-  \"name\":\"Members\",\"type\":\"group\",\"componentId\":\"members66443\",
-  \"helpBlock\":null,\"order\":\"3\",\"components\":[{\"label\":\"Name\",
-  \"name\":null,\"componentId\":\"name66444\",\"type\":\"textfield\",
-  \"helpBlock\":null,\"order\":\"0\",\"components\":null},
-  {\"label\":\"Instruments\",\"name\":null,\"componentId\":\"instruments66446\",
-  \"type\":\"relationalfield\",\"helpBlock\":null,\"order\":\"1\",
-  \"components\":null}]}]}]}]}}"
+  # Create the data frame to compare (very long command creation)
+  ## Created using dput()
   myExpectedComplexNestedFormStructure <-
-    jsonlite::fromJSON(
-      txt = myExpectedFormStructureStringJson,
-      simplifyVector = TRUE,
-      simplifyDataFrame = TRUE
-    )
-  myExpectedComplexNestedFormStructure <-
-    myExpectedComplexNestedFormStructure$data[[1]]
+    structure(
+      list(label = c("Artist name", "Active", NA, NA, NA),
+           name = c(NA, NA, "Origin localition", "Members", "Music"),
+           componentId =
+             c("artistName66429", "active66430", "originLocalition66431",
+               "members66433", "music66436"),
+           type = c("textfield", "agreementfield", "group", "group", "group"),
+           helpBlock = c(NA, NA, NA, NA, NA),
+           order = c("0", "1", "2", "3", "4"),
+           components =
+             list(NULL,
+                  NULL,
+                  structure(
+                    list(label = "Country",
+                         name = NA,
+                         componentId = "country66432",
+                         type = "countryfield",
+                         helpBlock = NA,
+                         order = "0",
+                         components = NA),
+                    .Names =
+                      c("label", "name", "componentId", "type", "helpBlock",
+                        "order", "components"),
+                    class = "data.frame",
+                    row.names = 1L),
+                  structure(
+                    list(label = c("Active", "Past"),
+                         name = c(NA, NA),
+                         componentId = c("active66434", "past66435"),
+                         type = c("textfield", "textfield"),
+                         helpBlock = c(NA, NA),
+                         order = c("0", "1"),
+                         components = c(NA, NA)),
+                    .Names =
+                      c("label", "name", "componentId", "type", "helpBlock",
+                        "order", "components"),
+                    class = "data.frame", row.names = 1:2),
+                  structure(
+                    list(label = NA,
+                         name = "Album",
+                         componentId = "album66437",
+                         type = "group",
+                         helpBlock = NA,
+                         order = "0",
+                         components =
+                           list(
+                             structure(
+                               list(label = c("Name", "Year", "Genres", NA),
+                                    name = c(NA, NA, NA, "Members"),
+                                    type =
+                                      c("textfield", "integerfield",
+                                        "relationalfield", "group"),
+                                    componentId =
+                                      c("name66438", "year66439", "genres66441",
+                                        "members66443"),
+                                    helpBlock = c(NA, NA, NA, NA),
+                                    order = c("0", "1", "2", "3"),
+                                    components =
+                                      list(NULL, NULL, NULL,
+                                           structure(
+                                             list(label =
+                                                    c("Name", "Instruments"),
+                                                  name = c(NA, NA),
+                                                  componentId =
+                                                    c("name66444",
+                                                      "instruments66446"),
+                                                  type =
+                                                    c("textfield",
+                                                      "relationalfield"),
+                                                  helpBlock = c(NA, NA),
+                                                  order = c("0", "1"),
+                                                  components = c(NA, NA)),
+                                             .Names =
+                                               c("label", "name", "componentId",
+                                                 "type", "helpBlock", "order",
+                                                 "components"),
+                                             class = "data.frame",
+                                             row.names = 1:2))),
+                               .Names =
+                                 c("label", "name", "type", "componentId",
+                                   "helpBlock", "order", "components"),
+                               class = "data.frame",
+                               row.names = c(NA, 4L)))),
+                    .Names =
+                      c("label", "name", "componentId", "type", "helpBlock",
+                        "order", "components"),
+                    class = "data.frame",
+                    row.names = 1L))),
+      .Names =
+        c("label", "name", "componentId", "type", "helpBlock", "order",
+          "components"),
+      class = "data.frame",
+      row.names = c(NA, 5L)
+      )
 
   myFullFormStructure <-
     GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)

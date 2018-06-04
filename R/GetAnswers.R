@@ -124,7 +124,7 @@ GetAnswers <- function(token,
         } else {
           createdBefore <- as.Date(createdBefore[1], format = createdBefore[2])
           if (is.na(createdBefore)) {
-            stop("Invalid data especification format.")
+            stop("Not possible cast the date to the specificated format.")
           } else {
             filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
           }
@@ -149,7 +149,7 @@ GetAnswers <- function(token,
         } else {
           createdAfter <- as.Date(createdAfter[1], format = createdAfter[2])
           if (is.na(createdAfter)) {
-            stop("Invalid data especification format.")
+            stop("Not possible cast the date to the specificated format.")
           } else {
             filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
           }

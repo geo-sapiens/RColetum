@@ -1,37 +1,33 @@
 context("GetForms")
 
-# Create the expected Forms.
-myExpectedFormsStringJson <-
-  "{\"data\":{\"form\":[{\"id\":\"5704\",
-\"name\":\"API Doc - Filmes preferidos\",\"status\":\"enabled\",
-\"category\":null,\"answerTracking\":true,\"publicAnswers\":false},
-{\"id\":\"5722\",\"name\":\"RColetum Test - Classic Rocks\",
-\"status\":\"enabled\",\"category\":\"RColetum Tests\",
-\"answerTracking\":false,\"publicAnswers\":false},{\"id\":\"5721\",
-\"name\":\"RColetum Test - Classic Rocks (genres)\",\"status\":\"disabled\",
-\"category\":null,\"answerTracking\":false,\"publicAnswers\":false},
-  {\"id\":\"5723\",\"name\":\"RColetum Test - Classic Rocks (instruments)\",
-  \"status\":\"disabled\",\"category\":null,\"answerTracking\":false,
-  \"publicAnswers\":false},{\"id\":\"5705\",\"name\":\"RColetum Test - Iris\",
-  \"status\":\"enabled\",\"category\":\"RColetum Tests\",
-  \"answerTracking\":false,\"publicAnswers\":false},{\"id\":\"5713\",
-  \"name\":\"RColetum Test - Star Wars\",\"status\":\"enabled\",
-  \"category\":\"RColetum Tests\",\"answerTracking\":false,
-  \"publicAnswers\":false},{\"id\":\"5712\",
-  \"name\":\"RColetum Test - Star Wars (films)\",\"status\":\"disabled\",
-  \"category\":null,\"answerTracking\":false,\"publicAnswers\":false},
-  {\"id\":\"5711\",\"name\":\"RColetum Test - Star Wars (species)\",
-  \"status\":\"disabled\",\"category\":null,\"answerTracking\":false,
-  \"publicAnswers\":false},{\"id\":\"5719\",\"name\":\"RColetum Test - Storms\",
-  \"status\":\"enabled\",\"category\":\"RColetum Tests\",
-  \"answerTracking\":false,\"publicAnswers\":false}]}}"
+# Create the data frame to compare (long command creation)
+## Created using dput()
 myExpectedForms <-
-  jsonlite::fromJSON(
-    txt = myExpectedFormsStringJson,
-    simplifyVector = TRUE,
-    simplifyDataFrame = TRUE
-  )
-myExpectedForms <- myExpectedForms$data[[1]]
+  structure(
+    list(id =
+           c("5704", "5722", "5721", "5723", "5705", "5713", "5712", "5711",
+             "5719"),
+         name =
+           c("API Doc - Filmes preferidos", "RColetum Test - Classic Rocks",
+             "RColetum Test - Classic Rocks (genres)",
+             "RColetum Test - Classic Rocks (instruments)",
+             "RColetum Test - Iris", "RColetum Test - Star Wars",
+             "RColetum Test - Star Wars (films)",
+             "RColetum Test - Star Wars (species)", "RColetum Test - Storms"),
+         status =
+           c("enabled", "enabled", "disabled", "disabled", "enabled", "enabled",
+             "disabled", "disabled", "enabled"),
+         category =
+           c(NA, "RColetum Tests", NA, NA, "RColetum Tests", "RColetum Tests",
+             NA, NA, "RColetum Tests"),
+         answerTracking =
+           c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+         publicAnswers =
+           c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)),
+    .Names =
+      c("id", "name", "status", "category", "answerTracking", "publicAnswers"),
+    class = "data.frame",
+    row.names = c(NA, 9L))
 
 test_that("error by wrong token", {
   expect_error(
