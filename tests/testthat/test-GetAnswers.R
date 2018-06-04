@@ -270,8 +270,8 @@ myExpectedAnswersStarWarsFormSingleDF <-
            c("Luke Skywalker", "Luke Skywalker", "Luke Skywalker",
              "Luke Skywalker", "Luke Skywalker", "Anakin Skywalker",
              "Anakin Skywalker", "Anakin Skywalker", "Yoda", "Yoda", "Yoda",
-             "Yoda", "Yoda", "R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2
-             ", "R2-D2", "R2-D2", "R2-D2"),
+             "Yoda", "Yoda", "R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2",
+             "R2-D2", "R2-D2", "R2-D2"),
          answer.height66299 =
            c(172L, 172L, 172L, 172L, 172L, 188L, 188L, 188L, 66L, 66L, 66L, 66L,
              66L, 96L, 96L, 96L, 96L, 96L, 96L, 96L, 96L),
@@ -609,11 +609,8 @@ myExpectedAnswersClassicRocksFormMultDF <-
                    "instruments66446"))),
     .Names = c("", ""))
 
-# Create the data frame to compare (very long command creation)
-## Created using dput()
-myExpectedAnswersClassicRocksFormSingleDF <-
 
-##### Tests
+##### Tests ===========
 test_that("error by wrong token", {
   expect_error(
     GetAnswers("notexisttoken", 5705),
@@ -656,6 +653,14 @@ test_that("error by wrong idForm or nameForm", {
     "IdForm or nameForm should be provided."
   )
 
+})
+
+test_that("error by duplicated form name", {
+  expect_error(
+    GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+                     nameForm = "RColetum Test - Westeros"),
+    "More than one result found. FormIds: 5745, 5744"
+  )
 })
 
 test_that("errors in the bad use of filters parameters", {
@@ -789,3 +794,33 @@ test_that("GetAnswers in simple form", {
   expect_equal(myFilteredAnswersAfter4, myFilteredAnswersAfter5)
 
 })
+
+test_that("GetAnswers in more complex forms", {
+  myNQuestionsAnswers <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5719)
+  expect_equal(myNQuestionsAnswers,myExpectedAnswersStormFormMultDF)
+
+  myRelationalAnswers <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5713)
+  expect_equal(myRelationalAnswers,myExpectedAnswersStarWarsFormMultDF)
+
+  myComplexGroupRelationalNQuestionsAnswers <-
+    GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
+  expect_equal(myComplexGroupRelationalNQuestionsAnswers,
+               myExpectedAnswersClassicRocksFormMultDF)
+})
+
+test_that("get answers in single data frame", {
+  myNQuestionsAnswers <- GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+                                    idForm = 5719,
+                                    singleDataFrame = TRUE)
+  expect_equal(myNQuestionsAnswers,myExpectedAnswersStormFormSingleDF)
+
+  myRelationalAnswers <- GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+                                    idForm = 5713,
+                                    singleDataFrame = TRUE)
+  expect_equal(myRelationalAnswers,myExpectedAnswersStarWarsFormSingleDF)
+
+})
+
+
+
+

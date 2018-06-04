@@ -6,28 +6,33 @@ myExpectedForms <-
   structure(
     list(id =
            c("5704", "5722", "5721", "5723", "5705", "5713", "5712", "5711",
-             "5719"),
-         name =
-           c("API Doc - Filmes preferidos", "RColetum Test - Classic Rocks",
-             "RColetum Test - Classic Rocks (genres)",
-             "RColetum Test - Classic Rocks (instruments)",
-             "RColetum Test - Iris", "RColetum Test - Star Wars",
-             "RColetum Test - Star Wars (films)",
-             "RColetum Test - Star Wars (species)", "RColetum Test - Storms"),
+             "5719", "5745", "5744"),
+         name = c("API Doc - Filmes preferidos",
+                  "RColetum Test - Classic Rocks",
+                  "RColetum Test - Classic Rocks (genres)",
+                  "RColetum Test - Classic Rocks (instruments)",
+                  "RColetum Test - Iris", "RColetum Test - Star Wars",
+                  "RColetum Test - Star Wars (films)",
+                  "RColetum Test - Star Wars (species)",
+                  "RColetum Test - Storms", "RColetum Test - Westeros",
+                  "RColetum Test - Westeros"),
          status =
-           c("enabled", "enabled", "disabled", "disabled", "enabled", "enabled",
-             "disabled", "disabled", "enabled"),
+           c("enabled", "enabled", "disabled", "disabled", "enabled",
+             "enabled", "disabled", "disabled", "enabled", "enabled",
+             "enabled"),
          category =
            c(NA, "RColetum Tests", NA, NA, "RColetum Tests", "RColetum Tests",
-             NA, NA, "RColetum Tests"),
+             NA, NA, "RColetum Tests", "RColetum Tests", "RColetum Tests"),
          answerTracking =
-           c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+           c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+             FALSE, FALSE, FALSE, FALSE),
          publicAnswers =
-           c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)),
-    .Names =
-      c("id", "name", "status", "category", "answerTracking", "publicAnswers"),
+           c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+             FALSE, FALSE)),
+    .Names = c("id", "name", "status", "category", "answerTracking",
+               "publicAnswers"),
     class = "data.frame",
-    row.names = c(NA, 9L))
+    row.names = c(NA, 11L))
 
 test_that("error by wrong token", {
   expect_error(

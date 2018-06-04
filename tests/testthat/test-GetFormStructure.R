@@ -53,6 +53,15 @@ test_that("Warming when is informed the idForm and nameForm", {
   )
 })
 
+test_that("error by duplicated form name", {
+  expect_error(
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               nameForm = "RColetum Test - Westeros"),
+    "More than one result found. FormIds: 5745, 5744"
+  )
+})
+
+
 test_that("GetFormStructure in simple form", {
   # Create the data frame to compare (long command creation)
   ## Created using dput()
