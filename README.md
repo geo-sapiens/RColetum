@@ -34,7 +34,7 @@ structure contains the specifications of each field, like the name, type,
 hierarchy and others.
 
 ```{r}
-myFormStructure <- GetFormStructure("TOKEN_HERE", idForm = FORM_ID)
+myFormStructure <- GetFormStructure(token = "TOKEN_HERE", idForm = FORM_ID)
 ```
 ### Get answers
 * `GetAnswers` this function gets the answers from a specific form. The data 
@@ -44,7 +44,7 @@ form has one or more fields with cardinality greater then one, the structure
 is a list of data frames.
 
 ```{r}
-myAnswers <- GetAnswers("TOKEN_HERE", idForm = FORM_ID)
+myAnswers <- GetAnswers(token = "TOKEN_HERE", idForm = FORM_ID)
 ```
 
 If you want to get the answers in a single data frame with redundant data 
@@ -52,7 +52,9 @@ If you want to get the answers in a single data frame with redundant data
 `singleDataFrame` parameter as TRUE.
 
 ```{r}
-myAnswers <- GetAnswers("TOKEN_HERE", idForm = FORM_ID, singleDataFrame = TRUE)
+myAnswers <- GetAnswers(token = "TOKEN_HERE", 
+                        idForm = FORM_ID, 
+                        singleDataFrame = TRUE)
 ```
 
 ## Full example
@@ -89,14 +91,14 @@ starWarsFormAnswer <- GetAnswers(token = myToken,
                                  nameForm = "RColetum Test - Star Wars")
 
 ####@> Getting answers for a form getting result as single dataframe
-####@> In this case we have rendundancy for N fields
+####@> In this case we have redundancy for N fields
 starWarsFormAnswerSingleDataframe <- GetAnswers(token = myToken, 
                                                 idForm = 5713, 
                                                 singleDataFrame = TRUE)
 
 
 ####@> LET'S HAVE SOME FUN AND SHOW A CHART WITH BMI (BODY MASS INDEX) 
-####@> OF EACH STAR WARS CHARACTERES
+####@> OF EACH STAR WARS CHARACTERS
 library(ggplot2)
 
 myChart <- ggplot(data = starWarsFormAnswer[[1]], 
@@ -119,3 +121,8 @@ myChart
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available,
 see the [tags on this repository](https://github.com/geo-sapiens/RColetum/tags).
+
+-----
+Please note that this project is released with a [Contributor Code of
+Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
