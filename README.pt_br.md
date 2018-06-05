@@ -1,5 +1,6 @@
 # RColetum
 [![Build Status](https://travis-ci.org/geo-sapiens/RColetum.svg)](https://travis-ci.org/geo-sapiens/RColetum)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/RColetum)](https://cran.r-project.org/package=RColetum)
 
 Um pacote R para obter dados do [Coletum](https://coletum.com).
 

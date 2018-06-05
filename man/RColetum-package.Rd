@@ -30,7 +30,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: André Smaniotto \email{smaniotto@geosapiens.com}
+\strong{Maintainer}: André Smaniotto \email{smaniotto@geosapiens.com.br}
 
 Other contributors:
 \itemize{
