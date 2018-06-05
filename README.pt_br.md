@@ -9,7 +9,7 @@ Para poder usar este pacote, primeiro de tudo, você precisa acessar a sua conta
 Coletum [https://coletum.com] do seu navegador para gerar o seu token 
 autenticado na página do Web service.
 
-Se você não tiver uma conta, [INSCREVA-SE AGORA](https://coletum.com/register/).
+Se você não tiver uma conta, [INSCREVA-SE AGORA](https://coletum.com/pt_BR/register/).
 
 ## Como instalar o RColetum
 Instale este pacote diretamente no R, usando o pacote 'devtools':

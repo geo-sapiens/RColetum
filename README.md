@@ -9,7 +9,7 @@ To be able to use this package, first of all, you need access your Coletum's
 account [https://coletum.com] from your browser to generate your
 authenticated token in Web service page.
 
-If you don't have an account, [SIGN UP NOW](https://coletum.com/register/).
+If you don't have an account, [SIGN UP NOW](https://coletum.com/en_US/register/).
 
 ## How to install RColetum
 Install this package directly in R, using the 'devtools' package:

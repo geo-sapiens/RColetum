@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+* Fix the invalid URL.
+* Fix the title field to title case.
+
 ## Test environments
 * local OS Linux Mint 18.1 install, R 3.4.4
 * ubuntu 14.04 (on travis-ci), R 3.4.4
