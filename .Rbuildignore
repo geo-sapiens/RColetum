@@ -5,4 +5,5 @@
 ^ISSUE_TEMPLATE\.md$
 ^PULL_REQUEST_TEMPLATE\.md$
 ^README\.pt_br\.md$
+^LICENSE.md$
 ^cran-comments\.md$

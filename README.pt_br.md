@@ -56,7 +56,7 @@ myAnswers <- GetAnswers(token = "TOKEN_HERE",
                         singleDataFrame = TRUE)
 ```
 
-## Full example
+## Examplo completo
 ```{r}
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")
@@ -112,7 +112,7 @@ meuGrafico <- ggplot(data = starWarsRespostas[[1]],
            alpha = 0.8) +
   geom_label(mapping = aes(label = (mass66300) / (height66299/100)^2)) +
   labs(x = "Character", 
-       y = "BMI") +
+       y = "IMC") +
   theme_bw(base_size = 14)
 
 meuGrafico
@@ -125,6 +125,6 @@ disponíveis, veja as
 [tags neste repositório](https://github.com/geo-sapiens/RColetum/tags).
 
 -----
-Observe que este projeto é lançado com um [Código do Colaborador de
-Conduta](CODE_OF_CONDUCT.md).
+Observe que este projeto é lançado com um [Código de Conduta do 
+Colaborador](CODE_OF_CONDUCT.md).
 Ao participar deste projeto, você concorda em cumprir seus termos.
