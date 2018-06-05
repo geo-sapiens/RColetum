@@ -1,4 +1,4 @@
-(Thanks for reporting an issue! Please make sure you view the issue guidelines, 
+(Thanks for reporting an issue! Please make sure you view the code of conduct, 
 then fill out the blanks below.)
 
 If this is a question or feature request, make sure to:
