@@ -32,6 +32,12 @@ Useful links:
 \author{
 \strong{Maintainer}: André Smaniotto \email{smaniotto@geosapiens.com.br}
 
+Authors:
+\itemize{
+  \item Marcelo Magnani \email{marcelo@geosapiens.com.br}
+  \item Rodrigo Sant'Ana \email{oc.rodrigosantana@gmail.com}
+}
+
 Other contributors:
 \itemize{
   \item GeoSapiens [copyright holder, funder]
