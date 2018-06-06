@@ -4,6 +4,8 @@ Title: Access your Coletum's Data from API
 Version: 0.1.0
 Authors@R: c(
     person("André", "Smaniotto", , "smaniotto@geosapiens.com.br", c("aut", "cre")),
+    person("Marcelo", "Magnani", , "marcelo@geosapiens.com.br", "aut"),
+    person("Rodrigo", "Sant'Ana", , "oc.rodrigosantana@gmail.com", "aut"),
     person("GeoSapiens", role = c("cph", "fnd"))
     )
 Maintainer: André Smaniotto <smaniotto@geosapiens.com.br>

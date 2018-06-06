@@ -1,7 +1,6 @@
 ## Resubmission
 This is a resubmission. In this version I have:
-* Fix the invalid URL.
-* Fix the title field to title case.
+* Update the authors list.
 
 ## Test environments
 * local OS Linux Mint 18.1 install, R 3.4.4
@@ -12,4 +11,4 @@ This is a resubmission. In this version I have:
 
 0 errors | 0 warnings | 0 note
 
-* This is a new release.
+* This is a update in a very recent release.
