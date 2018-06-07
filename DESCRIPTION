@@ -1,7 +1,7 @@
 Package: RColetum
 Type: Package
 Title: Access your Coletum's Data from API
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("André", "Smaniotto", , "smaniotto@geosapiens.com.br", c("aut", "cre")),
     person("Marcelo", "Magnani", , "marcelo@geosapiens.com.br", "aut"),
