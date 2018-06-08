@@ -12,8 +12,13 @@ authenticated token in Web service page.
 If you don't have an account, [SIGN UP NOW](https://coletum.com/en_US/register/).
 
 ## How to install RColetum
-Install this package directly in R, using the 'devtools' package:
 
+Install this package from CRAN:
+```{r}
+install.packages("RColetum")
+```
+
+Or install the development version from GitHUb using the 'devtools' package:
 ```{r}
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")

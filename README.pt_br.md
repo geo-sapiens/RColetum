@@ -12,8 +12,13 @@ autenticado na página do Web service.
 Se você não tiver uma conta, [INSCREVA-SE AGORA](https://coletum.com/pt_BR/register/).
 
 ## Como instalar o RColetum
-Instale este pacote diretamente no R, usando o pacote 'devtools':
+Instale este pacote a partir do CRAN:
+```{r}
+install.packages("RColetum")
+```
 
+Ou instale a versão de desenvolvedor a partir do Gitub usando o pacote
+'devtools':
 ```{r}
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")
