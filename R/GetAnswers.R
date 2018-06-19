@@ -108,53 +108,23 @@ GetAnswers <- function(token,
     }
 
     if (!is.null(createdBefore)) {
-      # Check if the option is valid
       if (is.na(createdBefore[2])) {
-        error <- try(as.Date(createdBefore))
-        if (identical(class(error), "try-error")) {
-          stop(error[1])
-        } else {
-          filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
-        }
+        createdBefore <- validDate_ISO8601(createdBefore)
       } else {
-        error <- try(as.Date(createdBefore[1],
-                             format = createdBefore[2]))
-        if (identical(class(error), "try-error")) {
-          stop(error[1])
-        } else {
-          createdBefore <- as.Date(createdBefore[1], format = createdBefore[2])
-          if (is.na(createdBefore)) {
-            stop("Not possible cast the date to the specificated format.")
-          } else {
-            filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
-          }
-        }
+        createdBefore <- parseDate_ISO8601(createdBefore[1], createdBefore[2])
       }
+
+      filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
     }
 
     if (!is.null(createdAfter)) {
-      # Check if the option is valid
       if (is.na(createdAfter[2])) {
-        error <- try(as.Date(createdAfter))
-        if (identical(class(error), "try-error")) {
-          stop(error[1])
-        } else {
-          filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
-        }
+        createdAfter <- validDate_ISO8601(createdAfter)
       } else {
-        error <- try(as.Date(createdAfter[1],
-                             format = createdAfter[2]))
-        if (identical(class(error), "try-error")) {
-          stop(error[1])
-        } else {
-          createdAfter <- as.Date(createdAfter[1], format = createdAfter[2])
-          if (is.na(createdAfter)) {
-            stop("Not possible cast the date to the specificated format.")
-          } else {
-            filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
-          }
-        }
+        createdAfter <- parseDate_ISO8601(createdAfter[1], createdAfter[2])
       }
+
+      filters <- paste0(filters, "createdBefore:\"", createdAfter, "\",")
     }
     filters <- paste0(filters, "}")
   }
@@ -169,6 +139,8 @@ GetAnswers <- function(token,
             source,
             createdAt,
             createdAtCoordinates
+            updateAt,
+            updatedAtCoordinates
         },
         answer{
         ", componentsId,

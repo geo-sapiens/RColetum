@@ -286,3 +286,61 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
   return(singleDataFrame)
 
 }
+
+validDate_ISO8601 <- function(user_date) {
+  user_date_size <- nchar(user_date)
+  if (identical(user_date_size, nchar("YYYY/MM/DD"))) {
+    error <- try(as.Date(createdBefore))
+    if (identical(class(error), "try-error")) {
+      stop("The informed date is not in ISO 8601 standard format.")
+    } else {
+      return(user_date)
+    }
+  } else {
+
+    if (identical(substr(user_date, user_date_size-2, user_date_size-2), ":")) {
+      user_date <- paste0(
+        substr(user_date,1,user_date_size-3),
+        substr(user_date,user_date_size-1,user_date_size))
+    } else {
+
+      if ( identical(substr(user_date, user_date_size, user_date_size),"Z")) {
+        user_date <- paste0(
+          substr(user_date,1,user_date_size-1),
+          "+0000"
+        )
+      }
+
+    }
+
+    user_date <- try(
+      as.POSIXlt(user_date, format = "%Y-%m-%dT%H:%M:%S%z"))
+    if (is.na(user_date)) {
+      stop("The informed date is not in ISO 8601 standard format.")
+    } else {
+      # Formating date
+      user_date <- strftime(user_date, "%Y-%m-%dT%H:%M:%S%z")
+      return(user_date)
+    }
+  }
+
+}
+
+parseDate_ISO8601 <- function(user_date, user_format) {
+
+  error <- try(
+    as.POSIXlt(
+      user_date,tz = 'UTC', format = user_format))
+  if (is.na(error)) {
+    stop("Not possible to parse. Check the information format.")
+  } else {
+    user_date <-
+      as.POSIXlt(user_date, format = "%Y-%m-%dT%H:%M:%S%z")
+
+    # Formating date
+    user_date <- strftime(user_date, "%Y-%m-%dT%H:%M:%S%z")
+    return(user_date)
+  }
+
+}
+
