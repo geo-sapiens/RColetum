@@ -287,57 +287,70 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
 
 }
 
-validDate_ISO8601 <- function(user_date) {
-  user_date_size <- nchar(user_date)
-  if (identical(user_date_size, nchar("YYYY/MM/DD"))) {
-    error <- try(as.Date(user_date))
+validDate_ISO8601 <- function(userDate) {
+  if (is.na(userDate)) {
+    return(NA)
+  }
+  userDateSize <- nchar(userDate)
+  if (identical(userDateSize, nchar("YYYY/MM/DD"))) {
+    error <- try(as.Date(userDate))
     if (identical(class(error), "try-error")) {
       stop("The informed date is not in ISO 8601 standard format.")
     } else {
-      return(user_date)
+      return(userDate)
     }
   } else {
 
-    if (identical(substr(user_date, user_date_size-2, user_date_size-2), ":")) {
-      user_date <- paste0(
-        substr(user_date,1,user_date_size-3),
-        substr(user_date,user_date_size-1,user_date_size))
+    if (identical(substr(userDate, userDateSize-2, userDateSize-2), ":")) {
+      userDate <- paste0(
+        substr(userDate,1,userDateSize-3),
+        substr(userDate,userDateSize-1,userDateSize))
+      userDateSize <- nchar(userDate)
     } else {
 
-      if ( identical(substr(user_date, user_date_size, user_date_size),"Z")) {
-        user_date <- paste0(
-          substr(user_date,1,user_date_size-1),
-          "+0000"
-        )
+      if ( identical(substr(userDate, userDateSize, userDateSize),"Z")) {
+        userDate <- paste0(
+          substr(userDate,1,userDateSize-1),
+          "+0000")
+        userDateSize <- nchar(userDate)
       }
 
     }
 
-    user_date <- try(
-      as.POSIXlt(user_date, format = "%Y-%m-%dT%H:%M:%S%z"))
-    if (is.na(user_date)) {
+    userDate <- try(
+      as.POSIXlt(userDate, format = "%Y-%m-%dT%H:%M:%S%z"))
+    if (is.na(userDate)) {
       stop("The informed date is not in ISO 8601 standard format.")
     } else {
       # Formating date
-      user_date <- strftime(user_date, "%Y-%m-%dT%H:%M:%S%z")
-      return(user_date)
+      userDate <- strftime(userDate, "%Y-%m-%dT%H:%M:%S%z")
+      userDate <- paste0(
+        substr(userDate,1,userDateSize-2),
+        ":",
+        substr(userDate,userDateSize-1,userDateSize))
+      return(userDate)
     }
   }
 
 }
 
-parseDate_ISO8601 <- function(user_date, user_format) {
+parseDate_ISO8601 <- function(userDate, userFormat) {
 
-  error <- try(as.POSIXlt(user_date, format = user_format))
+  error <- try(as.POSIXlt(userDate, format = userFormat))
   if (is.na(error)) {
     stop("Not possible to parse. Check the information format.")
   } else {
-    user_date <- as.POSIXlt(user_date, format = user_format)
+    userDate <- as.POSIXlt(userDate, format = userFormat)
 
     # Formating date
-    user_date <- strftime(user_date, "%Y-%m-%dT%H:%M:%S%z")
-    return(user_date)
+    userDate <- strftime(userDate, "%Y-%m-%dT%H:%M:%S%z")
+    userDateSize <- nchar(userDate)
+    userDate <- paste0(
+      substr(userDate,1,userDateSize-2),
+      ":",
+      substr(userDate,userDateSize-1,userDateSize))
+
+    return(userDate)
   }
 
 }
-

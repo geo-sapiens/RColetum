@@ -48,7 +48,7 @@
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
 #'              source = NULL,
-#'              createdAfter = "2012-12-20T19:20Z",
+#'              createdAfter = "2012-12-20T19:20:30Z",
 #'              createdBefore = c("20-12-2018 19:20:30+01:00",
 #'                                  "%d-%m-%Y %H:%M:%S%z")
 #'              )
@@ -137,7 +137,7 @@ GetAnswers <- function(token,
         createdAfter <- parseDate_ISO8601(createdAfter[1], createdAfter[2])
       }
 
-      filters <- paste0(filters, "createdBefore:\"", createdAfter, "\",")
+      filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
     }
     filters <- paste0(filters, "}")
   }
@@ -152,7 +152,7 @@ GetAnswers <- function(token,
             source,
             createdAt,
             createdAtCoordinates
-            updateAt,
+            updatedAt,
             updatedAtCoordinates
         },
         answer{
@@ -193,7 +193,10 @@ GetAnswers <- function(token,
                     "source",
                     "createdAt",
                     "createdAtCoordinates.latitude",
-                    "createdAtCoordinates.longitude")
+                    "createdAtCoordinates.longitude",
+                    "updatedAt",
+                    "updatedAtCoordinates.latitude",
+                    "updatedAtCoordinates.longitude")
   ### Reordering
   resp <- dplyr::select(resp, reorderNames)
 
