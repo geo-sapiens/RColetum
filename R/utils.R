@@ -290,7 +290,7 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
 validDate_ISO8601 <- function(user_date) {
   user_date_size <- nchar(user_date)
   if (identical(user_date_size, nchar("YYYY/MM/DD"))) {
-    error <- try(as.Date(createdBefore))
+    error <- try(as.Date(user_date))
     if (identical(class(error), "try-error")) {
       stop("The informed date is not in ISO 8601 standard format.")
     } else {
@@ -328,14 +328,11 @@ validDate_ISO8601 <- function(user_date) {
 
 parseDate_ISO8601 <- function(user_date, user_format) {
 
-  error <- try(
-    as.POSIXlt(
-      user_date,tz = 'UTC', format = user_format))
+  error <- try(as.POSIXlt(user_date, format = user_format))
   if (is.na(error)) {
     stop("Not possible to parse. Check the information format.")
   } else {
-    user_date <-
-      as.POSIXlt(user_date, format = "%Y-%m-%dT%H:%M:%S%z")
+    user_date <- as.POSIXlt(user_date, format = user_format)
 
     # Formating date
     user_date <- strftime(user_date, "%Y-%m-%dT%H:%M:%S%z")
