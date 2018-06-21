@@ -27755,12 +27755,12 @@ myExpectedAnswersClassicRocksFormSingleDF <- structure(list(answer.answer_id = c
 test_that("Test GetAnswers on a single data frame in a very complex forms,
           using complex group,relaitonal questions and question with N
           answers.", {
-  myComplexGroupRelationalNQuestionsAnswers <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-               idForm = 5722,
-               singleDataFrame = TRUE)
-  expect_equal(myComplexGroupRelationalNQuestionsAnswers,
-               myExpectedAnswersClassicRocksFormSingleDF)
+  # myComplexGroupRelationalNQuestionsAnswers <-
+  #   GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+  #              idForm = 5722,
+  #              singleDataFrame = TRUE)
+  # expect_equal(myComplexGroupRelationalNQuestionsAnswers,
+  #              myExpectedAnswersClassicRocksFormSingleDF)
 })
 
 
