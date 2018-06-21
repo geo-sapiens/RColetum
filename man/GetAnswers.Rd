@@ -59,6 +59,19 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              )
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
+             source = NULL,
+             createdAfter = "2012-12-20",
+             createdBefore = "2018-12-20T19:20:30+01:00"
+             )
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             idForm = 5705,
+             source = NULL,
+             createdAfter = "2012-12-20T19:20:30Z",
+             createdBefore = c("20-12-2018 19:20:30+01:00",
+                                 "\%d-\%m-\%Y \%H:\%M:\%S\%z")
+             )
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             idForm = 5705,
              source = "web_public",
              createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
              createdBefore = c("20-12-2018","\%d-\%m-\%Y")

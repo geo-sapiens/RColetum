@@ -419,7 +419,7 @@ myExpectedAnswersClassicRocksFormMultDF <-
            music66436.album66437 =
              structure(
                list(name66438 =
-                      c("(Pronounced 'Leh-'nérd 'Skin-'nérd)", "Second Helping",
+                      c("(Pronounced 'Lĕh-'nérd 'Skin-'nérd)", "Second Helping",
                         "Nuthin' Fancy", "Gimme Back My Bullets",
                         "Street Survivors", "Slippery When Wet",
                         "The Dark Side of the Moon", "Wish You Were Here"),
