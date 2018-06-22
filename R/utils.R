@@ -236,15 +236,15 @@ searchFormIdByName <- function(nameForm, token) {
   idForm <- forms$id[forms$name == nameForm]
 
   switch(as.character(length(idForm)),
-          "0" = {
-            stop("Name not found.")
-          },
-          "1" = {
-            idForm <- as.numeric(idForm)
-          },
-          "2" = {
-            stop("More than one result found. FormIds: ", toString(idForm))
-          }
+         "0" = {
+           stop("Name not found.")
+         },
+         "1" = {
+           idForm <- as.numeric(idForm)
+         },
+         "2" = {
+           stop("More than one result found. FormIds: ", toString(idForm))
+         }
 
   )
 
@@ -289,68 +289,58 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
 
 validDate_ISO8601 <- function(userDate) {
   if (is.na(userDate)) {
-    return(NA)
+    return(FALSE)
   }
   userDateSize <- nchar(userDate)
-  if (identical(userDateSize, nchar("YYYY/MM/DD"))) {
+  if (userDateSize == nchar("YYYY/MM/DD")) {
     error <- try(as.Date(userDate))
     if (identical(class(error), "try-error")) {
-      stop("The informed date is not in ISO 8601 standard format.")
+      return(FALSE)
     } else {
-      return(userDate)
+      return(TRUE)
     }
-  } else {
-
+  } else{
     if (identical(substr(userDate, userDateSize-2, userDateSize-2), ":")) {
       userDate <- paste0(
         substr(userDate,1,userDateSize-3),
         substr(userDate,userDateSize-1,userDateSize))
       userDateSize <- nchar(userDate)
     } else {
-
       if ( identical(substr(userDate, userDateSize, userDateSize),"Z")) {
         userDate <- paste0(
           substr(userDate,1,userDateSize-1),
           "+0000")
         userDateSize <- nchar(userDate)
       }
-
     }
 
     userDate <- try(
       as.POSIXlt(userDate, format = "%Y-%m-%dT%H:%M:%S%z"))
     if (is.na(userDate)) {
-      stop("The informed date is not in ISO 8601 standard format.")
+      return(FALSE)
     } else {
-      # Formating date
-      userDate <- strftime(userDate, "%Y-%m-%dT%H:%M:%S%z")
-      userDate <- paste0(
-        substr(userDate,1,userDateSize-2),
-        ":",
-        substr(userDate,userDateSize-1,userDateSize))
-      return(userDate)
+      return(TRUE)
     }
   }
-
 }
 
-parseDate_ISO8601 <- function(userDate, userFormat) {
+removeColonDate_ISO8601 <- function(apiDate) {
 
-  error <- try(as.POSIXlt(userDate, format = userFormat))
-  if (is.na(error)) {
-    stop("Not possible to parse. Check the information format.")
-  } else {
-    userDate <- as.POSIXlt(userDate, format = userFormat)
+  n <- length(apiDate)
+  i <- 1
 
-    # Formating date
-    userDate <- strftime(userDate, "%Y-%m-%dT%H:%M:%S%z")
-    userDateSize <- nchar(userDate)
-    userDate <- paste0(
-      substr(userDate,1,userDateSize-2),
-      ":",
-      substr(userDate,userDateSize-1,userDateSize))
+  while (i <= n) {
 
-    return(userDate)
+    if (!is.na(apiDate[[i]])) {
+      apiDateSize <- nchar(apiDate[i])
+      apiDate[i] <- paste0(
+        substr(apiDate[i],1,apiDateSize-3),
+        substr(apiDate[i],apiDateSize-1,apiDateSize))
+    }
+
+    i <- i + 1
+
   }
 
+  return(apiDate)
 }

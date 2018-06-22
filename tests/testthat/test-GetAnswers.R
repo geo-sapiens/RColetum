@@ -19,13 +19,13 @@ myExpectedAnswersIrisForm <-
              "André Smaniotto", "André Smaniotto", "André Smaniotto"),
          source = c("web_private", "web_private", "web_private", "web_private",
                     "web_private", "web_private"),
-         createdAt = c("2018-05-24T20:00:12+00:00", "2018-05-24T20:00:39+00:00",
-                       "2018-05-24T20:01:06+00:00", "2018-05-30T14:02:47+00:00",
-                       "2018-05-30T14:04:30+00:00",
-                       "2018-05-30T14:05:08+00:00"),
+         createdAt = c("2018-05-24T20:00:12+0000", "2018-05-24T20:00:39+0000",
+                       "2018-05-24T20:01:06+0000", "2018-05-30T14:02:47+0000",
+                       "2018-05-30T14:04:30+0000",
+                       "2018-05-30T14:05:08+0000"),
          createdAtCoordinates.latitude = c(NA, NA, NA, NA, NA, NA),
          createdAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA),
-         updatedAt = c(NA, NA, "2018-05-24T20:03:04+00:00", NA, NA, NA),
+         updatedAt = c(NA, NA, "2018-05-24T20:03:04+0000", NA, NA, NA),
          updatedAtCoordinates.latitude = c(NA, NA, NA, NA, NA, NA),
          updatedAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA)),
     class = "data.frame", row.names = c(NA, 6L))
@@ -43,10 +43,10 @@ myExpectedAnswersStormFormMultDF <-
                  "André Smaniotto"),
              source = c("web_private", "web_private", "web_private",
                         "web_private"),
-             createdAt = c("2018-05-28T12:16:13+00:00",
-                           "2018-05-28T12:17:12+00:00",
-                           "2018-05-28T12:21:29+00:00",
-                           "2018-05-28T12:25:27+00:00"),
+             createdAt = c("2018-05-28T12:16:13+0000",
+                           "2018-05-28T12:17:12+0000",
+                           "2018-05-28T12:21:29+0000",
+                           "2018-05-28T12:25:27+0000"),
              createdAtCoordinates.latitude = c(NA, NA, NA, NA),
              createdAtCoordinates.longitude = c(NA, NA, NA, NA),
              updatedAt = c(NA, NA, NA, NA),
@@ -118,18 +118,18 @@ myExpectedAnswersStormFormSingleDF <-
                            "web_private", "web_private", "web_private",
                            "web_private", "web_private", "web_private",
                            "web_private", "web_private", "web_private"),
-         answer.createdAt = c("2018-05-28T12:16:13+00:00",
-                              "2018-05-28T12:16:13+00:00",
-                              "2018-05-28T12:16:13+00:00",
-                              "2018-05-28T12:16:13+00:00",
-                              "2018-05-28T12:17:12+00:00",
-                              "2018-05-28T12:21:29+00:00",
-                              "2018-05-28T12:21:29+00:00",
-                              "2018-05-28T12:21:29+00:00",
-                              "2018-05-28T12:25:27+00:00",
-                              "2018-05-28T12:25:27+00:00",
-                              "2018-05-28T12:25:27+00:00",
-                              "2018-05-28T12:25:27+00:00"),
+         answer.createdAt = c("2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:17:12+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000"),
          answer.createdAtCoordinates.latitude =
            c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
          answer.createdAtCoordinates.longitude =
@@ -195,15 +195,15 @@ myExpectedAnswersStarWarsFormMultDF <-
                  "André Smaniotto"),
              source = c("web_private", "web_private", "web_private",
                         "web_private"),
-             createdAt = c("2018-05-28T11:27:40+00:00",
-                           "2018-05-28T11:42:22+00:00",
-                           "2018-05-28T11:43:26+00:00",
-                           "2018-05-28T11:44:48+00:00"),
+             createdAt = c("2018-05-28T11:27:40+0000",
+                           "2018-05-28T11:42:22+0000",
+                           "2018-05-28T11:43:26+0000",
+                           "2018-05-28T11:44:48+0000"),
              createdAtCoordinates.latitude =
                c(-26.9075, -26.9075, -26.9075, -26.9075),
              createdAtCoordinates.longitude =
                c(-48.65393, -48.65393, -48.65393, -48.65393),
-             updatedAt = c("2018-05-28T11:32:09+00:00", NA, NA, NA),
+             updatedAt = c("2018-05-28T11:32:09+0000", NA, NA, NA),
              updatedAtCoordinates.latitude = c(-26.9075, NA, NA, NA),
              updatedAtCoordinates.longitude = c(-48.65393, NA, NA, NA)),
         class = "data.frame",
@@ -301,17 +301,17 @@ myExpectedAnswersStarWarsFormSingleDF <-
              "web_private", "web_private", "web_private", "web_private",
              "web_private"),
          answer.createdAt =
-           c("2018-05-28T11:27:40+00:00", "2018-05-28T11:27:40+00:00",
-             "2018-05-28T11:27:40+00:00", "2018-05-28T11:27:40+00:00",
-             "2018-05-28T11:27:40+00:00", "2018-05-28T11:42:22+00:00",
-             "2018-05-28T11:42:22+00:00", "2018-05-28T11:42:22+00:00",
-             "2018-05-28T11:43:26+00:00", "2018-05-28T11:43:26+00:00",
-             "2018-05-28T11:43:26+00:00", "2018-05-28T11:43:26+00:00",
-             "2018-05-28T11:43:26+00:00", "2018-05-28T11:44:48+00:00",
-             "2018-05-28T11:44:48+00:00", "2018-05-28T11:44:48+00:00",
-             "2018-05-28T11:44:48+00:00", "2018-05-28T11:44:48+00:00",
-             "2018-05-28T11:44:48+00:00", "2018-05-28T11:44:48+00:00",
-             "2018-05-28T11:44:48+00:00"),
+           c("2018-05-28T11:27:40+0000", "2018-05-28T11:27:40+0000",
+             "2018-05-28T11:27:40+0000", "2018-05-28T11:27:40+0000",
+             "2018-05-28T11:27:40+0000", "2018-05-28T11:42:22+0000",
+             "2018-05-28T11:42:22+0000", "2018-05-28T11:42:22+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:43:26+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:43:26+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000"),
          answer.createdAtCoordinates.latitude =
            c(-26.9075, -26.9075, -26.9075, -26.9075, -26.9075, -26.9075,
              -26.9075, -26.9075, -26.9075, -26.9075, -26.9075, -26.9075,
@@ -323,9 +323,9 @@ myExpectedAnswersStarWarsFormSingleDF <-
              -48.65393, -48.65393, -48.65393, -48.65393, -48.65393, -48.65393,
              -48.65393, -48.65393, -48.65393),
          answer.updatedAt =
-           c("2018-05-28T11:32:09+00:00", "2018-05-28T11:32:09+00:00",
-             "2018-05-28T11:32:09+00:00", "2018-05-28T11:32:09+00:00",
-             "2018-05-28T11:32:09+00:00", NA, NA, NA, NA, NA, NA, NA, NA, NA,
+           c("2018-05-28T11:32:09+0000", "2018-05-28T11:32:09+0000",
+             "2018-05-28T11:32:09+0000", "2018-05-28T11:32:09+0000",
+             "2018-05-28T11:32:09+0000", NA, NA, NA, NA, NA, NA, NA, NA, NA,
              NA, NA, NA, NA, NA, NA, NA),
          answer.updatedAtCoordinates.latitude =
            c(-26.9075, -26.9075, -26.9075, -26.9075, -26.9075, NA, NA, NA, NA,
@@ -368,13 +368,13 @@ myExpectedAnswersClassicRocksFormMultDF <-
                c("André Smaniotto", "André Smaniotto", "André Smaniotto"),
              source = c("web_private", "web_private", "web_private"),
              createdAt =
-               c("2018-05-28T14:49:03+00:00", "2018-05-28T16:49:14+00:00",
-                 "2018-05-28T17:04:53+00:00"),
+               c("2018-05-28T14:49:03+0000", "2018-05-28T16:49:14+0000",
+                 "2018-05-28T17:04:53+0000"),
              createdAtCoordinates.latitude = c(NA, NA, NA),
              createdAtCoordinates.longitude = c(NA, NA, NA),
              updatedAt =
-               c("2018-05-28T16:40:26+00:00", "2018-05-28T16:50:54+00:00",
-                 "2018-05-28T17:16:34+00:00"),
+               c("2018-05-28T16:40:26+0000", "2018-05-28T16:50:54+0000",
+                 "2018-05-28T17:16:34+0000"),
              updatedAtCoordinates.latitude = c(NA, NA, NA),
              updatedAtCoordinates.longitude = c(NA, NA, NA)),
         class = "data.frame",
@@ -674,30 +674,28 @@ test_that("errors in the bad use of filters parameters", {
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdAfter = c("1995-30-15", "%d-%m-%Y")),
-    "Not possible to parse. Check the information format."
+               createdAfter = "2018-12-20 19:20:30+01:00")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdBefore = c("1995-30-15", "%d-%m-%Y")),
-    "Not possible to parse. Check the information format."
+               createdBefore = "2018-12-20 19:20:30+01:00")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdBefore = c("1995-30-15", "d-m-Y")),
-    "Not possible to parse. Check the information format."
+               createdAfter = "2018-12-20T19:20:30")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdAfter = c("1995-30-15", "d-m-Y")),
-    "Not possible to parse. Check the information format."
+               createdBefore = "2018-12-20T19:20:30")
   )
+
+
 })
 
 test_that("warming when is informed the idForm and nameForm", {
@@ -728,7 +726,7 @@ test_that("GetAnswers in simple form", {
   myFilteredAnswersBefore2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdBefore = c("30/05/18", "%d/%m/%y"))
+               createdBefore = "2018-05-30T06:20:30+01:00")
   myFilteredAnswersBefore3 <-
     dplyr::filter(myExpectedAnswersIrisForm, createdAt < "2018-05-30")
   expect_equal(myFilteredAnswersBefore, myFilteredAnswersBefore3)
@@ -741,18 +739,18 @@ test_that("GetAnswers in simple form", {
   myFilteredAnswersAfter2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = c("31/05/18", "%d/%m/%y"))
+               createdAfter = "2018-05-30T16:20:30+01:00")
   expect_equal(myFilteredAnswersAfter, NULL)
   expect_equal(myFilteredAnswersAfter2,NULL)
 
   myFilteredAnswersAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = "2018-05-29")
+               createdAfter = "2018-05-30T12:20:30+01:00")
   myFilteredAnswersAfter4 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = c("29/05/18", "%d/%m/%y"))
+               createdAfter = "2018-05-30T12:20:30Z")
   myFilteredAnswersAfter5 <-
     dplyr::mutate(
       dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29"),
@@ -769,10 +767,10 @@ test_that("GetAnswers in more complex forms", {
   myRelationalAnswers <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5713)
   expect_equal(myRelationalAnswers,myExpectedAnswersStarWarsFormMultDF)
 
-  # myComplexGroupRelationalNQuestionsAnswers <-
-  #   GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
-  # expect_equal(myComplexGroupRelationalNQuestionsAnswers,
-  #              myExpectedAnswersClassicRocksFormMultDF)
+  myComplexGroupRelationalNQuestionsAnswers <-
+    GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
+  expect_equal(myComplexGroupRelationalNQuestionsAnswers,
+               myExpectedAnswersClassicRocksFormMultDF)
 })
 
 test_that("get answers in single data frame", {

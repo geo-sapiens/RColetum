@@ -67,7 +67,7 @@ test_that("GetFormStructure in simple form", {
   ## Created using dput()
   myExpectedFormStructure <-
     structure(
-      list(label = c("Specie", NA, NA),
+      list(label = c("Specie", "Sepal", "Petal"),
            name = c(NA, "Sepal", "Petal"),
            componentId = c("specie66137", "sepal66138", "petal66141"),
            type = c("selectfield", "group", "group"),
@@ -129,7 +129,7 @@ test_that("GetFormStructure in complex and nested form", {
   myExpectedComplexNestedFormStructure <-
     structure(
       list(label =
-             c("Artist name", "Active", NA, NA, NA),
+             c("Artist name", "Active", "Origin localition", "Members", "Music"),
            name = c(NA, NA, "Origin localition", "Members", "Music"),
            componentId =
              c("artistName66429", "active66430", "originLocalition66431",
@@ -166,7 +166,7 @@ test_that("GetFormStructure in complex and nested form", {
                         "order", "components"),
                     class = "data.frame", row.names = 1:2),
                   structure(
-                    list(label = NA,
+                    list(label = "Album",
                          name = "Album",
                          componentId = "album66437",
                          type = "group",
@@ -176,7 +176,7 @@ test_that("GetFormStructure in complex and nested form", {
                            list(
                              structure(
                                list(label =
-                                      c("Name", "Year", "Genres", NA),
+                                      c("Name", "Year", "Genres", "Members"),
                                     name = c(NA, NA, NA, "Members"),
                                     type =
                                       c("textfield", "integerfield",

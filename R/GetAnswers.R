@@ -18,14 +18,10 @@
 #' "web_public", "web_private" or "mobile".
 #' @param createdAfter Optional filter. This parameter filters the answers that
 #' were answered after this date. Is acceptable in the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
-#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
-#' "25-10-1995".
+#' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
 #' @param createdBefore Optional filter. This parameter filters the answers
 #' that were answered before this date. Is acceptable in the ISO8601 format
-#' ("YYYY-MM-DD"). Also is possible to specify another format, sending together
-#' in a vector in the R especification, for example, "\%d-\%m-\%Y" to
-#' "25-10-1995".
+#' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
 #'
 #' @return A list, with one or more data frames.
 #' @examples
@@ -37,7 +33,7 @@
 #'              idForm = 5705,
 #'              source = NULL,
 #'              createdAfter = "2012-12-20",
-#'              createdBefore = c("20-12-2018","%d-%m-%Y")
+#'              createdBefore = "2018-12-20"
 #'              )
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
@@ -49,21 +45,20 @@
 #'              idForm = 5705,
 #'              source = NULL,
 #'              createdAfter = "2012-12-20T19:20:30Z",
-#'              createdBefore = c("20-12-2018 19:20:30+01:00",
-#'                                  "%d-%m-%Y %H:%M:%S%z")
+#'              createdBefore = "2018-12-20T19:20:30+01:00"
 #'              )
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
 #'              source = "web_public",
-#'              createdAfter = c("20-12-2012","%d-%m-%Y"),
-#'              createdBefore = c("20-12-2018","%d-%m-%Y")
+#'              createdAfter = "2012-12-20T19:20:30+01:00",
+#'              createdBefore = "2018-12-20T19:20:30+01:00"
 #'              )
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
 #'              singleDataFrame = TRUE,
 #'              source = "web_private",
-#'              createdAfter = "2012-12-20",
-#'              createdBefore = "2018-12-20",
+#'              createdAfter = "2012-12-20T19:20:30Z",
+#'              createdBefore = "2018-12-20T19:20:30Z"
 #'              )
 #' @export
 
@@ -121,24 +116,33 @@ GetAnswers <- function(token,
     }
 
     if (!is.null(createdBefore)) {
-      if (is.na(createdBefore[2])) {
-        createdBefore <- validDate_ISO8601(createdBefore)
+      # Check if the option is valid
+      if (validDate_ISO8601(createdBefore)) {
+        filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
       } else {
-        createdBefore <- parseDate_ISO8601(createdBefore[1], createdBefore[2])
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+                 )
+          )
       }
-
-      filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
     }
 
     if (!is.null(createdAfter)) {
-      if (is.na(createdAfter[2])) {
-        createdAfter <- validDate_ISO8601(createdAfter)
+      # Check if the option is valid
+      if (validDate_ISO8601(createdAfter)) {
+        filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
       } else {
-        createdAfter <- parseDate_ISO8601(createdAfter[1], createdAfter[2])
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+          )
+        )
       }
-
-      filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
     }
+
     filters <- paste0(filters, "}")
   }
 
@@ -208,6 +212,11 @@ GetAnswers <- function(token,
   # Extracting dictionary
   dictionary <- resp$dictionary
   resp$dictionary <- NULL
+
+  # Removing ":" (colon) from resp into dates.
+  ## This way is possible parse to a date format.
+  resp[[1]]$createdAt <- removeColonDate_ISO8601(resp[[1]]$createdAt)
+  resp[[1]]$updatedAt <- removeColonDate_ISO8601(resp[[1]]$updatedAt)
 
   if (singleDataFrame) {
     resp <- createSingleDataFrame(resp, dictionary)
