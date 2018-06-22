@@ -103,8 +103,9 @@ test_that("Get forms with the filters", {
       )
   expect_equal(myFormsAnswerTracking, myFormsAnswerTracking2)
 
-  myFormsAnswerNotTracking <-
-    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = FALSE)
+  myFormsAnswerNotTracking <- dplyr::arrange(
+    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = FALSE),
+    name, id)
   myFormsAnswerNotTracking2 <-
     dplyr::filter(myExpectedForms, answerTracking == FALSE)
   expect_equal(myFormsAnswerNotTracking, myFormsAnswerNotTracking2)

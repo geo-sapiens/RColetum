@@ -72,7 +72,7 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
 
       dictionary <- rbind(dictionary,
                           data.frame("idComponent" = dataFrame$componentId[i],
-                                     "label" = dataFrame$name[i],
+                                     "label" = dataFrame$label[i],
                                      "order" = dataFrame$order[i],
                                      stringsAsFactors = FALSE),
                           stringsAsFactors = FALSE)
