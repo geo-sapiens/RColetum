@@ -17,21 +17,18 @@ myExpectedAnswersIrisForm <-
          userName =
            c("André Smaniotto", "André Smaniotto", "André Smaniotto",
              "André Smaniotto", "André Smaniotto", "André Smaniotto"),
-         source =
-           c("web_private", "web_private", "web_private", "web_private",
-             "web_private", "web_private"),
-         createdAt =
-           c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-30",
-             "2018-05-30", "2018-05-30"),
+         source = c("web_private", "web_private", "web_private", "web_private",
+                    "web_private", "web_private"),
+         createdAt = c("2018-05-24T20:00:12+0000", "2018-05-24T20:00:39+0000",
+                       "2018-05-24T20:01:06+0000", "2018-05-30T14:02:47+0000",
+                       "2018-05-30T14:04:30+0000",
+                       "2018-05-30T14:05:08+0000"),
          createdAtCoordinates.latitude = c(NA, NA, NA, NA, NA, NA),
-         createdAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA)),
-    class = "data.frame",
-    row.names = c(NA, 6L),
-    .Names =
-      c("answer_id", "specie66137", "sepal66138.length66139",
-        "sepal66138.width66140", "petal66141.length66142",
-        "petal66141.width66143", "userName", "source", "createdAt",
-        "createdAtCoordinates.latitude", "createdAtCoordinates.longitude"))
+         createdAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA),
+         updatedAt = c(NA, NA, "2018-05-24T20:03:04+0000", NA, NA, NA),
+         updatedAtCoordinates.latitude = c(NA, NA, NA, NA, NA, NA),
+         updatedAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA)),
+    class = "data.frame", row.names = c(NA, 6L))
 
 # Create the data frame to compare (very long command creation)
 ## Created using dput()
@@ -44,67 +41,60 @@ myExpectedAnswersStormFormMultDF <-
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto",
                  "André Smaniotto"),
-             source =
-               c("web_private", "web_private", "web_private", "web_private"),
-             createdAt =
-               c("2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28"),
+             source = c("web_private", "web_private", "web_private",
+                        "web_private"),
+             createdAt = c("2018-05-28T12:16:13+0000",
+                           "2018-05-28T12:17:12+0000",
+                           "2018-05-28T12:21:29+0000",
+                           "2018-05-28T12:25:27+0000"),
              createdAtCoordinates.latitude = c(NA, NA, NA, NA),
-             createdAtCoordinates.longitude = c(NA, NA, NA, NA)),
+             createdAtCoordinates.longitude = c(NA, NA, NA, NA),
+             updatedAt = c(NA, NA, NA, NA),
+             updatedAtCoordinates.latitude = c(NA, NA, NA, NA),
+             updatedAtCoordinates.longitude = c(NA, NA, NA, NA)),
         class = "data.frame",
-        row.names = c(NA, 4L),
-        .Names = c(
-          "answer_id", "name66415", "userName", "source", "createdAt",
-          "createdAtCoordinates.latitude", "createdAtCoordinates.longitude")),
-      structure(
-        list(infos66416 =
-               structure(
-                 list(date66417 =
-                        c("1975-06-27", "1975-06-27", "1975-06-28",
-                          "1975-06-29", "1975-08-29", "2010-07-22",
-                          "2010-07-23", "2010-07-23", "2010-10-08",
-                          "2010-08-10", "2010-09-10", "2010-10-10"),
-                      hour66418 =
-                        c("00:00", "06:00", "12:00", "12:00", "12:00",
-                          "06:00", "00:00", "14:00", "06:00", "12:00", "06:00",
-                          "00:00"),
-                      location66419.longitude =
-                        c(-79, -79, -78, -73.8, -48.9, -73.8, -75.9, -80.2,
-                          -66.09999, -64.8, -59.7, -50.9),
-                      location66419.latitude =
-                        c(27.5, 28.5, 33.29999, 33.79999, 34.9, 21.5, 23.1,
-                          25.4, 24.1, 25.2, 28.5, 32.7),
-                      status66420 =
-                        c("Tropical Depression", "Tropical Depression",
-                          "Tropical Depression", "Tropical Storm",
-                          "Tropical Storm", "Tropical Depression",
-                          "Tropical Storm", "Tropical Storm", "Tropical Storm",
-                          "Hurricane", "Hurricane", "Tropical Storm"),
-                      wind66421 =
-                        c(25L, 25L, 25L, 45L, 45L, 30L, 35L, 35L, 60L, 65L, 75L,
-                          60L),
-                      pressure66422 =
-                        c(1013L, 1013L, 1011L, 1000L, 1005L, 1009L, 1006L,
-                          1007L, 989L, 983L, 978L, 988L),
-                      ts_diameter66423 =
-                        c(NA, NA, NA, NA, NA, 0, 46.0312, 92.0624, 241.6638,
-                          264.6794, 299.2028, 299.2028),
-                      hu_diameter66424 =
-                        c(NA, NA, NA, NA, NA, 0, 0, 0, 0, 40.2773, 46.0312, 0),
-                      answer_id =
-                        c("1.120988", "1.120988", "1.120988", "1.120988",
-                          "1.120989", "1.120990", "1.120990", "1.120990",
-                          "1.120992", "1.120992", "1.120992", "1.120992"),
-                      infos66416_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12")),
-                 row.names = c(NA, -12L),
-                 .Names =
-                   c("date66417", "hour66418", "location66419.longitude",
-                     "location66419.latitude", "status66420", "wind66421",
-                     "pressure66422", "ts_diameter66423", "hu_diameter66424",
-                     "answer_id", "infos66416_id"),
-                 class = "data.frame")),
-        .Names = "infos66416")),
+        row.names = c(NA, 4L)),
+      list(infos66416 =
+             structure(
+               list(date66417 =
+                      c("1975-06-27", "1975-06-27", "1975-06-28", "1975-06-29",
+                        "1975-08-29", "2010-07-22", "2010-07-23", "2010-07-23",
+                        "2010-10-08", "2010-08-10", "2010-09-10", "2010-10-10"),
+                    hour66418 =
+                      c("00:00", "06:00", "12:00", "12:00", "12:00", "06:00",
+                        "00:00", "14:00", "06:00", "12:00", "06:00", "00:00"),
+                    location66419.longitude =
+                      c(-79, -79, -78, -73.8, -48.9, -73.8, -75.9, -80.2,
+                        -66.09999, -64.8,     -59.7, -50.9),
+                    location66419.latitude =
+                      c(27.5, 28.5, 33.29999, 33.79999, 34.9, 21.5, 23.1, 25.4,
+                        24.1, 25.2, 28.5, 32.7),
+                    status66420 =
+                      c("Tropical Depression", "Tropical Depression",
+                        "Tropical Depression", "Tropical Storm",
+                        "Tropical Storm", "Tropical Depression",
+                        "Tropical Storm", "Tropical Storm", "Tropical Storm",
+                        "Hurricane", "Hurricane", "Tropical Storm"),
+                    wind66421 =
+                      c(25L, 25L, 25L, 45L, 45L, 30L, 35L, 35L, 60L, 65L, 75L,
+                        60L),
+                    pressure66422 =
+                      c(1013L, 1013L, 1011L, 1000L, 1005L, 1009L, 1006L, 1007L,
+                        989L, 983L, 978L, 988L),
+                    ts_diameter66423 =
+                      c(NA, NA, NA, NA, NA, 0, 46.0312, 92.0624, 241.6638,
+                        264.6794, 299.2028, 299.2028),
+                    hu_diameter66424 =
+                      c(NA, NA, NA, NA, NA, 0, 0, 0, 0, 40.2773, 46.0312, 0),
+                    answer_id =
+                      c("1.120988", "1.120988", "1.120988", "1.120988",
+                        "1.120989", "1.120990", "1.120990", "1.120990",
+                        "1.120992", "1.120992", "1.120992", "1.120992"),
+                    infos66416_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12")),
+               row.names = c(NA, -12L),
+               class = "data.frame"))),
     .Names = c("", ""))
 
 # Create the data frame to compare (long command creation)
@@ -118,27 +108,42 @@ myExpectedAnswersStormFormSingleDF <-
          answer.name66415 =
            c("Amy", "Amy", "Amy", "Amy", "Doris", "Bonnie", "Bonnie", "Bonnie",
              "Otto", "Otto", "Otto", "Otto"),
-         answer.userName =
-           c("André Smaniotto", "André Smaniotto", "André Smaniotto",
-             "André Smaniotto", "André Smaniotto", "André Smaniotto",
-             "André Smaniotto", "André Smaniotto", "André Smaniotto",
-             "André Smaniotto", "André Smaniotto", "André Smaniotto"),
-         answer.source =
-           c("web_private", "web_private", "web_private", "web_private",
-             "web_private", "web_private", "web_private", "web_private",
-             "web_private", "web_private", "web_private", "web_private"),
-         answer.createdAt =
-           c("2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28"),
+         answer.userName = c("André Smaniotto", "André Smaniotto",
+                             "André Smaniotto", "André Smaniotto",
+                             "André Smaniotto", "André Smaniotto",
+                             "André Smaniotto", "André Smaniotto",
+                             "André Smaniotto", "André Smaniotto",
+                             "André Smaniotto", "André Smaniotto"),
+         answer.source = c("web_private", "web_private", "web_private",
+                           "web_private", "web_private", "web_private",
+                           "web_private", "web_private", "web_private",
+                           "web_private", "web_private", "web_private"),
+         answer.createdAt = c("2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:16:13+0000",
+                              "2018-05-28T12:17:12+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:21:29+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000",
+                              "2018-05-28T12:25:27+0000"),
          answer.createdAtCoordinates.latitude =
            c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
          answer.createdAtCoordinates.longitude =
            c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+         answer.updatedAt =
+           c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+         answer.updatedAtCoordinates.latitude =
+           c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+         answer.updatedAtCoordinates.longitude =
+           c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
          infos66416.date66417 =
            c("1975-06-27", "1975-06-27", "1975-06-28", "1975-06-29",
              "1975-08-29", "2010-07-22", "2010-07-23", "2010-07-23",
-             "2010-10-08","2010-08-10", "2010-09-10", "2010-10-10"),
+             "2010-10-08", "2010-08-10", "2010-09-10", "2010-10-10"),
          infos66416.hour66418 =
            c("00:00", "06:00", "12:00", "12:00", "12:00", "06:00", "00:00",
              "14:00", "06:00", "12:00", "06:00", "00:00"),
@@ -154,7 +159,7 @@ myExpectedAnswersStormFormSingleDF <-
              "Tropical Depression", "Tropical Storm", "Tropical Storm",
              "Tropical Storm", "Hurricane", "Hurricane", "Tropical Storm"),
          infos66416.wind66421 =
-           c(25L, 25L, 25L, 45L, 45L, 30L, 35L, 35L, 60L, 65L, 75L, 60L),
+           c(25L, 25L, 25L, 45L, 45L, 30L, 35L, 35L, 60L,  65L, 75L, 60L),
          infos66416.pressure66422 =
            c(1013L, 1013L, 1011L, 1000L, 1005L, 1009L, 1006L, 1007L, 989L, 983L,
              978L, 988L),
@@ -166,17 +171,7 @@ myExpectedAnswersStormFormSingleDF <-
          infos66416.infos66416_id =
            c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")),
     class = "data.frame",
-    row.names = c(NA, -12L),
-    .Names =
-      c("answer.answer_id", "answer.name66415", "answer.userName",
-        "answer.source", "answer.createdAt",
-        "answer.createdAtCoordinates.latitude",
-        "answer.createdAtCoordinates.longitude", "infos66416.date66417",
-        "infos66416.hour66418", "infos66416.location66419.longitude",
-        "infos66416.location66419.latitude", "infos66416.status66420",
-        "infos66416.wind66421", "infos66416.pressure66422",
-        "infos66416.ts_diameter66423", "infos66416.hu_diameter66424",
-        "infos66416.infos66416_id"))
+    row.names = c(NA, -12L))
 
 # Create the data frame to compare (long command creation)
 ## Created using dput()
@@ -198,62 +193,56 @@ myExpectedAnswersStarWarsFormMultDF <-
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto",
                  "André Smaniotto"),
-             source =
-               c("web_private", "web_private", "web_private", "web_private"),
-             createdAt =
-               c("2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28"),
+             source = c("web_private", "web_private", "web_private",
+                        "web_private"),
+             createdAt = c("2018-05-28T11:27:40+0000",
+                           "2018-05-28T11:42:22+0000",
+                           "2018-05-28T11:43:26+0000",
+                           "2018-05-28T11:44:48+0000"),
              createdAtCoordinates.latitude =
                c(-26.9075, -26.9075, -26.9075, -26.9075),
              createdAtCoordinates.longitude =
-               c(-48.65393, -48.65393, -48.65393, -48.65393)),
+               c(-48.65393, -48.65393, -48.65393, -48.65393),
+             updatedAt = c("2018-05-28T11:32:09+0000", NA, NA, NA),
+             updatedAtCoordinates.latitude = c(-26.9075, NA, NA, NA),
+             updatedAtCoordinates.longitude = c(-48.65393, NA, NA, NA)),
         class = "data.frame",
-        row.names = c(NA, 4L),
-        .Names =
-          c("answer_id", "name66298", "height66299", "mass66300",
-            "birthYear66380", "gender66302",
-            "specie66303.answerIdFromAnotherForm",
-            "specie66303.answerFromAnotherForm", "userName", "source",
-            "createdAt", "createdAtCoordinates.latitude",
-            "createdAtCoordinates.longitude")),
-      structure(
-        list(films66304 =
-               structure(
-                 list(answerIdFromAnotherForm =
-                        c("1.120782", "1.120784", "1.120783", "1.120788",
-                          "1.120789", "1.120786",  "1.120787", "1.120785",
-                          "1.120782", "1.120786", "1.120787", "1.120783",
-                          "1.120785", "1.120782", "1.120786", "1.120784",
-                          "1.120787", "1.120783", "1.120788", "1.120789",
-                          "1.120785"),
-                      answerFromAnotherForm =
-                        c("A New Hope", "Return of the Jedi",
-                          "The Empire Strikes Back", "The Force Awakens",
-                          "The Last Jedi", "Attack of the Clones",
-                          "Revenge of the Sith", "The Phantom Menace",
-                          "A New Hope", "Attack of the Clones",
-                          "Revenge of the Sith", "The Empire Strikes Back",
-                          "The Phantom Menace", "A New Hope",
-                          "Attack of the Clones", "Return of the Jedi",
-                          "Revenge of the Sith", "The Empire Strikes Back",
-                          "The Force Awakens", "The Last Jedi",
-                          "The Phantom Menace"),
-                      answer_id =
-                        c("1.120978", "1.120978", "1.120978", "1.120978",
-                          "1.120978", "1.120984", "1.120984", "1.120984",
-                          "1.120985", "1.120985", "1.120985", "1.120985",
-                          "1.120985", "1.120986", "1.120986", "1.120986",
-                          "1.120986", "1.120986", "1.120986", "1.120986",
-                          "1.120986"),
-                      films66304_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                          "20", "21")),
-                 row.names = c(NA, -21L),
-                 .Names =
-                   c("answerIdFromAnotherForm", "answerFromAnotherForm",
-                     "answer_id", "films66304_id"),
-                 class = "data.frame")),
-        .Names = "films66304")),
+        row.names = c(NA, 4L)),
+      list(films66304 =
+             structure(
+               list(answerIdFromAnotherForm =
+                      c("1.120782", "1.120784", "1.120783", "1.120788",
+                        "1.120789", "1.120786", "1.120787", "1.120785",
+                        "1.120782", "1.120786", "1.120787", "1.120783",
+                        "1.120785", "1.120782", "1.120786", "1.120784",
+                        "1.120787", "1.120783", "1.120788", "1.120789",
+                        "1.120785"),
+                    answerFromAnotherForm =
+                      c("A New Hope", "Return of the Jedi",
+                        "The Empire Strikes Back", "The Force Awakens",
+                        "The Last Jedi", "Attack of the Clones",
+                        "Revenge of the Sith", "The Phantom Menace",
+                        "A New Hope", "Attack of the Clones",
+                        "Revenge of the Sith", "The Empire Strikes Back",
+                        "The Phantom Menace", "A New Hope",
+                        "Attack of the Clones", "Return of the Jedi",
+                        "Revenge of the Sith", "The Empire Strikes Back",
+                        "The Force Awakens", "The Last Jedi",
+                        "The Phantom Menace"),
+                    answer_id =
+                      c("1.120978", "1.120978", "1.120978", "1.120978",
+                        "1.120978", "1.120984", "1.120984", "1.120984",
+                        "1.120985", "1.120985", "1.120985", "1.120985",
+                        "1.120985", "1.120986", "1.120986", "1.120986",
+                        "1.120986", "1.120986", "1.120986", "1.120986",
+                        "1.120986"),
+                    films66304_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                        "21")),
+               row.names =
+                 c(NA, -21L),
+               class = "data.frame"))),
     .Names = c("", ""))
 
 # Create the data frame to compare (very long command creation)
@@ -312,12 +301,17 @@ myExpectedAnswersStarWarsFormSingleDF <-
              "web_private", "web_private", "web_private", "web_private",
              "web_private"),
          answer.createdAt =
-           c("2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28", "2018-05-28", "2018-05-28", "2018-05-28",
-             "2018-05-28"),
+           c("2018-05-28T11:27:40+0000", "2018-05-28T11:27:40+0000",
+             "2018-05-28T11:27:40+0000", "2018-05-28T11:27:40+0000",
+             "2018-05-28T11:27:40+0000", "2018-05-28T11:42:22+0000",
+             "2018-05-28T11:42:22+0000", "2018-05-28T11:42:22+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:43:26+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:43:26+0000",
+             "2018-05-28T11:43:26+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000", "2018-05-28T11:44:48+0000",
+             "2018-05-28T11:44:48+0000"),
          answer.createdAtCoordinates.latitude =
            c(-26.9075, -26.9075, -26.9075, -26.9075, -26.9075, -26.9075,
              -26.9075, -26.9075, -26.9075, -26.9075, -26.9075, -26.9075,
@@ -328,6 +322,17 @@ myExpectedAnswersStarWarsFormSingleDF <-
              -48.65393, -48.65393, -48.65393, -48.65393, -48.65393, -48.65393,
              -48.65393, -48.65393, -48.65393, -48.65393, -48.65393, -48.65393,
              -48.65393, -48.65393, -48.65393),
+         answer.updatedAt =
+           c("2018-05-28T11:32:09+0000", "2018-05-28T11:32:09+0000",
+             "2018-05-28T11:32:09+0000", "2018-05-28T11:32:09+0000",
+             "2018-05-28T11:32:09+0000", NA, NA, NA, NA, NA, NA, NA, NA, NA,
+             NA, NA, NA, NA, NA, NA, NA),
+         answer.updatedAtCoordinates.latitude =
+           c(-26.9075, -26.9075, -26.9075, -26.9075, -26.9075, NA, NA, NA, NA,
+             NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+         answer.updatedAtCoordinates.longitude =
+           c(-48.65393, -48.65393, -48.65393, -48.65393, -48.65393, NA, NA, NA,
+             NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
          films66304.answerIdFromAnotherForm =
            c("1.120782", "1.120784", "1.120783", "1.120788", "1.120789",
              "1.120786", "1.120787", "1.120785", "1.120782", "1.120786",
@@ -344,21 +349,10 @@ myExpectedAnswersStarWarsFormSingleDF <-
              "Revenge of the Sith", "The Empire Strikes Back",
              "The Force Awakens", "The Last Jedi", "The Phantom Menace"),
          films66304.films66304_id =
-           c("1", "2", "3", "4", "5", "6", "7", "8","9", "10", "11", "12", "13",
-             "14", "15","16", "17", "18", "19", "20", "21")),
+           c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+             "13", "14", "15", "16", "17", "18", "19", "20", "21")),
     class = "data.frame",
-    row.names = c(NA, -21L),
-    .Names = c("answer.answer_id", "answer.name66298", "answer.height66299",
-               "answer.mass66300", "answer.birthYear66380",
-               "answer.gender66302",
-               "answer.specie66303.answerIdFromAnotherForm",
-               "answer.specie66303.answerFromAnotherForm", "answer.userName",
-               "answer.source", "answer.createdAt",
-               "answer.createdAtCoordinates.latitude",
-               "answer.createdAtCoordinates.longitude",
-               "films66304.answerIdFromAnotherForm",
-               "films66304.answerFromAnotherForm",
-               "films66304.films66304_id"))
+    row.names = c(NA, -21L))
 
 # Create the data frame to compare (very long command creation)
 ## Created using dput()
@@ -373,240 +367,211 @@ myExpectedAnswersClassicRocksFormMultDF <-
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto"),
              source = c("web_private", "web_private", "web_private"),
-             createdAt = c("2018-05-28", "2018-05-28", "2018-05-28"),
+             createdAt =
+               c("2018-05-28T14:49:03+0000", "2018-05-28T16:49:14+0000",
+                 "2018-05-28T17:04:53+0000"),
              createdAtCoordinates.latitude = c(NA, NA, NA),
-             createdAtCoordinates.longitude = c(NA, NA, NA)),
-        class = "data.frame", row.names = c(NA, 3L),
-        .Names =
-          c("answer_id", "artistName66429", "active66430",
-            "originLocalition66431.country66432", "userName", "source",
-            "createdAt", "createdAtCoordinates.latitude",
-            "createdAtCoordinates.longitude")),
-      structure(
-        list(members66433.active66434 =
-               structure(
-                 list(answer_id =
-                        c("1.121042", "1.121042", "1.121042", "1.121042",
-                          "1.121042", "1.121042", "1.121042", "1.121093",
-                          "1.121093", "1.121093", "1.121093", "1.121093",
-                          "1.121101", "1.121101", "1.121101"),
-                      members66433.active66434 =
-                        c("Gary Rossington", "Rickey Medlocke",
-                          "Johnny Van Zant", "Michael Cartellone",
-                          "Mark Matejka", "Peter Keys", "Keith Christopher",
-                          "Jon Bon Jovi", "David Bryan", "Tico Torres",
-                          "Hugh McDonald", "Phil X", "Nick Mason",
-                          "Roger Waters", "David Gilmour"),
-                      members66433.active66434_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15")),
-                 row.names = c(NA, -15L),
-                 .Names =
-                   c("answer_id", "members66433.active66434",
-                     "members66433.active66434_id"),
-                 class = "data.frame"),
-             members66433.past66435 =
-               structure(
-                 list(answer_id =
-                        c("1.121042", "1.121042", "1.121042", "1.121042",
-                          "1.121042", "1.121042", "1.121042", "1.121042",
-                          "1.121042", "1.121042", "1.121042", "1.121042",
-                          "1.121042", "1.121042", "1.121093", "1.121093",
-                          "1.121093", "1.121101", "1.121101"),
-                      members66433.past66435 =
-                        c("Ronnie Van Zant", "Allen Collins", "Bob Burns",
-                          "Larry Junstrom", "Greg T. Walker", "Leon Wilkeson",
-                          "Billy Powell", "Ed King", "Artimus Pyle",
-                          "Steve Gaines", "Hughie Thomasson", "Ean Evans",
-                          "Robert Kearns", "Johnny Colt", "Richie Sambora",
-                          "Alec John Such", "Dave Sabo", "Richard Wright",
-                          "Syd Barrett"),
-                      members66433.past66435_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15", "16", "17", "18",
-                          "19")),
-                 row.names = c(NA, -19L),
-                 .Names =
-                   c("answer_id", "members66433.past66435",
-                     "members66433.past66435_id"),
-                 class = "data.frame"),
-             music66436.album66437 =
-               structure(
-                 list(name66438 =
-                        c("(Pronounced 'Lĕh-'nérd 'Skin-'nérd)",
-                          "Second Helping", "Nuthin' Fancy",
-                          "Gimme Back My Bullets", "Street Survivors",
-                          "Slippery When Wet", "The Dark Side of the Moon",
-                          "Wish You Were Here"),
-                      year66439 =
-                        c(1973L, 1974L, 1975L, 1976L, 1977L, 1986L, 1973L,
-                          1975L),
-                      answer_id =
-                        c("1.121042", "1.121042", "1.121042", "1.121042",
-                          "1.121042", "1.121093", "1.121101", "1.121101"),
-                      music66436.album66437_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8")),
-                 row.names = c(NA, -8L),
-                 class = "data.frame",
-                 .Names =
-                   c("name66438", "year66439", "answer_id",
-                     "music66436.album66437_id")),
-             genres66441 =
-               structure(
-                 list(answerIdFromAnotherForm =
-                        c("1.121011", "1.121012", "1.121010", "1.121011",
-                          "1.121014", "1.121015", "1.121012", "1.121010",
-                          "1.121011", "1.121014", "1.121012", "1.121010",
-                          "1.121010", "1.121014", "1.121010", "1.121090",
-                          "1.121012", "1.121099", "1.121098", "1.121099",
-                          "1.121098", "1.121114"),
-                      answerFromAnotherForm =
-                        c("Blues rock", "Hard rock", "Southern rock",
-                          "Blues rock", "Boggie rock", "Country rock",
-                          "Hard rock", "Southern rock", "Blues rock",
-                          "Boogie rock", "Hard rock", "Southern rock",
-                          "Southern rock", "Boogie rock", "Southern rock",
-                          "Glam metal", "Hard rock", "Art rock",
-                          "Rock progressive", "Art rock", "Rock progressive",
-                          "Experimental rock"),
-                      music66436.album66437_id =
-                        c("1", "1", "1", "2", "2", "2", "2", "2", "3", "3", "3",
-                          "3", "4", "5", "5", "6", "6", "7", "7", "8", "8",
-                          "8"),
-                      genres66441_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                          "20", "21", "22")),
-                 row.names = c(NA, -22L),
-                 .Names = c("answerIdFromAnotherForm", "answerFromAnotherForm",
-                            "music66436.album66437_id", "genres66441_id"),
-                 class = "data.frame"),
-             members66443 =
-               structure(
-                 list(name66444 =
-                        c("Ronnie Van Zant", "Gary Rossington", "Allen Collins",
-                          "Ed King", "Billy Powell", "Bob Burns",
-                          "Ronnie Van Zant", "Gary Rossington", "Allen Collins",
-                          "Ed King", "Billy Powell", "Leon Wilkeson",
-                          "Bob Burns", "Ronnie Van Zant", "Allen Collins",
-                          "Ed King", "Gary Rossington", "Billy Powell",
-                          "Leon Wilkeson", "Artimus Pyle", "Ronnie Van Zant",
-                          "Allen Collins", "Gary Rossington", "Billy Powell",
-                          "Leon Wilkeson", "Artimus Pyle", "Ronnie Van Zant",
-                          "Steve Gaines", "Allen Collins", "Gary Rossington",
-                          "Billy Powell", "Leon Wilkeson", "Artimus Pyle",
-                          "Jon Bon Jovi", "Richie Sambora", "Alec John Such",
-                          "Tico Torres", "David Bryan", "Roger Waters",
-                          "David Gilmour", "Nick Mason", "Richard Wright",
-                          "David Gilmour", "Roger Waters", "Nick Mason",
-                          "Richard Wright"),
-                      music66436.album66437_id =
-                        c("1", "1", "1", "1", "1", "1", "2", "2", "2", "2", "2",
-                          "2", "2", "3", "3", "3", "3", "3", "3", "3", "4", "4",
-                          "4", "4", "4", "4", "5", "5", "5", "5", "5", "5", "5",
-                          "6", "6", "6", "6", "6", "7", "7", "7", "7", "8", "8",
-                          "8", "8"),
-                      members66443_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                          "20", "21", "22", "23", "24", "25", "26", "27", "28",
-                          "29", "30", "31", "32", "33", "34", "35", "36", "37",
-                          "38", "39", "40", "41", "42", "43", "44", "45",
-                          "46")),
-                 row.names = c(NA, -46L),
-                 class = "data.frame",
-                 .Names =
-                   c("name66444", "music66436.album66437_id",
-                     "members66443_id")),
-             instruments66446 =
-               structure(
-                 list(answerIdFromAnotherForm =
-                        c("1.121040", "1.121019", "1.121021", "1.121041",
-                          "1.121019", "1.121021", "1.121023", "1.121019",
-                          "1.121028", "1.121020", "1.121040", "1.121031",
-                          "1.121031", "1.121022", "1.121023", "1.121031",
-                          "1.121028", "1.121022", "1.121023", "1.121020",
-                          "1.121040", "1.121031", "1.121031", "1.121031",
-                          "1.121028", "1.121023", "1.121020", "1.121027",
-                          "1.121040", "1.121031", "1.121031", "1.121028",
-                          "1.121022", "1.121023", "1.121020", "1.121027",
-                          "1.121040", "1.121022", "1.121031", "1.121040",
-                          "1.121031", "1.121031", "1.121028", "1.121022",
-                          "1.121023", "1.121020", "1.121031", "1.121040",
-                          "1.121021", "1.121022", "1.121019", "1.121096",
-                          "1.121022", "1.121023", "1.121020", "1.121094",
-                          "1.121022", "1.121028", "1.121095", "1.121023",
-                          "1.121103", "1.121106", "1.121032", "1.121031",
-                          "1.121105", "1.121032", "1.121020", "1.121027",
-                          "1.121103", "1.121108", "1.121107", "1.121026",
-                          "1.121105", "1.121106", "1.121032", "1.121032",
-                          "1.121119", "1.121031", "1.121118", "1.121103",
-                          "1.121023", "1.121124", "1.121031", "1.121103",
-                          "1.121032", "1.121020", "1.121027", "1.121103",
-                          "1.121121", "1.121022", "1.121124", "1.121120",
-                          "1.121125", "1.121122", "1.121123", "1.121126"),
-                      answerFromAnotherForm =
-                        c("Lead vocals", "Lead guitar", "Rhythm guitar",
-                          "Slide guitar", "Lead guitar", "Rhythm guitar",
-                          "Bass guitar", "Lead guitar", "Keyboards", "Drums",
-                          "Lead vocals", "Guitars", "Guitars", "Backing vocals",
-                          "Bass guitar", "Guitars", "Keyboards",
-                          "Backing vocals", "Bass guitar", "Drums",
-                          "Lead vocals", "Guitar", "Guitar", "Guitar",
-                          "Keyboards", "Bass guitar", "Drums", "Percussion",
-                          "Lead vocals", "Guitar", "Guitar", "Keyboards",
-                          "Backing vocals", "Bass guitar", "Drums",
-                          "Percussion", "Lead vocals", "Backing vocals",
-                          "Guitar", "Lead vocals", "Guitar", "Guitar",
-                          "Keyboards", "Backing vocals", "Bass guitar", "Drums",
-                          "Guitar", "Lead vocals", "Rhythm guitar",
-                          "Backing vocals", "Lead guitar",
-                          "Electric lead guitar", "Backing vocals",
-                          "Bass guitar", "Drums", "Finger cymbals",
-                          "Backing vocals", "Keyboards", "Horns", "Bass guitar",
-                          "Tape effects", "VCS 3", "Vocals", "Guitar",
-                          "Synthi AKS", "Vocals", "Drums", "Percussion",
-                          "Tape effects", "Electric piano", "Organ", "Piano",
-                          "Synthi AKS", "VCS 3", "Vocals", "Vocals",
-                          "EMS Synthi AKS", "Guitar", "Lap steel guitar",
-                          "Tape effects", "Bass guitar", "EMS VCS 3", "Guitar",
-                          "Tape effects", "Vocals", "Drums", "Percussion",
-                          "Tape effects", "ARP String Ensemble V",
-                          "Backing vocals", "EMS VCS 3", "Hammond C-3 organ",
-                          "Hohner Clavinet D6", "Minimoog", "Steinway piano",
-                          "Wurlitzer EP-200 electric piano"),
-                      members66443_id =
-                        c("1", "2", "2", "2", "3", "3", "4", "4", "5", "6", "7",
-                          "8", "9", "10", "10", "10", "11", "12", "12", "13",
-                          "14", "15", "16", "17", "18", "19", "20", "20", "21",
-                          "22", "23", "24", "25", "25", "26", "26", "27", "28",
-                          "28", "28", "29", "30", "31", "32", "32", "33", "34",
-                          "34", "34", "35", "35", "35", "36", "36", "37", "37",
-                          "38", "38", "38", "39", "39", "39", "39", "40", "40",
-                          "40", "41", "41", "41", "42", "42", "42", "42", "42",
-                          "42", "43", "43", "43", "43", "43", "44", "44", "44",
-                          "44", "44", "45", "45", "45", "46", "46", "46", "46",
-                          "46", "46", "46", "46"),
-                      instruments66446_id =
-                        c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                          "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                          "20", "21", "22", "23", "24", "25", "26", "27", "28",
-                          "29", "30", "31", "32", "33", "34", "35", "36", "37",
-                          "38", "39", "40", "41", "42", "43", "44", "45", "46",
-                          "47", "48", "49", "50", "51", "52", "53", "54", "55",
-                          "56", "57", "58", "59", "60", "61", "62", "63", "64",
-                          "65", "66", "67", "68", "69", "70", "71", "72", "73",
-                          "74", "75", "76", "77", "78", "79", "80", "81", "82",
-                          "83", "84", "85", "86", "87", "88", "89", "90", "91",
-                          "92", "93", "94", "95", "96")),
-                 row.names = c(NA, -96L),
-                 .Names =
-                   c("answerIdFromAnotherForm", "answerFromAnotherForm",
-                     "members66443_id", "instruments66446_id"),
-                 class = "data.frame")),
-        .Names = c("members66433.active66434", "members66433.past66435",
-                   "music66436.album66437", "genres66441", "members66443",
-                   "instruments66446"))),
+             createdAtCoordinates.longitude = c(NA, NA, NA),
+             updatedAt =
+               c("2018-05-28T16:40:26+0000", "2018-05-28T16:50:54+0000",
+                 "2018-05-28T17:16:34+0000"),
+             updatedAtCoordinates.latitude = c(NA, NA, NA),
+             updatedAtCoordinates.longitude = c(NA, NA, NA)),
+        class = "data.frame",
+        row.names = c(NA, 3L)),
+      list(members66433.active66434 =
+             structure(
+               list(answer_id =
+                      c("1.121042", "1.121042", "1.121042", "1.121042",
+                        "1.121042", "1.121042", "1.121042", "1.121093",
+                        "1.121093", "1.121093", "1.121093", "1.121093",
+                        "1.121101", "1.121101", "1.121101"),
+                    members66433.active66434 =
+                      c("Gary Rossington", "Rickey Medlocke", "Johnny Van Zant",
+                        "Michael Cartellone", "Mark Matejka", "Peter Keys",
+                        "Keith Christopher", "Jon Bon Jovi", "David Bryan",
+                        "Tico Torres", "Hugh McDonald", "Phil X", "Nick Mason",
+                        "Roger Waters", "David Gilmour"),
+                    members66433.active66434_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15")),
+               row.names = c(NA, -15L),
+               class = "data.frame"),
+           members66433.past66435 = structure(
+             list(answer_id =
+                    c("1.121042", "1.121042", "1.121042", "1.121042",
+                      "1.121042", "1.121042", "1.121042", "1.121042",
+                      "1.121042", "1.121042", "1.121042", "1.121042",
+                      "1.121042", "1.121042", "1.121093", "1.121093",
+                      "1.121093", "1.121101", "1.121101"),
+                  members66433.past66435 =
+                    c("Ronnie Van Zant", "Allen Collins", "Bob Burns",
+                      "Larry Junstrom", "Greg T. Walker", "Leon Wilkeson",
+                      "Billy Powell", "Ed King", "Artimus Pyle", "Steve Gaines",
+                      "Hughie Thomasson", "Ean Evans", "Robert Kearns",
+                      "Johnny Colt", "Richie Sambora", "Alec John Such",
+                      "Dave Sabo", "Richard Wright", "Syd Barrett"),
+                  members66433.past66435_id =
+                    c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                      "12", "13", "14", "15", "16", "17", "18", "19")),
+             row.names = c(NA, -19L),
+             class = "data.frame"),
+           music66436.album66437 =
+             structure(
+               list(name66438 =
+                      c("(Pronounced 'Lĕh-'nérd 'Skin-'nérd)", "Second Helping",
+                        "Nuthin' Fancy", "Gimme Back My Bullets",
+                        "Street Survivors", "Slippery When Wet",
+                        "The Dark Side of the Moon", "Wish You Were Here"),
+                    year66439 =
+                      c(1973L, 1974L, 1975L, 1976L, 1977L, 1986L, 1973L, 1975L),
+                    answer_id =
+                      c("1.121042", "1.121042", "1.121042", "1.121042",
+                        "1.121042", "1.121093", "1.121101", "1.121101"),
+                    music66436.album66437_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8")),
+               row.names = c(NA, -8L),
+               class = "data.frame"),
+           genres66441 =
+             structure(
+               list(answerIdFromAnotherForm =
+                      c("1.121011", "1.121012", "1.121010", "1.121011",
+                        "1.121014", "1.121015", "1.121012", "1.121010",
+                        "1.121011", "1.121014", "1.121012", "1.121010",
+                        "1.121010", "1.121014", "1.121010", "1.121090",
+                        "1.121012", "1.121099", "1.121098", "1.121099",
+                        "1.121098", "1.121114"),
+                    answerFromAnotherForm =
+                      c("Blues rock", "Hard rock", "Southern rock",
+                        "Blues rock", "Boggie rock", "Country rock",
+                        "Hard rock", "Southern rock", "Blues rock",
+                        "Boogie rock", "Hard rock", "Southern rock",
+                        "Southern rock", "Boogie rock", "Southern rock",
+                        "Glam metal", "Hard rock", "Art rock",
+                        "Rock progressive", "Art rock", "Rock progressive",
+                        "Experimental rock"),
+                    music66436.album66437_id =
+                      c("1", "1", "1", "2", "2", "2", "2", "2", "3", "3", "3",
+                        "3", "4", "5", "5", "6", "6", "7", "7", "8", "8", "8"),
+                    genres66441_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                        "21", "22")),
+               row.names = c(NA, -22L),
+               class = "data.frame"),
+           members66443 =
+             structure(
+               list(name66444 =
+                      c("Ronnie Van Zant", "Gary Rossington", "Allen Collins",
+                        "Ed King", "Billy Powell", "Bob Burns",
+                        "Ronnie Van Zant", "Gary Rossington", "Allen Collins",
+                        "Ed King", "Billy Powell", "Leon Wilkeson", "Bob Burns",
+                        "Ronnie Van Zant", "Allen Collins", "Ed King",
+                        "Gary Rossington", "Billy Powell", "Leon Wilkeson",
+                        "Artimus Pyle", "Ronnie Van Zant", "Allen Collins",
+                        "Gary Rossington", "Billy Powell", "Leon Wilkeson",
+                        "Artimus Pyle", "Ronnie Van Zant", "Steve Gaines",
+                        "Allen Collins", "Gary Rossington", "Billy Powell",
+                        "Leon Wilkeson", "Artimus Pyle", "Jon Bon Jovi",
+                        "Richie Sambora", "Alec John Such", "Tico Torres",
+                        "David Bryan", "Roger Waters", "David Gilmour",
+                        "Nick Mason", "Richard Wright", "David Gilmour",
+                        "Roger Waters", "Nick Mason", "Richard Wright"),
+                    music66436.album66437_id =
+                      c("1", "1", "1", "1", "1", "1", "2", "2", "2", "2", "2",
+                        "2", "2", "3", "3", "3", "3", "3", "3", "3", "4", "4",
+                        "4", "4", "4", "4", "5", "5", "5", "5", "5", "5", "5",
+                        "6", "6", "6", "6", "6", "7", "7", "7", "7", "8", "8",
+                        "8", "8"),
+                    members66443_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                        "21", "22", "23", "24", "25", "26", "27", "28", "29",
+                        "30", "31", "32", "33", "34", "35", "36", "37", "38",
+                        "39", "40", "41", "42", "43", "44", "45", "46")),
+               row.names = c(NA, -46L),
+               class = "data.frame"),
+           instruments66446 =
+             structure(
+               list(answerIdFromAnotherForm =
+                      c("1.121040", "1.121019", "1.121021", "1.121041",
+                        "1.121019", "1.121021", "1.121023", "1.121019",
+                        "1.121028", "1.121020", "1.121040", "1.121031",
+                        "1.121031", "1.121022", "1.121023", "1.121031",
+                        "1.121028", "1.121022", "1.121023", "1.121020",
+                        "1.121040", "1.121031", "1.121031", "1.121031",
+                        "1.121028", "1.121023", "1.121020", "1.121027",
+                        "1.121040", "1.121031", "1.121031", "1.121028",
+                        "1.121022", "1.121023", "1.121020", "1.121027",
+                        "1.121040", "1.121022", "1.121031", "1.121040",
+                        "1.121031", "1.121031", "1.121028", "1.121022",
+                        "1.121023", "1.121020", "1.121031", "1.121040",
+                        "1.121021", "1.121022", "1.121019", "1.121096",
+                        "1.121022", "1.121023", "1.121020", "1.121094",
+                        "1.121022", "1.121028", "1.121095", "1.121023",
+                        "1.121103", "1.121106", "1.121032", "1.121031",
+                        "1.121105", "1.121032", "1.121020", "1.121027",
+                        "1.121103", "1.121108", "1.121107", "1.121026",
+                        "1.121105", "1.121106", "1.121032", "1.121032",
+                        "1.121119", "1.121031", "1.121118", "1.121103",
+                        "1.121023", "1.121124", "1.121031", "1.121103",
+                        "1.121032", "1.121020", "1.121027", "1.121103",
+                        "1.121121", "1.121022", "1.121124", "1.121120",
+                        "1.121125", "1.121122", "1.121123", "1.121126"),
+                    answerFromAnotherForm =
+                      c("Lead vocals", "Lead guitar", "Rhythm guitar",
+                        "Slide guitar", "Lead guitar", "Rhythm guitar",
+                        "Bass guitar", "Lead guitar", "Keyboards", "Drums",
+                        "Lead vocals", "Guitars", "Guitars", "Backing vocals",
+                        "Bass guitar", "Guitars", "Keyboards", "Backing vocals",
+                        "Bass guitar", "Drums", "Lead vocals", "Guitar",
+                        "Guitar", "Guitar", "Keyboards", "Bass guitar", "Drums",
+                        "Percussion", "Lead vocals", "Guitar", "Guitar",
+                        "Keyboards", "Backing vocals", "Bass guitar", "Drums",
+                        "Percussion", "Lead vocals", "Backing vocals", "Guitar",
+                        "Lead vocals", "Guitar", "Guitar", "Keyboards",
+                        "Backing vocals", "Bass guitar", "Drums", "Guitar",
+                        "Lead vocals", "Rhythm guitar", "Backing vocals",
+                        "Lead guitar", "Electric lead guitar", "Backing vocals",
+                        "Bass guitar", "Drums", "Finger cymbals",
+                        "Backing vocals", "Keyboards", "Horns", "Bass guitar",
+                        "Tape effects", "VCS 3", "Vocals", "Guitar",
+                        "Synthi AKS", "Vocals", "Drums", "Percussion",
+                        "Tape effects", "Electric piano", "Organ", "Piano",
+                        "Synthi AKS", "VCS 3", "Vocals", "Vocals",
+                        "EMS Synthi AKS", "Guitar", "Lap steel guitar",
+                        "Tape effects", "Bass guitar", "EMS VCS 3", "Guitar",
+                        "Tape effects", "Vocals", "Drums", "Percussion",
+                        "Tape effects", "ARP String Ensemble V",
+                        "Backing vocals", "EMS VCS 3", "Hammond C-3 organ",
+                        "Hohner Clavinet D6", "Minimoog", "Steinway piano",
+                        "Wurlitzer EP-200 electric piano"),
+                    members66443_id =
+                      c("1", "2", "2", "2", "3", "3", "4", "4", "5", "6", "7",
+                        "8", "9", "10", "10", "10", "11", "12", "12", "13",
+                        "14", "15", "16", "17", "18", "19", "20", "20", "21",
+                        "22", "23", "24", "25", "25", "26", "26", "27", "28",
+                        "28", "28", "29", "30", "31", "32", "32", "33", "34",
+                        "34", "34", "35", "35", "35", "36", "36", "37", "37",
+                        "38", "38", "38", "39", "39", "39", "39", "40", "40",
+                        "40", "41", "41", "41", "42", "42", "42", "42", "42",
+                        "42", "43", "43", "43", "43", "43", "44", "44", "44",
+                        "44", "44", "45", "45", "45", "46", "46", "46", "46",
+                        "46", "46", "46", "46"),
+                    instruments66446_id =
+                      c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                        "21", "22", "23", "24", "25", "26", "27", "28", "29",
+                        "30", "31", "32", "33", "34", "35", "36", "37", "38",
+                        "39", "40", "41", "42", "43", "44", "45", "46", "47",
+                        "48", "49", "50", "51", "52", "53", "54", "55", "56",
+                        "57", "58", "59", "60", "61", "62", "63", "64", "65",
+                        "66", "67", "68", "69", "70", "71", "72", "73", "74",
+                        "75", "76", "77", "78", "79", "80", "81", "82", "83",
+                        "84", "85", "86", "87", "88", "89", "90", "91", "92",
+                        "93", "94", "95", "96")),
+               row.names = c(NA, -96L),
+               class = "data.frame"))),
     .Names = c("", ""))
 
 
@@ -657,7 +622,7 @@ test_that("error by wrong idForm or nameForm", {
 
 test_that("error by duplicated form name", {
   expect_error(
-    GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                      nameForm = "RColetum Test - Westeros"),
     "More than one result found. FormIds: 5745, 5744"
   )
@@ -709,30 +674,28 @@ test_that("errors in the bad use of filters parameters", {
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdAfter = c("1995-30-15", "%d-%m-%Y")),
-    "Not possible cast the date to the specificated format."
+               createdAfter = "2018-12-20 19:20:30+01:00")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdBefore = c("1995-30-15", "%d-%m-%Y")),
-    "Not possible cast the date to the specificated format."
+               createdBefore = "2018-12-20 19:20:30+01:00")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdBefore = c("1995-30-15", "d-m-Y")),
-    "Not possible cast the date to the specificated format."
+               createdAfter = "2018-12-20T19:20:30")
   )
 
   expect_error(
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
-               createdAfter = c("1995-30-15", "d-m-Y")),
-    "Not possible cast the date to the specificated format."
+               createdBefore = "2018-12-20T19:20:30")
   )
+
+
 })
 
 test_that("warming when is informed the idForm and nameForm", {
@@ -763,7 +726,7 @@ test_that("GetAnswers in simple form", {
   myFilteredAnswersBefore2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdBefore = c("30/05/18", "%d/%m/%y"))
+               createdBefore = "2018-05-30T06:20:30+01:00")
   myFilteredAnswersBefore3 <-
     dplyr::filter(myExpectedAnswersIrisForm, createdAt < "2018-05-30")
   expect_equal(myFilteredAnswersBefore, myFilteredAnswersBefore3)
@@ -776,20 +739,22 @@ test_that("GetAnswers in simple form", {
   myFilteredAnswersAfter2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = c("30/05/18", "%d/%m/%y"))
+               createdAfter = "2018-05-30T16:20:30+01:00")
   expect_equal(myFilteredAnswersAfter, NULL)
   expect_equal(myFilteredAnswersAfter2,NULL)
 
   myFilteredAnswersAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = "2018-05-29")
+               createdAfter = "2018-05-30T12:20:30+01:00")
   myFilteredAnswersAfter4 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = c("29/05/18", "%d/%m/%y"))
+               createdAfter = "2018-05-30T12:20:30Z")
   myFilteredAnswersAfter5 <-
-    dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29")
+    dplyr::mutate(
+      dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29"),
+      updatedAt = as.logical(updatedAt))
   expect_equal(myFilteredAnswersAfter3, myFilteredAnswersAfter5)
   expect_equal(myFilteredAnswersAfter4, myFilteredAnswersAfter5)
 

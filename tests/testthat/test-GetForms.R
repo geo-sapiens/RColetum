@@ -6,7 +6,7 @@ myExpectedForms <-
   structure(
     list(id =
            c("5704", "5722", "5721", "5723", "5705", "5713", "5712", "5711",
-             "5719", "5745", "5744"),
+             "5719", "5744", "5745"),
          name = c("API Doc - Filmes preferidos",
                   "RColetum Test - Classic Rocks",
                   "RColetum Test - Classic Rocks (genres)",
@@ -71,7 +71,8 @@ test_that("error in using incorrection the filters", {
 })
 
 test_that("GetForms with no filter", {
-    myForms <- GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
+    myForms <- dplyr::arrange(
+      GetForms("cizio7xeohwgc8k4g4koo008kkoocwg"), name, id)
   expect_equal(myForms,myExpectedForms)
 })
 
@@ -87,7 +88,8 @@ test_that("Get forms with the filters", {
   expect_equal(myFormnsDisabled,myFormnsDisabled2)
 
   myFormnsEnabled <-
-    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = 'enabled')
+    dplyr::arrange(
+      GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = 'enabled'), name, id)
   myFormnsEnabled2 <-
     dplyr::filter(myExpectedForms, status == "enabled")
   expect_equal(myFormnsEnabled,myFormnsEnabled2)
@@ -101,8 +103,9 @@ test_that("Get forms with the filters", {
       )
   expect_equal(myFormsAnswerTracking, myFormsAnswerTracking2)
 
-  myFormsAnswerNotTracking <-
-    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = FALSE)
+  myFormsAnswerNotTracking <- dplyr::arrange(
+    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", answerTracking = FALSE),
+    name, id)
   myFormsAnswerNotTracking2 <-
     dplyr::filter(myExpectedForms, answerTracking == FALSE)
   expect_equal(myFormsAnswerNotTracking, myFormsAnswerNotTracking2)
@@ -111,16 +114,17 @@ test_that("Get forms with the filters", {
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = TRUE)
   expect_identical(myFormsPublicAnswers,NULL)
 
-  myFormsNotPublicAnswers <-
-    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = FALSE)
+  myFormsNotPublicAnswers <- dplyr::arrange(
+    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = FALSE), name, id)
   myFormsNotPublicAnswers2 <-
     dplyr::filter(myExpectedForms, publicAnswers == FALSE)
   expect_equal(myFormsNotPublicAnswers,myFormsNotPublicAnswers2)
 
-  myFormsMistFilters <- GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-                                 status = "enabled",
-                                 publicAnswers = FALSE,
-                                 answerTracking = FALSE)
+  myFormsMistFilters <- dplyr::arrange(
+    GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             status = "enabled",
+             publicAnswers = FALSE,
+             answerTracking = FALSE), name, id)
   myFormsMixFilters2 <-
     dplyr::filter(myExpectedForms,
                   status == "enabled",

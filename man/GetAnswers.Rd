@@ -25,15 +25,11 @@ repeated values, according to the multiplicity of relationships.}
 
 \item{createdAfter}{Optional filter. This parameter filters the answers that
 were answered after this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD"). Also is possible to specify another format, sending together
-in a vector in the R especification, for example, "\%d-\%m-\%Y" to
-"25-10-1995".}
+("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
 
 \item{createdBefore}{Optional filter. This parameter filters the answers
 that were answered before this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD"). Also is possible to specify another format, sending together
-in a vector in the R especification, for example, "\%d-\%m-\%Y" to
-"25-10-1995".}
+("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
 }
 \value{
 A list, with one or more data frames.
@@ -55,19 +51,31 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              source = NULL,
              createdAfter = "2012-12-20",
-             createdBefore = c("20-12-2018","\%d-\%m-\%Y")
+             createdBefore = "2018-12-20"
+             )
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             idForm = 5705,
+             source = NULL,
+             createdAfter = "2012-12-20",
+             createdBefore = "2018-12-20T19:20:30+01:00"
+             )
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             idForm = 5705,
+             source = NULL,
+             createdAfter = "2012-12-20T19:20:30Z",
+             createdBefore = "2018-12-20T19:20:30+01:00"
              )
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              source = "web_public",
-             createdAfter = c("20-12-2012","\%d-\%m-\%Y"),
-             createdBefore = c("20-12-2018","\%d-\%m-\%Y")
+             createdAfter = "2012-12-20T19:20:30+01:00",
+             createdBefore = "2018-12-20T19:20:30+01:00"
              )
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              singleDataFrame = TRUE,
              source = "web_private",
-             createdAfter = "2012-12-20",
-             createdBefore = "2018-12-20",
+             createdAfter = "2012-12-20T19:20:30Z",
+             createdBefore = "2018-12-20T19:20:30Z"
              )
 }
