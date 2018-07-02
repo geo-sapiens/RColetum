@@ -623,8 +623,7 @@ test_that("error by wrong idForm or nameForm", {
 test_that("error by duplicated form name", {
   expect_error(
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-                     nameForm = "RColetum Test - Westeros"),
-    "More than one result found. FormIds: 5745, 5744"
+                     nameForm = "RColetum Test - Westeros")
   )
 })
 

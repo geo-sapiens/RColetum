@@ -56,8 +56,7 @@ test_that("Warming when is informed the idForm and nameForm", {
 test_that("error by duplicated form name", {
   expect_error(
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-               nameForm = "RColetum Test - Westeros"),
-    "More than one result found. FormIds: 5745, 5744"
+               nameForm = "RColetum Test - Westeros")
   )
 })
 
@@ -68,7 +67,6 @@ test_that("GetFormStructure in simple form", {
   myExpectedFormStructure <-
     structure(
       list(label = c("Specie", "Sepal", "Petal"),
-           name = c(NA, "Sepal", "Petal"),
            componentId = c("specie66137", "sepal66138", "petal66141"),
            type = c("selectfield", "group", "group"),
            helpBlock = c(NA, NA, NA),
@@ -77,32 +75,30 @@ test_that("GetFormStructure in simple form", {
              list(NULL,
                   structure(
                     list(label = c("Length", "Width"),
-                         name = c(NA, NA),
                          componentId = c("length66139", "width66140"),
                          type = c("floatfield", "floatfield"),
                          helpBlock = c(NA, NA),
                          order = c("0", "1"),
                          components = c(NA, NA)),
                     .Names =
-                      c("label", "name", "componentId", "type", "helpBlock",
+                      c("label", "componentId", "type", "helpBlock",
                         "order", "components"),
                     class = "data.frame", row.names = 1:2),
                   structure(
                     list(label = c("Length", "Width"),
-                         name = c(NA, NA),
                          componentId = c("length66142", "width66143"),
                          type = c("floatfield", "floatfield"),
                          helpBlock = c(NA, NA),
                          order = c("0", "1"),
                          components = c(NA, NA)),
                     .Names =
-                      c("label", "name", "componentId", "type", "helpBlock",
+                      c("label", "componentId", "type", "helpBlock",
                         "order", "components"),
                     class = "data.frame",
                     row.names = 1:2))
            ),
       .Names =
-        c("label", "name", "componentId", "type", "helpBlock", "order",
+        c("label", "componentId", "type", "helpBlock", "order",
           "components"),
       class = "data.frame",
       row.names = c(NA, 3L)
@@ -130,7 +126,6 @@ test_that("GetFormStructure in complex and nested form", {
     structure(
       list(label =
              c("Artist name", "Active", "Origin localition", "Members", "Music"),
-           name = c(NA, NA, "Origin localition", "Members", "Music"),
            componentId =
              c("artistName66429", "active66430", "originLocalition66431",
                "members66433", "music66436"),
@@ -142,32 +137,29 @@ test_that("GetFormStructure in complex and nested form", {
                   NULL,
                   structure(
                     list(label = "Country",
-                         name = NA,
                          componentId = "country66432",
                          type = "countryfield",
                          helpBlock = NA,
                          order = "0",
                          components = NA),
                     .Names =
-                      c("label", "name", "componentId", "type", "helpBlock",
+                      c("label", "componentId", "type", "helpBlock",
                         "order", "components"),
                     class = "data.frame",
                     row.names = 1L),
                   structure(
                     list(label = c("Active", "Past"),
-                         name = c(NA, NA),
                          componentId = c("active66434", "past66435"),
                          type = c("textfield", "textfield"),
                          helpBlock = c(NA, NA),
                          order = c("0", "1"),
                          components = c(NA, NA)),
                     .Names =
-                      c("label", "name", "componentId", "type", "helpBlock",
+                      c("label", "componentId", "type", "helpBlock",
                         "order", "components"),
                     class = "data.frame", row.names = 1:2),
                   structure(
                     list(label = "Album",
-                         name = "Album",
                          componentId = "album66437",
                          type = "group",
                          helpBlock = NA,
@@ -177,7 +169,6 @@ test_that("GetFormStructure in complex and nested form", {
                              structure(
                                list(label =
                                       c("Name", "Year", "Genres", "Members"),
-                                    name = c(NA, NA, NA, "Members"),
                                     type =
                                       c("textfield", "integerfield",
                                         "relationalfield", "group"),
@@ -191,7 +182,6 @@ test_that("GetFormStructure in complex and nested form", {
                                            structure(
                                              list(label =
                                                     c("Name", "Instruments"),
-                                                  name = c(NA, NA),
                                                   componentId =
                                                     c("name66444",
                                                       "instruments66446"),
@@ -202,23 +192,23 @@ test_that("GetFormStructure in complex and nested form", {
                                                   order = c("0", "1"),
                                                   components = c(NA, NA)),
                                              .Names =
-                                               c("label", "name", "componentId",
+                                               c("label", "componentId",
                                                  "type", "helpBlock", "order",
                                                  "components"),
                                              class = "data.frame",
                                              row.names = 1:2))),
                                .Names =
-                                 c("label", "name", "type", "componentId",
+                                 c("label", "type", "componentId",
                                    "helpBlock", "order", "components"),
                                class = "data.frame",
                                row.names = c(NA, 4L)))),
                     .Names =
-                      c("label", "name", "componentId", "type", "helpBlock",
+                      c("label", "componentId", "type", "helpBlock",
                         "order", "components"),
                     class = "data.frame",
                     row.names = 1L))),
       .Names =
-        c("label", "name", "componentId", "type", "helpBlock", "order",
+        c("label", "componentId", "type", "helpBlock", "order",
           "components"),
       class = "data.frame",
       row.names = c(NA, 5L)
