@@ -1,4 +1,7 @@
-# RColetum 0.1.1.900
+# RColetum 0.1.2.9000
+*
+
+# RColetum 0.1.2
 
 * `getAnswers` Add the field UpdatedAt, according the API
 * `getAnswers` Remove the functionality to choose the format in the data filters 
