@@ -22,6 +22,12 @@
 #' @param createdBefore Optional filter. This parameter filters the answers
 #' that were answered before this date. Is acceptable in the ISO8601 format
 #' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
+#' @param updatedAfter Optional filter. This parameter filters the answers that
+#' were updated after this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
+#' @param updatedBefore Optional filter. This parameter filters the answers
+#' that were updated before this date. Is acceptable in the ISO8601 format
+#' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
 #'
 #' @return A list, with one or more data frames.
 #' @examples
@@ -60,6 +66,16 @@
 #'              createdAfter = "2012-12-20T19:20:30Z",
 #'              createdBefore = "2018-12-20T19:20:30Z"
 #'              )
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+#'              idForm = 5705,
+#'              singleDataFrame = TRUE,
+#'              source = "web_private",
+#'              createdAfter = "2012-12-20T19:20:30Z",
+#'              createdBefore = "2018-12-20T19:20:30Z",
+#'              updatedAfter = "2018-05-20T19:20:30Z",
+#'              updatedBefore = "2018-06-20T19:20:30Z"
+#'              )
+#'
 #' @export
 
 GetAnswers <- function(token,
@@ -68,7 +84,9 @@ GetAnswers <- function(token,
                        singleDataFrame = FALSE,
                        source = NULL,
                        createdAfter = NULL,
-                       createdBefore = NULL) {
+                       createdBefore = NULL,
+                       updatedAfter = NULL,
+                       updatedBefore = NULL) {
 
     if (missing(idForm)) {
       if (!is.null(nameForm)) {
@@ -95,7 +113,9 @@ GetAnswers <- function(token,
   filters <- NULL
   if (!is.null(source) |
       !is.null(createdBefore) |
-      !is.null(createdAfter)) {
+      !is.null(createdAfter) |
+      !is.null(updatedBefore) |
+      !is.null(updatedAfter))  {
 
     filters <- ",filters:{"
     if (!is.null(source)) {
@@ -142,6 +162,35 @@ GetAnswers <- function(token,
         )
       }
     }
+
+    if (!is.null(updatedBefore)) {
+      # Check if the option is valid
+      if (validDate_ISO8601(updatedBefore)) {
+        filters <- paste0(filters, "updatedBefore:\"", updatedBefore, "\",")
+      } else {
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+          )
+        )
+      }
+    }
+
+    if (!is.null(updatedAfter)) {
+      # Check if the option is valid
+      if (validDate_ISO8601(updatedAfter)) {
+        filters <- paste0(filters, "updatedAfter:\"", updatedAfter, "\",")
+      } else {
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+          )
+        )
+      }
+    }
+
 
     filters <- paste0(filters, "}")
   }

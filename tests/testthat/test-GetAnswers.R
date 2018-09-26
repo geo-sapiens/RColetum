@@ -706,7 +706,7 @@ test_that("warming when is informed the idForm and nameForm", {
   )
 })
 
-test_that("GetAnswers in simple form", {
+test_that("get answers in simple form", {
   myFullAnswersSimpleForm <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
   expect_equal(myExpectedAnswersIrisForm, myFullAnswersSimpleForm)
 
@@ -759,7 +759,7 @@ test_that("GetAnswers in simple form", {
 
 })
 
-test_that("GetAnswers in more complex forms", {
+test_that("get answers in more complex forms", {
   myNQuestionsAnswers <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5719)
   expect_equal(myNQuestionsAnswers,myExpectedAnswersStormFormMultDF)
 

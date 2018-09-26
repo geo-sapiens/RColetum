@@ -5,7 +5,8 @@
 \title{Get all the answers of a form.}
 \usage{
 GetAnswers(token, idForm, nameForm = NULL, singleDataFrame = FALSE,
-  source = NULL, createdAfter = NULL, createdBefore = NULL)
+  source = NULL, createdAfter = NULL, createdBefore = NULL,
+  updatedAfter = NULL, updatedBefore = NULL)
 }
 \arguments{
 \item{token}{String access token.}
@@ -29,6 +30,14 @@ were answered after this date. Is acceptable in the ISO8601 format
 
 \item{createdBefore}{Optional filter. This parameter filters the answers
 that were answered before this date. Is acceptable in the ISO8601 format
+("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+
+\item{updatedAfter}{Optional filter. This parameter filters the answers that
+were updated after this date. Is acceptable in the ISO8601 format
+("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+
+\item{updatedBefore}{Optional filter. This parameter filters the answers
+that were updated before this date. Is acceptable in the ISO8601 format
 ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
 }
 \value{
@@ -78,4 +87,14 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              createdAfter = "2012-12-20T19:20:30Z",
              createdBefore = "2018-12-20T19:20:30Z"
              )
+GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+             idForm = 5705,
+             singleDataFrame = TRUE,
+             source = "web_private",
+             createdAfter = "2012-12-20T19:20:30Z",
+             createdBefore = "2018-12-20T19:20:30Z",
+             updatedAfter = "2018-05-20T19:20:30Z",
+             updatedBefore = "2018-06-20T19:20:30Z"
+             )
+
 }
