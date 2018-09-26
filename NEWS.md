@@ -1,5 +1,9 @@
-# RColetum 0.1.2.9000
-*
+# RColetum 0.1.99.9000
+
+To be released as 0.2.0
+
+* `getAnswers` Add field `userId` in answer's metadata, indicating the id from 
+the user who answered the form.
 
 # RColetum 0.1.2
 

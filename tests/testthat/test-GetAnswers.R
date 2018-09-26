@@ -17,6 +17,7 @@ myExpectedAnswersIrisForm <-
          userName =
            c("André Smaniotto", "André Smaniotto", "André Smaniotto",
              "André Smaniotto", "André Smaniotto", "André Smaniotto"),
+         userId = c(8403, 8403, 8403, 8403, 8403, 8403),
          source = c("web_private", "web_private", "web_private", "web_private",
                     "web_private", "web_private"),
          createdAt = c("2018-05-24T20:00:12+0000", "2018-05-24T20:00:39+0000",
@@ -41,6 +42,7 @@ myExpectedAnswersStormFormMultDF <-
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto",
                  "André Smaniotto"),
+             userId = c(8403, 8403, 8403, 8403),
              source = c("web_private", "web_private", "web_private",
                         "web_private"),
              createdAt = c("2018-05-28T12:16:13+0000",
@@ -114,6 +116,8 @@ myExpectedAnswersStormFormSingleDF <-
                              "André Smaniotto", "André Smaniotto",
                              "André Smaniotto", "André Smaniotto",
                              "André Smaniotto", "André Smaniotto"),
+         answer.userId = c(8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403,
+                           8403, 8403, 8403),
          answer.source = c("web_private", "web_private", "web_private",
                            "web_private", "web_private", "web_private",
                            "web_private", "web_private", "web_private",
@@ -193,6 +197,7 @@ myExpectedAnswersStarWarsFormMultDF <-
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto",
                  "André Smaniotto"),
+             userId = c(8403, 8403, 8403, 8403),
              source = c("web_private", "web_private", "web_private",
                         "web_private"),
              createdAt = c("2018-05-28T11:27:40+0000",
@@ -293,6 +298,9 @@ myExpectedAnswersStarWarsFormSingleDF <-
              "André Smaniotto", "André Smaniotto", "André Smaniotto",
              "André Smaniotto", "André Smaniotto", "André Smaniotto",
              "André Smaniotto", "André Smaniotto", "André Smaniotto"),
+         answer.userId =
+           c(8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403,
+             8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403, 8403),
          answer.source =
            c("web_private", "web_private", "web_private", "web_private",
              "web_private", "web_private", "web_private", "web_private",
@@ -366,6 +374,7 @@ myExpectedAnswersClassicRocksFormMultDF <-
              originLocalition66431.country66432 = c("US", "US", "GB"),
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto"),
+             userId = c(8403, 8403, 8403),
              source = c("web_private", "web_private", "web_private"),
              createdAt =
                c("2018-05-28T14:49:03+0000", "2018-05-28T16:49:14+0000",
