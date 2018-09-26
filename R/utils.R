@@ -300,15 +300,15 @@ validDate_ISO8601 <- function(userDate) {
       return(TRUE)
     }
   } else{
-    if (identical(substr(userDate, userDateSize-2, userDateSize-2), ":")) {
+    if (identical(substr(userDate, userDateSize - 2, userDateSize - 2), ":")) {
       userDate <- paste0(
-        substr(userDate,1,userDateSize-3),
-        substr(userDate,userDateSize-1,userDateSize))
+        substr(userDate, 1, userDateSize - 3),
+        substr(userDate, userDateSize - 1, userDateSize))
       userDateSize <- nchar(userDate)
     } else {
-      if ( identical(substr(userDate, userDateSize, userDateSize),"Z")) {
+      if ( identical(substr(userDate, userDateSize, userDateSize), "Z")) {
         userDate <- paste0(
-          substr(userDate,1,userDateSize-1),
+          substr(userDate, 1, userDateSize - 1),
           "+0000")
         userDateSize <- nchar(userDate)
       }
@@ -334,8 +334,8 @@ removeColonDate_ISO8601 <- function(apiDate) {
     if (!is.na(apiDate[[i]])) {
       apiDateSize <- nchar(apiDate[i])
       apiDate[i] <- paste0(
-        substr(apiDate[i],1,apiDateSize-3),
-        substr(apiDate[i],apiDateSize-1,apiDateSize))
+        substr(apiDate[i], 1, apiDateSize - 3),
+        substr(apiDate[i], apiDateSize - 1, apiDateSize))
     }
 
     i <- i + 1
