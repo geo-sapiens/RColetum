@@ -4,6 +4,8 @@ To be released as 0.2.0
 
 * `GetAnswers` Add the filters "updatedBefore" and "updatedAfter" for the field
 "updatedAt".
+* `GetAnswers` Add field `userId` in answer's metadata, indicating the id from 
+the user who answered the form.
 
 # RColetum 0.1.2
 
