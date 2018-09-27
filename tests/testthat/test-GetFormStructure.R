@@ -23,18 +23,22 @@ test_that("error by wrong idForm or nameForm", {
     "Name not found."
   )
 
-  expect_error(
-    GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg",
-                     5841,
-                     "RColetum Test - NaN"),
-    "Form not found."
+  expect_warning(
+    expect_error(
+      GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg",
+                       5841,
+                       "RColetum Test - NaN"),
+      "Form not found."
+    )
   )
 
-  expect_error(
-    GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg",
-                     5715,
-                     "RColetum Test - Iris"),
-    "Form not found."
+  expect_warning(
+    expect_error(
+      GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg",
+                       5715,
+                       "RColetum Test - Iris"),
+      "Form not found."
+    )
   )
 
   expect_error(

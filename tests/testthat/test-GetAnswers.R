@@ -608,18 +608,22 @@ test_that("error by wrong idForm or nameForm", {
     "Name not found."
   )
 
-  expect_error(
-    GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
-                     5841,
-                     "RColetum Test - NaN"),
-    "Form not found."
+  expect_warning(
+    expect_error(
+      GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
+                 5841,
+                 "RColetum Test - NaN"),
+      "Form not found."
+    )
   )
 
-  expect_error(
-    GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
-                     5715,
-                     "RColetum Test - Iris"),
-    "Form not found."
+  expect_warning(
+    expect_error(
+      GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
+                 5715,
+                 "RColetum Test - Iris"),
+      "Form not found."
+    )
   )
 
   expect_error(
@@ -727,45 +731,82 @@ test_that("get answers in simple form", {
     dplyr::filter(myExpectedAnswersIrisForm, source == "web_private")
   expect_equal(myFilteredAnswersSource, myFilteredAnswersSource2)
 
-  myFilteredAnswersBefore <-
+  myFilteredAnswersCreatedBefore <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdBefore = "2018-05-30")
-  myFilteredAnswersBefore2 <-
+  myFilteredAnswersCreatedBefore2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdBefore = "2018-05-30T06:20:30+01:00")
-  myFilteredAnswersBefore3 <-
+  myFilteredAnswersCreatedBefore3 <-
     dplyr::filter(myExpectedAnswersIrisForm, createdAt < "2018-05-30")
-  expect_equal(myFilteredAnswersBefore, myFilteredAnswersBefore3)
-  expect_equal(myFilteredAnswersBefore2, myFilteredAnswersBefore3)
+  expect_equal(myFilteredAnswersCreatedBefore, myFilteredAnswersCreatedBefore3)
+  expect_equal(myFilteredAnswersCreatedBefore2, myFilteredAnswersCreatedBefore3)
 
-  myFilteredAnswersAfter <-
+  myFilteredAnswersCreatedAfter <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdAfter = "2018-05-30")
-  myFilteredAnswersAfter2 <-
+  myFilteredAnswersCreatedAfter2 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdAfter = "2018-05-30T16:20:30+01:00")
-  expect_equal(myFilteredAnswersAfter, NULL)
-  expect_equal(myFilteredAnswersAfter2,NULL)
+  expect_equal(myFilteredAnswersCreatedAfter, NULL)
+  expect_equal(myFilteredAnswersCreatedAfter2,NULL)
 
-  myFilteredAnswersAfter3 <-
+  myFilteredAnswersCreatedAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdAfter = "2018-05-30T12:20:30+01:00")
-  myFilteredAnswersAfter4 <-
+  myFilteredAnswersCreatedAfter4 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdAfter = "2018-05-30T12:20:30Z")
-  myFilteredAnswersAfter5 <-
+  myFilteredAnswersCreatedAfter5 <-
     dplyr::mutate(
       dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29"),
       updatedAt = as.logical(updatedAt))
-  expect_equal(myFilteredAnswersAfter3, myFilteredAnswersAfter5)
-  expect_equal(myFilteredAnswersAfter4, myFilteredAnswersAfter5)
+  expect_equal(myFilteredAnswersCreatedAfter3, myFilteredAnswersCreatedAfter5)
+  expect_equal(myFilteredAnswersCreatedAfter4, myFilteredAnswersCreatedAfter5)
 
+  myFilteredAnswersUpdatedBefore <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedBefore = "2018-05-30")
+  myFilteredAnswersUpdatedBefore2 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedBefore = "2018-05-30T06:20:30+01:00")
+  myFilteredAnswersUpdatedBefore3 <-
+    dplyr::filter(myExpectedAnswersIrisForm, updatedAt < "2018-05-30")
+  expect_equal(myFilteredAnswersUpdatedBefore, myFilteredAnswersUpdatedBefore3)
+  expect_equal(myFilteredAnswersUpdatedBefore2, myFilteredAnswersUpdatedBefore3)
+
+  myFilteredAnswersUpdatedAfter <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedAfter = "2018-05-30")
+  myFilteredAnswersUpdatedAfter2 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedAfter = "2018-05-30T16:20:30+01:00")
+  expect_equal(myFilteredAnswersUpdatedAfter, NULL)
+  expect_equal(myFilteredAnswersUpdatedAfter2,NULL)
+
+  myFilteredAnswersUpdatedAfter3 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedAfter = "2018-05-20T12:20:30+01:00")
+  myFilteredAnswersUpdatedAfter4 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               updatedAfter = "2018-05-20T12:20:30Z")
+  myFilteredAnswersUpdatedAfter5 <-
+    dplyr::mutate(
+      dplyr::filter(myExpectedAnswersIrisForm, updatedAt > "2018-05-20"))
+  expect_equal(myFilteredAnswersUpdatedAfter3, myFilteredAnswersUpdatedAfter5)
+  expect_equal(myFilteredAnswersUpdatedAfter4, myFilteredAnswersUpdatedAfter5)
 })
 
 test_that("get answers in more complex forms", {

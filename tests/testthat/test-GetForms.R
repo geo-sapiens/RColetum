@@ -70,13 +70,13 @@ test_that("error in using incorrection the filters", {
 
 })
 
-test_that("GetForms with no filter", {
+test_that("get forms with no filter", {
     myForms <- dplyr::arrange(
       GetForms("cizio7xeohwgc8k4g4koo008kkoocwg"), name, id)
   expect_equal(myForms,myExpectedForms)
 })
 
-test_that("Get forms with the filters", {
+test_that("get forms with the filters", {
 
     myFormnsDisabled <-
     GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = 'disabled')
