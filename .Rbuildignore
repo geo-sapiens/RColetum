@@ -8,3 +8,5 @@
 ^LICENSE.md$
 ^cran-comments\.md$
 ^docs$
+^NEWS\.md$
+^revdep$
