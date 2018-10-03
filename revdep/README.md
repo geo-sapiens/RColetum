@@ -4,7 +4,7 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.4.4 (2018-03-15) |
+|version  |R version 3.5.1 (2018-07-02) |
 |system   |x86_64, linux-gnu            |
 |ui       |RStudio (1.1.453)            |
 |language |pt_BR:pt:en                  |
