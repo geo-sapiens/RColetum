@@ -205,6 +205,7 @@ GetAnswers <- function(token,
             userId,
             source,
             createdAt,
+            createdAtDevice,
             createdAtCoordinates
             updatedAt,
             updatedAtCoordinates
@@ -247,6 +248,7 @@ GetAnswers <- function(token,
                     "userId",
                     "source",
                     "createdAt",
+                    "createdAtDevice",
                     "createdAtCoordinates.latitude",
                     "createdAtCoordinates.longitude",
                     "updatedAt",
@@ -266,6 +268,8 @@ GetAnswers <- function(token,
 
   # Removing ":" (colon) from resp into dates.
   ## This way is possible parse to a date format.
+  resp[[1]]$createdAtDevice <-
+    removeColonDate_ISO8601(resp[[1]]$createdAtDevice)
   resp[[1]]$createdAt <- removeColonDate_ISO8601(resp[[1]]$createdAt)
   resp[[1]]$updatedAt <- removeColonDate_ISO8601(resp[[1]]$updatedAt)
 

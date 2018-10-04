@@ -2,6 +2,8 @@
 
 To be released as 0.2.0
 
+`GetAnswers` Add field `createAtDevice` in answer's metadata, informing the
+moment of creation of the answer, with device's data.
 * `GetAnswers` Add the filters "updatedBefore" and "updatedAfter" for the field
 "updatedAt".
 * `GetAnswers` Add field `userId` in answer's metadata, indicating the id from 
