@@ -132,5 +132,5 @@ disponíveis, veja as
 
 -----
 Observe que este projeto é lançado com um [Código de Conduta do 
-Colaborador](CODE_OF_CONDUCT.md).
+Colaborador](docs/CODE_OF_CONDUCT.md).
 Ao participar deste projeto, você concorda em cumprir seus termos.
