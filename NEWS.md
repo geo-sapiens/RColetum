@@ -1,6 +1,4 @@
-# RColetum 0.1.99.9000
-
-To be released as 0.2.0
+# RColetum 0.2.0
 
 * `GetAnswers` Add the filters "createdDeviceBefore" and "createdDeviceAfter" 
 for the field `createAtDevice`.
