@@ -2,10 +2,12 @@
 
 To be released as 0.2.0
 
+* `GetAnswers` Add the filters "createdDeviceBefore" and "createdDeviceAfter" 
+for the field `createAtDevice`.
 `GetAnswers` Add field `createAtDevice` in answer's metadata, informing the
 moment of creation of the answer, with device's data.
 * `GetAnswers` Add the filters "updatedBefore" and "updatedAfter" for the field
-"updatedAt".
+`updatedAt`.
 * `GetAnswers` Add field `userId` in answer's metadata, indicating the id from 
 the user who answered the form.
 
