@@ -811,6 +811,49 @@ test_that("get answers in simple form", {
   expect_equal(myFilteredAnswersCreatedAfter3, myFilteredAnswersCreatedAfter5)
   expect_equal(myFilteredAnswersCreatedAfter4, myFilteredAnswersCreatedAfter5)
 
+  myFilteredAnswersCreatedDeviceBefore <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceBefore = "2018-05-30")
+  myFilteredAnswersCreatedDeviceBefore2 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceBefore = "2018-05-30T06:20:30+01:00")
+  myFilteredAnswersCreatedDeviceBefore3 <-
+    dplyr::filter(myExpectedAnswersIrisForm, createdAtDevice < "2018-05-30")
+  expect_equal(myFilteredAnswersCreatedDeviceBefore,
+               myFilteredAnswersCreatedDeviceBefore3)
+  expect_equal(myFilteredAnswersCreatedDeviceBefore2,
+               myFilteredAnswersCreatedDeviceBefore3)
+
+  myFilteredAnswersCreatedDeviceAfter <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceAfter = "2018-05-30")
+  myFilteredAnswersCreatedDeviceAfter2 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceAfter = "2018-05-30T16:20:30+01:00")
+  expect_equal(myFilteredAnswersCreatedDeviceAfter, NULL)
+  expect_equal(myFilteredAnswersCreatedDeviceAfter2,NULL)
+
+  myFilteredAnswersCreatedDeviceAfter3 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceAfter = "2018-05-30T12:20:30+01:00")
+  myFilteredAnswersCreatedDeviceAfter4 <-
+    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+               idForm = 5705,
+               createdDeviceAfter = "2018-05-30T12:20:30Z")
+  myFilteredAnswersCreatedDeviceAfter5 <-
+    dplyr::mutate(
+      dplyr::filter(myExpectedAnswersIrisForm, createdAtDevice > "2018-05-29"),
+      updatedAt = as.logical(updatedAt))
+  expect_equal(myFilteredAnswersCreatedDeviceAfter3,
+               myFilteredAnswersCreatedDeviceAfter5)
+  expect_equal(myFilteredAnswersCreatedDeviceAfter4,
+               myFilteredAnswersCreatedDeviceAfter5)
+
   myFilteredAnswersUpdatedBefore <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
