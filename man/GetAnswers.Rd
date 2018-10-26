@@ -6,6 +6,7 @@
 \usage{
 GetAnswers(token, idForm, nameForm = NULL, singleDataFrame = FALSE,
   source = NULL, createdAfter = NULL, createdBefore = NULL,
+  createdDeviceAfter = NULL, createdDeviceBefore = NULL,
   updatedAfter = NULL, updatedBefore = NULL)
 }
 \arguments{
@@ -31,6 +32,14 @@ were answered after this date. Is acceptable in the ISO8601 format
 \item{createdBefore}{Optional filter. This parameter filters the answers
 that were answered before this date. Is acceptable in the ISO8601 format
 ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+
+\item{createdDeviceAfter}{Optional filter. This parameter filters the answers
+that were answered after this date on device time. Is acceptable in the
+ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+
+\item{createdDeviceBefore}{Optional filter. This parameter filters the
+answers that were answered before this date on device time. Is acceptable in
+the ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
 
 \item{updatedAfter}{Optional filter. This parameter filters the answers that
 were updated after this date. Is acceptable in the ISO8601 format
@@ -93,6 +102,8 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              source = "web_private",
              createdAfter = "2012-12-20T19:20:30Z",
              createdBefore = "2018-12-20T19:20:30Z",
+             createdDeviceAfter = "2012-12-20T19:20:30Z",
+             createdDeviceBefore = "2018-12-20T19:20:30Z",
              updatedAfter = "2018-05-20T19:20:30Z",
              updatedBefore = "2018-06-20T19:20:30Z"
              )

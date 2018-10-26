@@ -22,6 +22,12 @@
 #' @param createdBefore Optional filter. This parameter filters the answers
 #' that were answered before this date. Is acceptable in the ISO8601 format
 #' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
+#' @param createdDeviceAfter Optional filter. This parameter filters the answers
+#' that were answered after this date on device time. Is acceptable in the
+#' ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
+#' @param createdDeviceBefore Optional filter. This parameter filters the
+#' answers that were answered before this date on device time. Is acceptable in
+#' the ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
 #' @param updatedAfter Optional filter. This parameter filters the answers that
 #' were updated after this date. Is acceptable in the ISO8601 format
 #' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
@@ -72,6 +78,8 @@
 #'              source = "web_private",
 #'              createdAfter = "2012-12-20T19:20:30Z",
 #'              createdBefore = "2018-12-20T19:20:30Z",
+#'              createdDeviceAfter = "2012-12-20T19:20:30Z",
+#'              createdDeviceBefore = "2018-12-20T19:20:30Z",
 #'              updatedAfter = "2018-05-20T19:20:30Z",
 #'              updatedBefore = "2018-06-20T19:20:30Z"
 #'              )
@@ -85,6 +93,8 @@ GetAnswers <- function(token,
                        source = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL,
+                       createdDeviceAfter = NULL,
+                       createdDeviceBefore = NULL,
                        updatedAfter = NULL,
                        updatedBefore = NULL) {
 
@@ -114,6 +124,8 @@ GetAnswers <- function(token,
   if (!is.null(source) |
       !is.null(createdBefore) |
       !is.null(createdAfter) |
+      !is.null(createdDeviceBefore) |
+      !is.null(createdDeviceAfter) |
       !is.null(updatedBefore) |
       !is.null(updatedAfter))  {
 
@@ -153,6 +165,40 @@ GetAnswers <- function(token,
       # Check if the option is valid
       if (validDate_ISO8601(createdAfter)) {
         filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
+      } else {
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+          )
+        )
+      }
+    }
+
+    if (!is.null(createdDeviceBefore)) {
+      # Check if the option is valid
+      if (validDate_ISO8601(createdDeviceBefore)) {
+        filters <- paste0(filters,
+                          "createdDeviceBefore:\"",
+                          createdDeviceBefore,
+                          "\",")
+      } else {
+        stop(
+          paste0("The informed date is not in ISO 8601 standard format. The ",
+                 "avaible formats are: 'YYYY-MM-DD' ou ",
+                 "'YYYY-MM-DDThh:mm:ssTZD')"
+          )
+        )
+      }
+    }
+
+    if (!is.null(createdDeviceAfter)) {
+      # Check if the option is valid
+      if (validDate_ISO8601(createdDeviceAfter)) {
+        filters <- paste0(filters,
+                          "createdDeviceAfter:\"",
+                          createdDeviceAfter,
+                          "\",")
       } else {
         stop(
           paste0("The informed date is not in ISO 8601 standard format. The ",
