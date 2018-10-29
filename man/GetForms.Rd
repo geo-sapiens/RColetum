@@ -30,6 +30,7 @@ To get more details about the fields provided by the result, please visit the
 \href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
 }
 \examples{
+\donttest{
 GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
 GetForms("cizio7xeohwgc8k4g4koo008kkoocwg","enabled","true","true")
 GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -37,4 +38,5 @@ GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
            publicAnswers = "false",
            answerTracking = "true"
          )
+}
 }

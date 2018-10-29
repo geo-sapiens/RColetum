@@ -15,6 +15,7 @@
 #'
 #' @return A data frame.
 #' @examples
+#' \donttest{
 #' GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
 #' GetForms("cizio7xeohwgc8k4g4koo008kkoocwg","enabled","true","true")
 #' GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -22,6 +23,7 @@
 #'            publicAnswers = "false",
 #'            answerTracking = "true"
 #'          )
+#'}
 #' @export
 
 GetForms <- function(token,

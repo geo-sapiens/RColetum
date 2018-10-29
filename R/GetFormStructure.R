@@ -17,10 +17,12 @@
 #'
 #' @return A possible nested data frame.
 #' @examples
+#' \donttest{
 #' GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
 #' GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", , "RColetum Test - Iris")
 #' GetFormStructure(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'                 nameForm = "RColetum Test - Iris")
+#'}
 #' @export
 
 GetFormStructure <- function(token, idForm, nameForm = NULL,
