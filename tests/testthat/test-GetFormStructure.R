@@ -142,7 +142,7 @@ test_that("GetFormStructure in complex and nested form", {
                   structure(
                     list(label = "Country",
                          componentId = "country66432",
-                         type = "countryfield",
+                         type = "selectfield",
                          helpBlock = NA,
                          order = "0",
                          components = NA),

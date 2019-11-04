@@ -1,7 +1,7 @@
 Package: RColetum
 Type: Package
 Title: Access your Coletum's Data from API
-Version: 0.2.0.9000
+Version: 0.2.0.9001
 Authors@R: c(
     person("André", "Smaniotto", , "smaniotto@geosapiens.com.br", c("aut", "cre")),
     person("Marcelo", "Magnani", , "marcelo@geosapiens.com.br", "aut"),
@@ -21,5 +21,5 @@ Imports:
     jsonlite,
     dplyr,
     stats
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: testthat

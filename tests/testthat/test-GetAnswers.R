@@ -409,7 +409,8 @@ myExpectedAnswersClassicRocksFormMultDF <-
         list(answer_id = c("1.121042", "1.121093", "1.121101"),
              artistName66429 = c("Lynyrd Skynyrd", "Bon jovi", "Pink Floyd"),
              active66430 = c(TRUE, TRUE, TRUE),
-             originLocalition66431.country66432 = c("US", "US", "GB"),
+             originLocalition66431.country66432 =
+               c("Estados Unidos", "Estados Unidos", "Reino Unido"),
              userName =
                c("André Smaniotto", "André Smaniotto", "André Smaniotto"),
              userId = c(8403, 8403, 8403),
