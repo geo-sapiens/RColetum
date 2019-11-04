@@ -306,7 +306,7 @@ validDate_ISO8601 <- function(userDate) {
         substr(userDate, userDateSize - 1, userDateSize))
       userDateSize <- nchar(userDate)
     } else {
-      if ( identical(substr(userDate, userDateSize, userDateSize), "Z")) {
+      if (identical(substr(userDate, userDateSize, userDateSize), "Z")) {
         userDate <- paste0(
           substr(userDate, 1, userDateSize - 1),
           "+0000")

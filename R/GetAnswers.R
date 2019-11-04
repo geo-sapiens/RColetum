@@ -246,7 +246,7 @@ GetAnswers <- function(token,
 
   query <- paste0(
     "{
-      answer(formId:", idForm, filters, "){
+      answer(formId:", idForm, filters, ") {
         metaData{
             friendlyId,
             userName,

@@ -50,7 +50,7 @@ GetFormStructure <- function(token, idForm, nameForm = NULL,
   }
 
   query <- paste0("{
-      form_structure(formId:", idForm, filters, "){
+      form_structure(formId:", idForm, filters, ") {
         label,
         componentId,
         type,
