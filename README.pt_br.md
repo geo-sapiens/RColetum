@@ -17,7 +17,7 @@ Instale este pacote a partir do CRAN:
 install.packages("RColetum")
 ```
 
-Ou instale a versão de desenvolvedor a partir do Gitub usando o pacote
+Ou instale a versão de desenvolvedor a partir do GitHub usando o pacote
 'devtools':
 ```{r}
 install.packages("devtools")

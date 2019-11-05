@@ -1,7 +1,6 @@
-# RColetum 0.2.0.9000
+# RColetum 0.2.1
 
 * Removed references from `countryfield` from tests.
-* 
 
 # RColetum 0.2.0
 

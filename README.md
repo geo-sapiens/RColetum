@@ -18,7 +18,7 @@ Install this package from CRAN:
 install.packages("RColetum")
 ```
 
-Or install the development version from GitHUb using the 'devtools' package:
+Or install the development version from GitHub using the 'devtools' package:
 ```{r}
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")
