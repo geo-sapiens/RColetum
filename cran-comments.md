@@ -17,3 +17,10 @@ We checked 0 reverse dependencies, comparing R CMD check results across CRAN and
 
  * We saw 0 new problems
  * We failed to check 0 packages
+
+### Resubmission
+ This is a resubmission. This is a resubmission. The reason is: 
+  * Was found a possibly invalid file URI on README.md
+
+In this version I have:
+ * Fix the URI to real github URI.
