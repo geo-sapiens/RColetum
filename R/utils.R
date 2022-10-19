@@ -235,7 +235,7 @@ searchFormIdByName <- function(nameForm, token) {
   forms <- GetForms(token)
   idForm <- forms$id[forms$name == nameForm]
 
-  switch(as.character(length(idForm)),
+  switch(format(length(idForm)),
          "0" = {
            stop("Name not found.")
          },
