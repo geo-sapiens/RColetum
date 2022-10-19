@@ -33,13 +33,13 @@ GetForms <- function(token,
 
   # Applying optionals filters
   filters <- NULL
-  if (!is.null(status) | !is.null(publicAnswers) | !is.null(answerTracking)) {
+  if (!is.null(status) || !is.null(publicAnswers) || !is.null(answerTracking)) {
     filters <- "(filters:{"
 
     if (!is.null(status)) {
       status <- tolower(status)
       # Check if the option is valid
-      if (identical(status, "enabled") | identical(status, "disabled")) {
+      if (identical(status, "enabled") || identical(status, "disabled")) {
         filters <- paste0(filters, "status:", status, ",")
       } else {
         stop(paste0("The option '", status, "' are not avaliable for the ",
@@ -53,7 +53,7 @@ GetForms <- function(token,
     if (!is.null(publicAnswers)) {
       publicAnswers <- tolower(publicAnswers)
       # Check if the option is valid
-      if (identical(publicAnswers, "true") |
+      if (identical(publicAnswers, "true") ||
           identical(publicAnswers, "false")) {
         filters <- paste0(filters, "publicAnswers:", publicAnswers, ",")
       } else {
@@ -68,7 +68,7 @@ GetForms <- function(token,
     if (!is.null(answerTracking)) {
       answerTracking <- tolower(answerTracking)
       # Check if the option is valid
-      if (identical(answerTracking, "true") |
+      if (identical(answerTracking, "true") ||
           identical(answerTracking, "false")) {
         filters <- paste0(filters, "answerTracking:", answerTracking)
       } else {

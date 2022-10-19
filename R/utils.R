@@ -118,7 +118,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
 
   first <- TRUE
   otherI <- 1
-  while (first | otherI <= length(complementaryDF)) {
+  while (first || otherI <= length(complementaryDF)) {
     otherDF <- list()
 
     if (!first) {
@@ -299,7 +299,7 @@ validDate_ISO8601 <- function(userDate) {
     } else {
       return(TRUE)
     }
-  } else{
+  } else {
     if (identical(substr(userDate, userDateSize - 2, userDateSize - 2), ":")) {
       userDate <- paste0(
         substr(userDate, 1, userDateSize - 3),

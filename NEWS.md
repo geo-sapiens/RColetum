@@ -2,6 +2,7 @@
 
 * Replace `as.character` by `format`.
 * Reorder expected dataframes on tests.
+* Fix some lint warnings.
 
 # RColetum 0.2.1
 
