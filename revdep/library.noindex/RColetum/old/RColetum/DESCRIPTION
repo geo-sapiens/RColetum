@@ -1,7 +1,7 @@
 Package: RColetum
 Type: Package
 Title: Access your Coletum's Data from API
-Version: 0.2.2
+Version: 0.2.1
 Authors@R: c(
     person("André", "Smaniotto", , "smaniotto@geosapiens.com.br", c("aut", "cre")),
     person("Marcelo", "Magnani", , "marcelo@geosapiens.com.br", "aut"),
@@ -16,10 +16,15 @@ URL: https://github.com/geo-sapiens/RColetum
 BugReports: https://github.com/geo-sapiens/RColetum/issues
 Encoding: UTF-8
 LazyData: true
-Imports:
-    httr, 
-    jsonlite,
-    dplyr,
-    stats
+Imports: httr, jsonlite, dplyr, stats
 RoxygenNote: 6.1.1
 Suggests: testthat
+NeedsCompilation: no
+Packaged: 2019-11-05 16:42:02 UTC; Smaniotto
+Author: André Smaniotto [aut, cre],
+  Marcelo Magnani [aut],
+  Rodrigo Sant'Ana [aut],
+  GeoSapiens [cph, fnd]
+Repository: CRAN
+Date/Publication: 2019-11-05 18:10:09 UTC
+Built: R 4.2.0; ; 2022-03-22 18:42:18 UTC; unix

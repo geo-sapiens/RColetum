@@ -1,7 +1,7 @@
 ^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-ˆ\.github\/workflows\/ci\.yml$
+^\.github$
 ^CODE_OF_CONDUCT\.md$
 ^ISSUE_TEMPLATE\.md$
 ^PULL_REQUEST_TEMPLATE\.md$

@@ -1,0 +1,4 @@
+GetAnswers              Get all the answers of a form.
+GetFormStructure        Get the form structure of a form.
+GetForms                Get info of all forms.
+RColetum-package        RColetum

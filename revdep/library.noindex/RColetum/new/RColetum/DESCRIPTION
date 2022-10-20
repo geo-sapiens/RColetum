@@ -15,11 +15,15 @@ License: LGPL-3
 URL: https://github.com/geo-sapiens/RColetum
 BugReports: https://github.com/geo-sapiens/RColetum/issues
 Encoding: UTF-8
-LazyData: true
-Imports:
-    httr, 
-    jsonlite,
-    dplyr,
-    stats
+Imports: httr, jsonlite, dplyr, stats
 RoxygenNote: 6.1.1
 Suggests: testthat
+RemoteType: local
+RemoteUrl: /Users/andresmaniotto/Projects/RColetum
+NeedsCompilation: no
+Packaged: 2022-10-20 20:55:57 UTC; andresmaniotto
+Author: André Smaniotto [aut, cre],
+  Marcelo Magnani [aut],
+  Rodrigo Sant'Ana [aut],
+  GeoSapiens [cph, fnd]
+Built: R 4.2.1; ; 2022-10-20 20:55:57 UTC; unix
