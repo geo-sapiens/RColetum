@@ -123,20 +123,20 @@ GetAnswers <- function(token,
 
   # Applying optionals filters
   filters <- NULL
-  if (!is.null(source) |
-      !is.null(createdBefore) |
-      !is.null(createdAfter) |
-      !is.null(createdDeviceBefore) |
-      !is.null(createdDeviceAfter) |
-      !is.null(updatedBefore) |
+  if (!is.null(source) ||
+      !is.null(createdBefore) ||
+      !is.null(createdAfter) ||
+      !is.null(createdDeviceBefore) ||
+      !is.null(createdDeviceAfter) ||
+      !is.null(updatedBefore) ||
       !is.null(updatedAfter))  {
 
     filters <- ",filters:{"
     if (!is.null(source)) {
       source <- tolower(source)
       # Check if the option is valid
-      if (identical(source, "web_public") |
-          identical(source, "web_private") |
+      if (identical(source, "web_public") ||
+          identical(source, "web_private") ||
           identical(source, "mobile")) {
         filters <- paste0(filters, "source:", source, ",")
       } else {
