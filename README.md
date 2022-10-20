@@ -125,7 +125,7 @@ myChart
 ```
 
 ## Versioning
-We use [SemVer](http://semver.org/) for versioning. For the versions available,
+We use [SemVer](https://semver.org/) for versioning. For the versions available,
 see the [tags on this repository](https://github.com/geo-sapiens/RColetum/tags).
 
 -----

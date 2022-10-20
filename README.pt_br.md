@@ -126,7 +126,7 @@ meuGrafico
 ```
 
 ## Versionamento
-Usamos [SemVer](http://semver.org/) para controle de versão. Para as versões 
+Usamos [SemVer](https://semver.org/) para controle de versão. Para as versões 
 disponíveis, veja as
 [tags neste repositório](https://github.com/geo-sapiens/RColetum/tags).
 
