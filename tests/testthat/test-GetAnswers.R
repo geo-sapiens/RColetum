@@ -759,13 +759,13 @@ test_that("get answers in simple form", {
   expect_equal(myFilteredAnswersCreatedBefore2, myFilteredAnswersCreatedBefore3)
 
   myFilteredAnswersCreatedAfter <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = "2018-05-30")
+               createdAfter = "2018-05-30"))
   myFilteredAnswersCreatedAfter2 <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdAfter = "2018-05-30T16:20:30+01:00")
+               createdAfter = "2018-05-30T16:20:30+01:00"))
   expect_equal(myFilteredAnswersCreatedAfter, NULL)
   expect_equal(myFilteredAnswersCreatedAfter2,NULL)
 
@@ -800,13 +800,13 @@ test_that("get answers in simple form", {
                myFilteredAnswersCreatedDeviceBefore3)
 
   myFilteredAnswersCreatedDeviceAfter <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdDeviceAfter = "2018-05-30")
+               createdDeviceAfter = "2018-05-30"))
   myFilteredAnswersCreatedDeviceAfter2 <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               createdDeviceAfter = "2018-05-30T16:20:30+01:00")
+               createdDeviceAfter = "2018-05-30T16:20:30+01:00"))
   expect_equal(myFilteredAnswersCreatedDeviceAfter, NULL)
   expect_equal(myFilteredAnswersCreatedDeviceAfter2,NULL)
 
@@ -841,13 +841,13 @@ test_that("get answers in simple form", {
   expect_equal(myFilteredAnswersUpdatedBefore2, myFilteredAnswersUpdatedBefore3)
 
   myFilteredAnswersUpdatedAfter <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               updatedAfter = "2018-05-30")
+               updatedAfter = "2018-05-30"))
   myFilteredAnswersUpdatedAfter2 <-
-    GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+    suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
-               updatedAfter = "2018-05-30T16:20:30+01:00")
+               updatedAfter = "2018-05-30T16:20:30+01:00"))
   expect_equal(myFilteredAnswersUpdatedAfter, NULL)
   expect_equal(myFilteredAnswersUpdatedAfter2,NULL)
 

@@ -111,7 +111,7 @@ test_that("get forms with the filters", {
   expect_equal(myFormsAnswerNotTracking, myFormsAnswerNotTracking2)
 
   myFormsPublicAnswers <-
-    GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = TRUE)
+    suppressWarnings(GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", publicAnswers = TRUE))
   expect_identical(myFormsPublicAnswers,NULL)
 
   myFormsNotPublicAnswers <- dplyr::arrange(

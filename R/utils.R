@@ -3,7 +3,7 @@ requestFunction <- function(query, token) {
   # Is used to make all the requests to the webservice.
 
   # API's URL
-  url <- "http://www.coletum.com/api/graphql"
+  url <- "http://localhost/app_dev.php/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
@@ -199,7 +199,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
                         names(otherDF[[i]][[j]]),
                         value = TRUE))
 
-        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], reordered)
+        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], dplyr::all_of(reordered))
 
         j <- j + 1
       }
@@ -278,7 +278,8 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
                                         dataFrame[[i]],
                                         # Using setNames, is necessery invert
                                         # the order
-                                        by = stats::setNames(dFKey, parentKey))
+                                        by = stats::setNames(dFKey, parentKey),
+                                        relationship = "many-to-many")
 
     i <- i + 1
   }
@@ -293,7 +294,7 @@ validDate_ISO8601 <- function(userDate) {
   }
   userDateSize <- nchar(userDate)
   if (userDateSize == nchar("YYYY/MM/DD")) {
-    error <- try(as.Date(userDate))
+    error <- try(as.Date(userDate), silent = TRUE)
     if (identical(class(error), "try-error")) {
       return(FALSE)
     } else {

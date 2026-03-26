@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 /revdep/.cache.rds
+.DS_Store
