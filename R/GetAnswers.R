@@ -114,6 +114,7 @@ GetAnswers <- function(token,
 
   form_structure <- GetFormStructure(token, idForm)
   aux <- auxFunction(form_structure)
+  groupTree <- buildGroupTree(form_structure)
   componentsId <- aux[[1]]
   # Add substituition to friendlyId to id
   aux[[2]] <- dplyr::bind_rows(c(idComponent = "friendlyId",
@@ -273,8 +274,11 @@ GetAnswers <- function(token,
 
   # Check if the form have some answer.
   if (length(resp) == 0) {
-    warning("No answers avaliable. Returning NULL")
-    return(NULL)
+    emptyResult <- buildEmptyAnswerResult(form_structure, groupTree)
+    if (singleDataFrame || length(emptyResult[[3]]) == 0) {
+      return(emptyResult[[2]])
+    }
+    return(list(emptyResult[[2]], emptyResult[[3]]))
   }
 
   # Registering the order of the names, because in next step, will lost
@@ -308,7 +312,7 @@ GetAnswers <- function(token,
   # Standardization of column id
   resp <- dplyr::rename(resp, answer_id = "friendlyId")
   # This function will remove the N questions from the principal Data Frame
-  resp <- prepareAnswerDF(resp, "answer")
+  resp <- prepareAnswerDF(resp, "answer", groupTree)
 
   # Extracting dictionary
   dictionary <- resp$dictionary

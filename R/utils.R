@@ -3,7 +3,7 @@ requestFunction <- function(query, token) {
   # Is used to make all the requests to the webservice.
 
   # API's URL
-  url <- "http://localhost/app_dev.php/api/graphql"
+  url <- "https://coletum.com/api/graphql"
 
   # Request
   resp <- httr::GET(url = url,
@@ -44,6 +44,89 @@ requestFunction <- function(query, token) {
   }
 
   return(resp$data[[1]])
+}
+
+buildGroupTree <- function(dataFrame) {
+  # Builds a named list mapping each group componentId to its direct child
+  # group componentIds. Used by prepareAnswerDF to discover sub-groups of
+  # empty groups whose rows are never iterated.
+  tree <- list()
+  i <- 1
+  while (i <= nrow(dataFrame)) {
+    if (identical(dataFrame$type[i], "group")) {
+      parentId <- dataFrame$componentId[i]
+      children <- dataFrame$components[i][[1]]
+      childGroups <- children$componentId[children$type == "group"]
+      tree[[parentId]] <- childGroups
+      tree <- c(tree, buildGroupTree(children))
+    }
+    i <- i + 1
+  }
+  return(tree)
+}
+
+collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
+  # Recursively walks the form structure to collect:
+  # - mainCols: root-level single-value field componentIds (go to main df)
+  # - nestedDfs: named list of empty data.frames for groups and multivalue fields
+  # - dictionary: parent-child relationships for all nested dfs
+  mainCols <- character(0)
+  nestedDfs <- list()
+  dictionary <- data.frame(dfName = character(0),
+                           parentDfName = character(0),
+                           stringsAsFactors = FALSE)
+
+  for (i in seq_len(nrow(components))) {
+    cId   <- components$componentId[i]
+    cType <- components$type[i]
+
+    if (identical(cType, "group")) {
+      nestedDfs[[cId]] <- data.frame()
+      dictionary <- rbind(dictionary,
+                          data.frame(dfName = cId,
+                                     parentDfName = parentName,
+                                     stringsAsFactors = FALSE))
+      sub <- collectEmptyFields(components$components[i][[1]], cId, FALSE)
+      nestedDfs  <- c(nestedDfs, sub$nestedDfs)
+      dictionary <- rbind(dictionary, sub$dictionary)
+
+    } else if (isRoot) {
+      maxVal      <- if ("maximum" %in% names(components)) components$maximum[i] else 1L
+      isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1
+      if (isMultivalue) {
+        nestedDfs[[cId]] <- data.frame()
+        dictionary <- rbind(dictionary,
+                            data.frame(dfName = cId,
+                                       parentDfName = parentName,
+                                       stringsAsFactors = FALSE))
+      } else {
+        mainCols <- c(mainCols, cId)
+      }
+    }
+    # Non-root leaf fields are columns within their parent group nested df;
+    # they don't need a separate entry here.
+  }
+
+  return(list(mainCols = mainCols, nestedDfs = nestedDfs, dictionary = dictionary))
+}
+
+buildEmptyAnswerResult <- function(form_structure, groupTree) {
+  # Builds the same list structure returned by GetAnswers when there are
+  # answers, but with 0 rows everywhere. Used when the API returns no data.
+  result <- collectEmptyFields(form_structure, "answer")
+
+  metaCols <- c("userName", "userId", "source",
+                "createdAt", "createdAtDevice",
+                "createdAtCoordinates.latitude", "createdAtCoordinates.longitude",
+                "updatedAt", "updatedAtCoordinates.latitude",
+                "updatedAtCoordinates.longitude")
+  allMainCols <- c("answer_id", result$mainCols, metaCols)
+  mainDf <- setNames(
+    as.data.frame(matrix(nrow = 0, ncol = length(allMainCols))),
+    allMainCols
+  )
+
+  return(list(dictionary = result$dictionary, mainDf, result$nestedDfs))
 }
 
 auxFunction <- function(dataFrame, idComponentsString = NULL) {
@@ -103,7 +186,7 @@ auxFunction <- function(dataFrame, idComponentsString = NULL) {
   return(list(idComponentsString, dictionary))
 }
 
-prepareAnswerDF <- function(dataFrame, dataFrameName) {
+prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
   # This function separeted the questions N from the principal data frame
   #
   # The main loop, pass through all the register in the data frame and verify if
@@ -124,6 +207,23 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     if (!first) {
       dataFrame <- complementaryDF[[otherI]]
       dataFrameName <- names(complementaryDF[otherI])
+    }
+
+    # When processing an empty group, add its child groups to complementaryDF
+    # so they are consistently represented even with no answer data.
+    if (!first && nrow(dataFrame) == 0 && !is.null(groupTree[[dataFrameName]])) {
+      for (childGroup in groupTree[[dataFrameName]]) {
+        if (is.null(complementaryDF[[childGroup]])) {
+          newEntry <- list(data.frame())
+          names(newEntry) <- childGroup
+          complementaryDF <- append(complementaryDF, newEntry)
+          dictionary <- rbind(dictionary,
+                              data.frame("dfName" = childGroup,
+                                         "parentDfName" = dataFrameName,
+                                         stringsAsFactors = FALSE),
+                              stringsAsFactors = FALSE)
+        }
+      }
     }
 
     # Moving N question to another place
@@ -160,9 +260,11 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
             }
           }
 
-          otherDF[[names(dataFrame[j])]] <-
-            append(otherDF[[names(dataFrame[j])]],
-                   aux)
+          col <- names(dataFrame[j])
+          if (is.null(otherDF[[col]])) {
+            otherDF[[col]] <- list()
+          }
+          otherDF[[col]] <- append(otherDF[[col]], aux)
           dictionary <- rbind(dictionary,
                               data.frame("dfName" = names(dataFrame[j]),
                                          "parentDfName" = dataFrameName,
@@ -183,31 +285,36 @@ prepareAnswerDF <- function(dataFrame, dataFrameName) {
     dfNames <- paste0(names(otherDF), "_id")
 
     while (i <= n) {
-      # Registering the order of the names, because in next step, will lost
-      ordered <- lapply(otherDF[[i]], names)
-      # Unnesting the data frames
-      ## The function flatten changes the original orders of the columns
-      otherDF[[i]] <- lapply(otherDF[[i]], jsonlite::flatten)
+      if (length(otherDF[[i]]) == 0) {
+        # Nested field with no data across all answers: return empty data frame
+        otherDF[[i]] <- data.frame()
+      } else {
+        # Registering the order of the names, because in next step, will lost
+        ordered <- lapply(otherDF[[i]], names)
+        # Unnesting the data frames
+        ## The function flatten changes the original orders of the columns
+        otherDF[[i]] <- lapply(otherDF[[i]], jsonlite::flatten)
 
-      # Reordening the columns names
-      j <- 1
-      nDF <- length(ordered)
-      while (j <= nDF) {
-        reordered <-
-          unlist(lapply(ordered[[j]],
-                        grep,
-                        names(otherDF[[i]][[j]]),
-                        value = TRUE))
+        # Reordening the columns names
+        j <- 1
+        nDF <- length(ordered)
+        while (j <= nDF) {
+          reordered <-
+            unlist(lapply(ordered[[j]],
+                          grep,
+                          names(otherDF[[i]][[j]]),
+                          value = TRUE))
 
-        otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], dplyr::all_of(reordered))
+          otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], dplyr::all_of(reordered))
 
-        j <- j + 1
+          j <- j + 1
+        }
+
+        # Bind the data frames
+        otherDF[[i]] <- do.call(dplyr::bind_rows, otherDF[[i]])
+        # Add the id
+        otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
       }
-
-      # Bind the data frames
-      otherDF[[i]] <- do.call(dplyr::bind_rows, otherDF[[i]])
-      # Add the id
-      otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
       i <- i + 1
     }
 
