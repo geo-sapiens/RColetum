@@ -272,10 +272,16 @@ GetAnswers <- function(token,
   # Get just the data frame populated with the data
   resp <- unname(resp)
 
+  # Pre-compute the empty structure for structural reference (used in both paths)
+  emptyResult <- buildEmptyAnswerResult(form_structure, groupTree)
+
   # Check if the form have some answer.
   if (length(resp) == 0) {
-    emptyResult <- buildEmptyAnswerResult(form_structure, groupTree)
-    if (singleDataFrame || length(emptyResult[[3]]) == 0) {
+    if (singleDataFrame) {
+      return(createSingleDataFrame(list(emptyResult[[2]], emptyResult[[3]]),
+                                   emptyResult[[1]]))
+    }
+    if (length(emptyResult[[3]]) == 0) {
       return(emptyResult[[2]])
     }
     return(list(emptyResult[[2]], emptyResult[[3]]))
@@ -324,6 +330,29 @@ GetAnswers <- function(token,
     removeColonDate_ISO8601(resp[[1]]$createdAtDevice)
   resp[[1]]$createdAt <- removeColonDate_ISO8601(resp[[1]]$createdAt)
   resp[[1]]$updatedAt <- removeColonDate_ISO8601(resp[[1]]$updatedAt)
+
+  # Supplement nested dfs that are absent or structureless (0 columns) with
+  # correctly-structured empty dfs from the form structure, so the output always
+  # has the same column set regardless of which groups happen to have data.
+  # Some entries in emptyResult[[3]] use simple keys (e.g. "active66434")
+  # while the actual resp[[2]] stores them under compound dot-notation keys
+  # (e.g. "members66433.active66434") because jsonlite::flatten inlined their
+  # single-value parent group. Detect this by checking endsWith on resp[[2]] keys.
+  for (dfName in names(emptyResult[[3]])) {
+    emptyNested <- emptyResult[[3]][[dfName]]
+    if (is.null(emptyNested) || ncol(emptyNested) == 0) next
+    # Skip if dfName already appears as a suffix under a compound key in resp[[2]]
+    # (e.g. "active66434" is covered by "members66433.active66434" in resp[[2]])
+    if (any(endsWith(names(resp[[2]]), paste0(".", dfName)))) next
+    if (is.null(resp[[2]][[dfName]]) || ncol(resp[[2]][[dfName]]) == 0) {
+      dictEntry <- emptyResult[[1]][emptyResult[[1]]$dfName == dfName, ]
+      if (nrow(dictEntry) == 0) next
+      resp[[2]][[dfName]] <- emptyNested
+      if (!dfName %in% dictionary$dfName) {
+        dictionary <- rbind(dictionary, dictEntry)
+      }
+    }
+  }
 
   if (singleDataFrame) {
     resp <- createSingleDataFrame(resp, dictionary)

@@ -81,20 +81,49 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
     cType <- components$type[i]
 
     if (identical(cType, "group")) {
-      nestedDfs[[cId]] <- data.frame()
-      dictionary <- rbind(dictionary,
-                          data.frame(dfName = cId,
-                                     parentDfName = parentName,
-                                     stringsAsFactors = FALSE))
-      sub <- collectEmptyFields(components$components[i][[1]], cId, FALSE)
-      nestedDfs  <- c(nestedDfs, sub$nestedDfs)
-      dictionary <- rbind(dictionary, sub$dictionary)
+      maxVal <- if ("maximum" %in% names(components)) components$maximum[i] else 1L
+      isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1
+      if (!isRoot || isMultivalue) {
+        sub <- collectEmptyFields(components$components[i][[1]], cId, TRUE)
+        parentFKCol <- paste0(parentName, "_id")
+        groupIdCol  <- paste0(cId, "_id")
+        allGroupCols <- c(sub$mainCols, parentFKCol, groupIdCol)
+        nestedDfs[[cId]] <- as.data.frame(
+          setNames(
+            replicate(length(allGroupCols), character(0), simplify = FALSE),
+            allGroupCols
+          ),
+          stringsAsFactors = FALSE
+        )
+        dictionary <- rbind(dictionary,
+                            data.frame(dfName = cId,
+                                       parentDfName = parentName,
+                                       stringsAsFactors = FALSE))
+        nestedDfs  <- c(nestedDfs, sub$nestedDfs)
+        dictionary <- rbind(dictionary, sub$dictionary)
+      } else {
+        # Single-value root group: jsonlite::flatten will flatten its fields
+        # into dot-notation columns (groupId.fieldId) in the main data frame.
+        sub <- collectEmptyFields(components$components[i][[1]], parentName, TRUE)
+        mainCols <- c(mainCols, paste0(cId, ".", sub$mainCols))
+        nestedDfs <- c(nestedDfs, sub$nestedDfs)
+        dictionary <- rbind(dictionary, sub$dictionary)
+      }
 
     } else if (isRoot) {
       maxVal      <- if ("maximum" %in% names(components)) components$maximum[i] else 1L
       isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1
       if (isMultivalue) {
-        nestedDfs[[cId]] <- data.frame()
+        parentFKCol <- paste0(parentName, "_id")
+        groupIdCol  <- paste0(cId, "_id")
+        allCols <- c(parentFKCol, cId, groupIdCol)
+        nestedDfs[[cId]] <- as.data.frame(
+          setNames(
+            replicate(length(allCols), character(0), simplify = FALSE),
+            allCols
+          ),
+          stringsAsFactors = FALSE
+        )
         dictionary <- rbind(dictionary,
                             data.frame(dfName = cId,
                                        parentDfName = parentName,
@@ -121,9 +150,12 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
                 "updatedAt", "updatedAtCoordinates.latitude",
                 "updatedAtCoordinates.longitude")
   allMainCols <- c("answer_id", result$mainCols, metaCols)
-  mainDf <- setNames(
-    as.data.frame(matrix(nrow = 0, ncol = length(allMainCols))),
-    allMainCols
+  mainDf <- as.data.frame(
+    setNames(
+      replicate(length(allMainCols), character(0), simplify = FALSE),
+      allMainCols
+    ),
+    stringsAsFactors = FALSE
   )
 
   return(list(dictionary = result$dictionary, mainDf, result$nestedDfs))
@@ -368,6 +400,10 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
   n <- length(dataFrame)
 
   while (i <= n) {
+    if (ncol(dataFrame[[i]]) == 0) {
+      i <- i + 1
+      next
+    }
     names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
                                     ".",
                                     names(dataFrame[[i]]))

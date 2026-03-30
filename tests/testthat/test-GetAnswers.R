@@ -766,8 +766,8 @@ test_that("get answers in simple form", {
     suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdAfter = "2018-05-30T16:20:30+01:00"))
-  expect_equal(myFilteredAnswersCreatedAfter, NULL)
-  expect_equal(myFilteredAnswersCreatedAfter2,NULL)
+  expect_equal(nrow(myFilteredAnswersCreatedAfter), 0L)
+  expect_equal(nrow(myFilteredAnswersCreatedAfter2), 0L)
 
   myFilteredAnswersCreatedAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -807,8 +807,8 @@ test_that("get answers in simple form", {
     suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                createdDeviceAfter = "2018-05-30T16:20:30+01:00"))
-  expect_equal(myFilteredAnswersCreatedDeviceAfter, NULL)
-  expect_equal(myFilteredAnswersCreatedDeviceAfter2,NULL)
+  expect_equal(nrow(myFilteredAnswersCreatedDeviceAfter), 0L)
+  expect_equal(nrow(myFilteredAnswersCreatedDeviceAfter2), 0L)
 
   myFilteredAnswersCreatedDeviceAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -848,8 +848,8 @@ test_that("get answers in simple form", {
     suppressWarnings(GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
                idForm = 5705,
                updatedAfter = "2018-05-30T16:20:30+01:00"))
-  expect_equal(myFilteredAnswersUpdatedAfter, NULL)
-  expect_equal(myFilteredAnswersUpdatedAfter2,NULL)
+  expect_equal(nrow(myFilteredAnswersUpdatedAfter), 0L)
+  expect_equal(nrow(myFilteredAnswersUpdatedAfter2), 0L)
 
   myFilteredAnswersUpdatedAfter3 <-
     GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
