@@ -39,7 +39,7 @@ requestFunction <- function(query, token) {
 
   # Catch some another existing error or warning
   if (!is.null(resp$errors$message)) {
-    warning(paste0("\nCheck careful the result, because something may wents ",
+    warning(paste0("\nCheck careful the result, because something may have gone ",
                    "wrong: \n", resp$errors$message))
   }
 
@@ -51,16 +51,14 @@ buildGroupTree <- function(dataFrame) {
   # group componentIds. Used by prepareAnswerDF to discover sub-groups of
   # empty groups whose rows are never iterated.
   tree <- list()
-  i <- 1
-  while (i <= nrow(dataFrame)) {
+  for (i in seq_len(nrow(dataFrame))) {
     if (identical(dataFrame$type[i], "group")) {
       parentId <- dataFrame$componentId[i]
-      children <- dataFrame$components[i][[1]]
+      children <- dataFrame$components[[i]]
       childGroups <- children$componentId[children$type == "group"]
       tree[[parentId]] <- childGroups
       tree <- c(tree, buildGroupTree(children))
     }
-    i <- i + 1
   }
   return(tree)
 }
@@ -158,97 +156,62 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
     stringsAsFactors = FALSE
   )
 
-  return(list(dictionary = result$dictionary, mainDf, result$nestedDfs))
+  return(list(dictionary = result$dictionary,
+              mainDf    = mainDf,
+              nestedDfs = result$nestedDfs))
 }
 
-auxFunction <- function(dataFrame, idComponentsString = NULL) {
-  # Auxiliar function
-  # Is used to get the idComponents and create a dictionary with the componentId
-  # and the question name of each answer from the answer schema.
-  #
-  # The idComponents is necessary to be possible use to get the answers after.
-  # The dictionary is necessary to rename the columns from idComponents to
-  # labels.
-  #
-  # Recursively, gets the idComponentes and the question name of all components,
-  # including from the nested components.
-
-  dictionary <- data.frame(matrix(ncol = 3, nrow = 0), stringsAsFactors = FALSE)
-  names(dictionary) <- c("idComponent", "label", "order")
-  i <- 1
-  nrow <- nrow(dataFrame)
-  while (i <= nrow) {
+buildQueryFragment <- function(dataFrame, queryFragment = NULL) {
+  # Recursively walks the form structure to build the GraphQL answer{...}
+  # query fragment. Groups become nested { } blocks; leaf fields become
+  # comma-separated componentIds.
+  # Returns the fragment as a character string.
+  n_components <- nrow(dataFrame)
+  for (i in seq_len(n_components)) {
 
     if (identical(dataFrame$type[i], "group")) {
-      idComponentsString <- paste0(
-        idComponentsString,
-        dataFrame$componentId[i],
-        "{")
-
-      dictionary <- rbind(dictionary,
-                          data.frame("idComponent" = dataFrame$componentId[i],
-                                     "label" = dataFrame$label[i],
-                                     "order" = dataFrame$order[i],
-                                     stringsAsFactors = FALSE),
-                          stringsAsFactors = FALSE)
-
-      aux <- auxFunction(dataFrame$components[i][[1]],
-                         idComponentsString)
-
-      idComponentsString <- aux[[1]]
-      idComponentsString <- paste0(idComponentsString, "}")
-
-      dictionary <- rbind(dictionary, aux[[2]],
-                          stringsAsFactors = FALSE)
-
+      queryFragment <- paste0(queryFragment, dataFrame$componentId[i], "{")
+      queryFragment <- buildQueryFragment(dataFrame$components[[i]], queryFragment)
+      queryFragment <- paste0(queryFragment, "}")
     } else {
-      idComponentsString <- paste0(idComponentsString,
-                                   dataFrame$componentId[i], ",")
-
-      dictionary <- rbind(dictionary,
-                          data.frame("idComponent" = dataFrame$componentId[i],
-                                     "label" = dataFrame$label[i],
-                                     "order" = dataFrame$order[i],
-                                     stringsAsFactors = FALSE),
-                          stringsAsFactors = FALSE)
+      queryFragment <- paste0(queryFragment, dataFrame$componentId[i], ",")
     }
-
-    i <- i + 1
   }
-  return(list(idComponentsString, dictionary))
+  return(queryFragment)
 }
 
 prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
-  # This function separeted the questions N from the principal data frame
+  # Separates N-cardinality columns from the main data frame.
   #
-  # The main loop, pass through all the register in the data frame and verify if
-  # is another data frame or a list. In both cases, this element is moved to the
-  # another list called complementaryDF. All elements in the complementary DF
-  # pass through this procediment too.
+  # Iterates over every column of the data frame. If a column holds a nested
+  # data frame or list (i.e., a group or multivalued field), it is extracted
+  # into a separate data frame in nestedDfs. All extracted entries then go
+  # through this same procedure to handle further nesting.
 
   dictionary <- data.frame(matrix(ncol = 2, nrow = 0), stringsAsFactors = FALSE)
   names(dictionary) <- c("dfName", "parentDfName")
 
-  complementaryDF <- list()
+  nestedDfs <- list()
 
+  # TRUE on the first pass (main data frame); FALSE for subsequent nested dfs
   first <- TRUE
-  otherI <- 1
-  while (first || otherI <= length(complementaryDF)) {
-    otherDF <- list()
+  nestedIdx <- 1
+  while (first || nestedIdx <= length(nestedDfs)) {
+    extractedDfs <- list()
 
     if (!first) {
-      dataFrame <- complementaryDF[[otherI]]
-      dataFrameName <- names(complementaryDF[otherI])
+      dataFrame <- nestedDfs[[nestedIdx]]
+      dataFrameName <- names(nestedDfs[nestedIdx])
     }
 
-    # When processing an empty group, add its child groups to complementaryDF
+    # When processing an empty group, add its child groups to nestedDfs
     # so they are consistently represented even with no answer data.
     if (!first && nrow(dataFrame) == 0 && !is.null(groupTree[[dataFrameName]])) {
       for (childGroup in groupTree[[dataFrameName]]) {
-        if (is.null(complementaryDF[[childGroup]])) {
+        if (is.null(nestedDfs[[childGroup]])) {
           newEntry <- list(data.frame())
           names(newEntry) <- childGroup
-          complementaryDF <- append(complementaryDF, newEntry)
+          nestedDfs <- append(nestedDfs, newEntry)
           dictionary <- rbind(dictionary,
                               data.frame("dfName" = childGroup,
                                          "parentDfName" = dataFrameName,
@@ -258,22 +221,18 @@ prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
       }
     }
 
-    # Moving N question to another place
-    i <- 1
+    # Extract N-cardinality columns into separate data frames
     nRow <- nrow(dataFrame)
     aux <- NULL
-    while (i <= nRow) {
+    for (i in seq_len(nRow)) {
 
-      j <- 1
       nCol <- length(dataFrame[i, ])
-      while (j <= nCol) {
+      for (j in seq_len(nCol)) {
 
         if (is.list(dataFrame[i, j])) {
           aux <- NULL
           columnId <- paste0(dataFrameName, "_id")
           if (is.data.frame(dataFrame[i, j][[1]])) {
-            # aux[[1]] <- dplyr::mutate(dataFrame[i,j][[1]],
-            #                           parent_cod = dataFrame[i,"id"])
             if (nrow(dataFrame[i, j][[1]]) != 0) {
               aux[[1]] <- cbind(dataFrame[i, j][[1]],
                                 "temp" = dataFrame[i, columnId],
@@ -293,10 +252,10 @@ prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
           }
 
           col <- names(dataFrame[j])
-          if (is.null(otherDF[[col]])) {
-            otherDF[[col]] <- list()
+          if (is.null(extractedDfs[[col]])) {
+            extractedDfs[[col]] <- list()
           }
-          otherDF[[col]] <- append(otherDF[[col]], aux)
+          extractedDfs[[col]] <- append(extractedDfs[[col]], aux)
           dictionary <- rbind(dictionary,
                               data.frame("dfName" = names(dataFrame[j]),
                                          "parentDfName" = dataFrameName,
@@ -304,90 +263,72 @@ prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
                               stringsAsFactors = FALSE)
 
         }
-
-        j <- j + 1
       }
-
-      i <- i + 1
     }
-    ###################
-    # Binding all iqual data frames
-    i <- 1
-    n <- length(otherDF)
-    dfNames <- paste0(names(otherDF), "_id")
+    # Bind equal data frames from all rows into one per column
+    n <- length(extractedDfs)
+    dfNames <- paste0(names(extractedDfs), "_id")
 
-    while (i <= n) {
-      if (length(otherDF[[i]]) == 0) {
+    for (i in seq_len(n)) {
+      if (length(extractedDfs[[i]]) == 0) {
         # Nested field with no data across all answers: return empty data frame
-        otherDF[[i]] <- data.frame()
+        extractedDfs[[i]] <- data.frame()
       } else {
-        # Registering the order of the names, because in next step, will lost
-        ordered <- lapply(otherDF[[i]], names)
-        # Unnesting the data frames
-        ## The function flatten changes the original orders of the columns
-        otherDF[[i]] <- lapply(otherDF[[i]], jsonlite::flatten)
+        # Save column order before jsonlite::flatten, which reorders columns
+        ordered <- lapply(extractedDfs[[i]], names)
+        # Flatten nested data frames (changes original column order)
+        extractedDfs[[i]] <- lapply(extractedDfs[[i]], jsonlite::flatten)
 
-        # Reordening the columns names
-        j <- 1
+        # Reordering the columns
         nDF <- length(ordered)
-        while (j <= nDF) {
+        for (j in seq_len(nDF)) {
           reordered <-
             unlist(lapply(ordered[[j]],
                           grep,
-                          names(otherDF[[i]][[j]]),
+                          names(extractedDfs[[i]][[j]]),
                           value = TRUE))
 
-          otherDF[[i]][[j]] <- dplyr::select(otherDF[[i]][[j]], dplyr::all_of(reordered))
-
-          j <- j + 1
+          extractedDfs[[i]][[j]] <- dplyr::select(extractedDfs[[i]][[j]], dplyr::all_of(reordered))
         }
 
-        # Bind the data frames
-        otherDF[[i]] <- do.call(dplyr::bind_rows, otherDF[[i]])
-        # Add the id
-        otherDF[[i]][dfNames[i]] <- rownames(otherDF[[i]])
+        # Bind the data frames and add a row id column
+        extractedDfs[[i]] <- do.call(dplyr::bind_rows, extractedDfs[[i]])
+        extractedDfs[[i]][dfNames[i]] <- rownames(extractedDfs[[i]])
       }
-      i <- i + 1
     }
 
-    # Removing the columns with N answers from the principal Data Frame
-    if (length(otherDF) != 0) {
-      dataFrame <- dplyr::select(dataFrame, -dplyr::one_of(names(otherDF)))
+    # Remove the extracted N-cardinality columns from the current data frame
+    if (length(extractedDfs) != 0) {
+      dataFrame <- dplyr::select(dataFrame, -dplyr::one_of(names(extractedDfs)))
     }
 
     if (first) {
-      DFPrincipal <- dataFrame
-      complementaryDF <- otherDF
+      mainDf <- dataFrame
+      nestedDfs <- extractedDfs
       first <- FALSE
     } else {
-      complementaryDF[[otherI]] <- dataFrame
-      complementaryDF <- append(complementaryDF, otherDF)
-      otherI <- otherI + 1
+      nestedDfs[[nestedIdx]] <- dataFrame
+      nestedDfs <- append(nestedDfs, extractedDfs)
+      nestedIdx <- nestedIdx + 1
     }
 
   }
   dictionary <- dplyr::distinct(dictionary)
-  return(list(dictionary = dictionary, DFPrincipal, complementaryDF))
+  return(list(dictionary = dictionary, mainDf = mainDf, nestedDfs = nestedDfs))
 }
 
 searchFormIdByName <- function(nameForm, token) {
   forms <- GetForms(token)
   idForm <- forms$id[forms$name == nameForm]
+  n <- length(idForm)
 
-  switch(format(length(idForm)),
-         "0" = {
-           stop("Name not found.")
-         },
-         "1" = {
-           idForm <- as.numeric(idForm)
-         },
-         "2" = {
-           stop("More than one result found. FormIds: ", toString(idForm))
-         }
-
-  )
-
-  return(idForm)
+  if (n == 0) {
+    stop("Name not found.")
+  }
+  if (n > 1) {
+    stop("More than one result found. FormIds: ", toString(idForm))
+  }
+  return(as.numeric(idForm))
 }
 
 createSingleDataFrame <- function(dataFrame, dictionary) {
@@ -396,39 +337,54 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
                                   ".",
                                   names(dataFrame[[1]]))
   singleDataFrame <- dataFrame[[1]]
-  i <- 2
   n <- length(dataFrame)
 
-  while (i <= n) {
-    if (ncol(dataFrame[[i]]) == 0) {
-      i <- i + 1
-      next
+  if (n >= 2) {
+    for (i in 2:n) {
+      if (ncol(dataFrame[[i]]) == 0) {
+        next
+      }
+      names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
+                                      ".",
+                                      names(dataFrame[[i]]))
+      parentKey <- paste0(
+        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
+        ".",
+        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
+        "_id")
+      dFKey <- paste0(
+        names(dataFrame[i]),
+        ".",
+        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])], "_id")
+
+      # dplyr::full_join's `by` expects setNames(y_column, x_column).
+      # parentKey is the join column in the left (x) table;
+      # dFKey is the join column in the right (y) table.
+      singleDataFrame <- dplyr::full_join(singleDataFrame,
+                                          dataFrame[[i]],
+                                          by = stats::setNames(dFKey, parentKey),
+                                          relationship = "many-to-many")
     }
-    names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
-                                    ".",
-                                    names(dataFrame[[i]]))
-    parentKey <- paste0(
-      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-      ".",
-      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-      "_id")
-    dFKey <- paste0(
-      names(dataFrame[i]),
-      ".",
-      dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])], "_id")
-
-    singleDataFrame <- dplyr::full_join(singleDataFrame,
-                                        dataFrame[[i]],
-                                        # Using setNames, is necessery invert
-                                        # the order
-                                        by = stats::setNames(dFKey, parentKey),
-                                        relationship = "many-to-many")
-
-    i <- i + 1
   }
 
   return(singleDataFrame)
 
+}
+
+appendDateFilter <- function(filters, field_name, value) {
+  # Validates an ISO 8601 date string and appends a "field_name:\"value\","
+  # fragment to `filters`. Returns `filters` unchanged if `value` is NULL.
+  # Stops with a descriptive error if the date format is invalid.
+  if (is.null(value)) {
+    return(filters)
+  }
+  if (!validDate_ISO8601(value)) {
+    stop(paste0(
+      "The date provided for '", field_name, "' is not in ISO 8601 format. ",
+      "Accepted formats are: 'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ssTZD'."
+    ))
+  }
+  paste0(filters, field_name, ":\"", value, "\",")
 }
 
 validDate_ISO8601 <- function(userDate) {
@@ -444,18 +400,20 @@ validDate_ISO8601 <- function(userDate) {
       return(TRUE)
     }
   } else {
+    # Normalize timezone colon: "+01:00" → "+0100"
     if (identical(substr(userDate, userDateSize - 2, userDateSize - 2), ":")) {
       userDate <- paste0(
         substr(userDate, 1, userDateSize - 3),
         substr(userDate, userDateSize - 1, userDateSize))
       userDateSize <- nchar(userDate)
-    } else {
-      if (identical(substr(userDate, userDateSize, userDateSize), "Z")) {
-        userDate <- paste0(
-          substr(userDate, 1, userDateSize - 1),
-          "+0000")
-        userDateSize <- nchar(userDate)
-      }
+    }
+
+    # Normalize UTC "Z" suffix: "...Z" → "...+0000"
+    if (identical(substr(userDate, userDateSize, userDateSize), "Z")) {
+      userDate <- paste0(
+        substr(userDate, 1, userDateSize - 1),
+        "+0000")
+      userDateSize <- nchar(userDate)
     }
 
     userDate <- try(
@@ -469,22 +427,7 @@ validDate_ISO8601 <- function(userDate) {
 }
 
 removeColonDate_ISO8601 <- function(apiDate) {
-
-  n <- length(apiDate)
-  i <- 1
-
-  while (i <= n) {
-
-    if (!is.na(apiDate[[i]])) {
-      apiDateSize <- nchar(apiDate[i])
-      apiDate[i] <- paste0(
-        substr(apiDate[i], 1, apiDateSize - 3),
-        substr(apiDate[i], apiDateSize - 1, apiDateSize))
-    }
-
-    i <- i + 1
-
-  }
-
-  return(apiDate)
+  # Remove the colon from timezone offsets (e.g. "+01:00" → "+0100")
+  # so that R's as.POSIXlt() can parse the result. NA values are preserved.
+  sub("([-+]\\d{2}):(\\d{2})$", "\\1\\2", apiDate)
 }

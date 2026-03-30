@@ -59,7 +59,7 @@ myExpectedAnswersStormFormMultDF <-
                               "2018-05-28T12:17:12+0000", "2018-05-28T12:16:13+0000"),
           createdAtCoordinates.latitude = c(NA, NA, NA, NA),
           createdAtCoordinates.longitude = c(NA, NA, NA, NA),
-          updatedAt = c(NA, NA, NA, NA),
+          updatedAt = c(NA_character_, NA_character_, NA_character_, NA_character_),
           updatedAtCoordinates.latitude = c(NA, NA, NA, NA),
           updatedAtCoordinates.longitude = c(NA, NA, NA, NA)),
         row.names = c(NA, 4L),
@@ -138,7 +138,7 @@ myExpectedAnswersStormFormSingleDF <-
                                                NA, NA, NA, NA),
       answer.createdAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA, NA, NA,
                                                 NA, NA, NA, NA),
-      answer.updatedAt = c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+      answer.updatedAt = rep(NA_character_, 12),
       answer.updatedAtCoordinates.latitude = c(NA, NA, NA, NA, NA, NA, NA, NA,
                                                NA, NA, NA, NA),
       answer.updatedAtCoordinates.longitude = c(NA, NA, NA, NA, NA, NA, NA, NA,
@@ -659,8 +659,8 @@ test_that("errors in the bad use of filters parameters", {
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
                source = "web"),
-    paste0("The option 'web' are not avaliable for the filter 'source'. ",
-           "The avaliable options to this filter are: 'web_public' or",
+    paste0("The option 'web' is not available for the filter 'source'. ",
+           "The available options to this filter are: 'web_public' or",
            " 'web_private' or 'mobile'.")
   )
 
@@ -668,8 +668,8 @@ test_that("errors in the bad use of filters parameters", {
     GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg",
                5705,
                source = "private"),
-    paste0("The option 'private' are not avaliable for the filter 'source'. ",
-           "The avaliable options to this filter are: 'web_public' or",
+    paste0("The option 'private' is not available for the filter 'source'. ",
+           "The available options to this filter are: 'web_public' or",
            " 'web_private' or 'mobile'.")
   )
 
@@ -778,9 +778,7 @@ test_that("get answers in simple form", {
                idForm = 5705,
                createdAfter = "2018-05-30T12:20:30Z")
   myFilteredAnswersCreatedAfter5 <-
-    dplyr::mutate(
-      dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29"),
-      updatedAt = as.logical(updatedAt))
+    dplyr::filter(myExpectedAnswersIrisForm, createdAt > "2018-05-29")
   expect_equal(myFilteredAnswersCreatedAfter3, myFilteredAnswersCreatedAfter5)
   expect_equal(myFilteredAnswersCreatedAfter4, myFilteredAnswersCreatedAfter5)
 
@@ -819,9 +817,7 @@ test_that("get answers in simple form", {
                idForm = 5705,
                createdDeviceAfter = "2018-05-30T12:20:30Z")
   myFilteredAnswersCreatedDeviceAfter5 <-
-    dplyr::mutate(
-      dplyr::filter(myExpectedAnswersIrisForm, createdAtDevice > "2018-05-29"),
-      updatedAt = as.logical(updatedAt))
+    dplyr::filter(myExpectedAnswersIrisForm, createdAtDevice > "2018-05-29")
   expect_equal(myFilteredAnswersCreatedDeviceAfter3,
                myFilteredAnswersCreatedDeviceAfter5)
   expect_equal(myFilteredAnswersCreatedDeviceAfter4,

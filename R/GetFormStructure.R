@@ -9,13 +9,12 @@
 #'
 #' @param token A string access token.
 #' @param idForm Numeric Id of the required form.
-#' @param nameForm String name of the required form. Just is used when an idForm
-#' are not supplied. When this parameter is used, are spent extra one access
-#' quota.
+#' @param nameForm String name of the required form. Used only when idForm is
+#' not supplied. When this parameter is used, one extra access quota is spent.
 #' @param componentId Optional filter. That is the field identifier, it's
 #' possible use to filter to get a specific field.
 #'
-#' @return A possible nested data frame.
+#' @return A nested data frame representing the form schema.
 #' @examples
 #' \donttest{
 #' GetFormStructure("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
@@ -44,9 +43,7 @@ GetFormStructure <- function(token, idForm, nameForm = NULL,
   filters <- NULL
   if (!is.null(componentId)) {
     componentId <- toString(componentId)
-    filters <- ",filters:{"
-    filters <- paste0(filters, "componentId:", componentId)
-    filters <- paste0(filters, "}")
+    filters <- paste0(",filters:{componentId:", componentId, "}")
   }
 
   query <- paste0("{
@@ -94,6 +91,9 @@ GetFormStructure <- function(token, idForm, nameForm = NULL,
               minimum,
               maximum,
               widget,
+              # 5th nesting level: only basic fields requested.
+              # options, visibility, minimum, maximum, widget, and sub-components
+              # are intentionally omitted — this is the hard depth limit.
               components{
                 label,
                 componentId,

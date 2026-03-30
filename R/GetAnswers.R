@@ -1,20 +1,19 @@
 #' Get all the answers of a form.
 #'
-#' Get all the currents answers of a specific form. This function makes a call
-#' to GetFormStructure and spent 2 quotas.
+#' Get all the current answers of a specific form. This function makes a call
+#' to GetFormStructure and uses 2 API quotas.
 #'
 #' To get more details about the fields provided by the result, please visit the
 #' \href{https://coletum.docs.apiary.io/#reference/0/preenchimentos/listar-preenchimentos}{API documentation}.
 #'
 #' @param token String access token.
 #' @param idForm Numeric Id of the required form.
-#' @param nameForm String name of the required form. Just is used when an idForm
-#' is not supplied. When this parameter is used, are spent extra one access
-#' quota.
+#' @param nameForm String name of the required form. Used only when idForm is
+#' not supplied. When this parameter is used, one extra access quota is spent.
 #' @param singleDataFrame Boolean flag. Indicates the preference to create a
 #' single data frame with all the answers. In this case, is possible to have
 #' repeated values, according to the multiplicity of relationships.
-#' @param source Optional filter. Is the the source of the answer and can use
+#' @param source Optional filter. Is the source of the answer and can use
 #' "web_public", "web_private" or "mobile".
 #' @param createdAfter Optional filter. This parameter filters the answers that
 #' were answered after this date. Is acceptable in the ISO8601 format
@@ -39,7 +38,8 @@
 #' @examples
 #' \donttest{
 #' GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
-#' GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", ,"RColetum Test - Iris", TRUE)
+#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
+#'              nameForm = "RColetum Test - Iris", singleDataFrame = TRUE)
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              nameForm = "RColetum Test - Iris")
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -113,14 +113,8 @@ GetAnswers <- function(token,
     }
 
   form_structure <- GetFormStructure(token, idForm)
-  aux <- auxFunction(form_structure)
   groupTree <- buildGroupTree(form_structure)
-  componentsId <- aux[[1]]
-  # Add substituition to friendlyId to id
-  aux[[2]] <- dplyr::bind_rows(c(idComponent = "friendlyId",
-                                 label = "id",
-                                 order = ""),
-                               aux[[2]])
+  componentsId <- buildQueryFragment(form_structure)
 
   # Applying optionals filters
   filters <- NULL
@@ -141,8 +135,8 @@ GetAnswers <- function(token,
           identical(source, "mobile")) {
         filters <- paste0(filters, "source:", source, ",")
       } else {
-        stop(paste0("The option '", source, "' are not avaliable for the ",
-                    "filter 'source'. The avaliable options to this ",
+        stop(paste0("The option '", source, "' is not available for the ",
+                    "filter 'source'. The available options to this ",
                     "filter are: 'web_public' or 'web_private' or ",
                     "'mobile'.")
         )
@@ -150,96 +144,12 @@ GetAnswers <- function(token,
 
     }
 
-    if (!is.null(createdBefore)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(createdBefore)) {
-        filters <- paste0(filters, "createdBefore:\"", createdBefore, "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-                 )
-          )
-      }
-    }
-
-    if (!is.null(createdAfter)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(createdAfter)) {
-        filters <- paste0(filters, "createdAfter:\"", createdAfter, "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-          )
-        )
-      }
-    }
-
-    if (!is.null(createdDeviceBefore)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(createdDeviceBefore)) {
-        filters <- paste0(filters,
-                          "createdDeviceBefore:\"",
-                          createdDeviceBefore,
-                          "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-          )
-        )
-      }
-    }
-
-    if (!is.null(createdDeviceAfter)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(createdDeviceAfter)) {
-        filters <- paste0(filters,
-                          "createdDeviceAfter:\"",
-                          createdDeviceAfter,
-                          "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-          )
-        )
-      }
-    }
-
-    if (!is.null(updatedBefore)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(updatedBefore)) {
-        filters <- paste0(filters, "updatedBefore:\"", updatedBefore, "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-          )
-        )
-      }
-    }
-
-    if (!is.null(updatedAfter)) {
-      # Check if the option is valid
-      if (validDate_ISO8601(updatedAfter)) {
-        filters <- paste0(filters, "updatedAfter:\"", updatedAfter, "\",")
-      } else {
-        stop(
-          paste0("The informed date is not in ISO 8601 standard format. The ",
-                 "avaible formats are: 'YYYY-MM-DD' ou ",
-                 "'YYYY-MM-DDThh:mm:ssTZD')"
-          )
-        )
-      }
-    }
-
+    filters <- appendDateFilter(filters, "createdBefore",       createdBefore)
+    filters <- appendDateFilter(filters, "createdAfter",        createdAfter)
+    filters <- appendDateFilter(filters, "createdDeviceBefore", createdDeviceBefore)
+    filters <- appendDateFilter(filters, "createdDeviceAfter",  createdDeviceAfter)
+    filters <- appendDateFilter(filters, "updatedBefore",       updatedBefore)
+    filters <- appendDateFilter(filters, "updatedAfter",        updatedAfter)
 
     filters <- paste0(filters, "}")
   }
@@ -275,31 +185,28 @@ GetAnswers <- function(token,
   # Pre-compute the empty structure for structural reference (used in both paths)
   emptyResult <- buildEmptyAnswerResult(form_structure, groupTree)
 
-  # Check if the form have some answer.
+  # Check if the form has any answers.
   if (length(resp) == 0) {
     if (singleDataFrame) {
-      return(createSingleDataFrame(list(emptyResult[[2]], emptyResult[[3]]),
-                                   emptyResult[[1]]))
+      return(createSingleDataFrame(list(emptyResult$mainDf, emptyResult$nestedDfs),
+                                   emptyResult$dictionary))
     }
-    if (length(emptyResult[[3]]) == 0) {
-      return(emptyResult[[2]])
+    if (length(emptyResult$nestedDfs) == 0) {
+      return(emptyResult$mainDf)
     }
-    return(list(emptyResult[[2]], emptyResult[[3]]))
+    return(list(emptyResult$mainDf, emptyResult$nestedDfs))
   }
 
-  # Registering the order of the names, because in next step, will lost
+  # Save column order before jsonlite::flatten, which reorders columns
   orderNames <- names(resp[[2]])
 
-  # Unnesting the data frame
-  ## This function change the original orders of the columns
+  # Flatten the nested answer structure (changes original column order)
   resp <- jsonlite::flatten(resp)
 
-  # Reordening the columns names
-  reorderNames <- unlist(lapply(orderNames,
-                                grep,
-                                names(resp), value = TRUE))
+  # Reorder columns to match the original field order from the form structure
+  reorderNames <- unlist(lapply(orderNames, grep, names(resp), value = TRUE))
 
-  ## Adding the metaData fields
+  # Append metadata columns at the end
   reorderNames <- c("friendlyId",
                     reorderNames,
                     "userName",
@@ -312,42 +219,40 @@ GetAnswers <- function(token,
                     "updatedAt",
                     "updatedAtCoordinates.latitude",
                     "updatedAtCoordinates.longitude")
-  ### Reordering
   resp <- dplyr::select(resp, reorderNames)
 
-  # Standardization of column id
+  # Rename the submission identifier to the standard column name
   resp <- dplyr::rename(resp, answer_id = "friendlyId")
-  # This function will remove the N questions from the principal Data Frame
+
+  # Separate N-cardinality columns into their own nested data frames
   resp <- prepareAnswerDF(resp, "answer", groupTree)
 
-  # Extracting dictionary
+  # Extract the dictionary and rebuild resp with only the return-facing elements
   dictionary <- resp$dictionary
-  resp$dictionary <- NULL
+  resp <- list(mainDf = resp$mainDf, nestedDfs = resp$nestedDfs)
 
-  # Removing ":" (colon) from resp into dates.
-  ## This way is possible parse to a date format.
-  resp[[1]]$createdAtDevice <-
-    removeColonDate_ISO8601(resp[[1]]$createdAtDevice)
-  resp[[1]]$createdAt <- removeColonDate_ISO8601(resp[[1]]$createdAt)
-  resp[[1]]$updatedAt <- removeColonDate_ISO8601(resp[[1]]$updatedAt)
+  # Remove colon from timezone offsets in date columns (e.g. "+01:00" → "+0100")
+  # so they can be parsed by R's date functions.
+  resp$mainDf$createdAtDevice <- removeColonDate_ISO8601(resp$mainDf$createdAtDevice)
+  resp$mainDf$createdAt       <- removeColonDate_ISO8601(resp$mainDf$createdAt)
+  resp$mainDf$updatedAt       <- removeColonDate_ISO8601(resp$mainDf$updatedAt)
 
   # Supplement nested dfs that are absent or structureless (0 columns) with
   # correctly-structured empty dfs from the form structure, so the output always
   # has the same column set regardless of which groups happen to have data.
-  # Some entries in emptyResult[[3]] use simple keys (e.g. "active66434")
-  # while the actual resp[[2]] stores them under compound dot-notation keys
+  # Some entries in emptyResult$nestedDfs use simple keys (e.g. "active66434")
+  # while the actual resp$nestedDfs stores them under compound dot-notation keys
   # (e.g. "members66433.active66434") because jsonlite::flatten inlined their
-  # single-value parent group. Detect this by checking endsWith on resp[[2]] keys.
-  for (dfName in names(emptyResult[[3]])) {
-    emptyNested <- emptyResult[[3]][[dfName]]
+  # single-value parent group. Detect this by checking endsWith on the keys.
+  for (dfName in names(emptyResult$nestedDfs)) {
+    emptyNested <- emptyResult$nestedDfs[[dfName]]
     if (is.null(emptyNested) || ncol(emptyNested) == 0) next
-    # Skip if dfName already appears as a suffix under a compound key in resp[[2]]
-    # (e.g. "active66434" is covered by "members66433.active66434" in resp[[2]])
-    if (any(endsWith(names(resp[[2]]), paste0(".", dfName)))) next
-    if (is.null(resp[[2]][[dfName]]) || ncol(resp[[2]][[dfName]]) == 0) {
-      dictEntry <- emptyResult[[1]][emptyResult[[1]]$dfName == dfName, ]
+    # Skip if dfName is already covered by a compound key in resp$nestedDfs
+    if (any(endsWith(names(resp$nestedDfs), paste0(".", dfName)))) next
+    if (is.null(resp$nestedDfs[[dfName]]) || ncol(resp$nestedDfs[[dfName]]) == 0) {
+      dictEntry <- emptyResult$dictionary[emptyResult$dictionary$dfName == dfName, ]
       if (nrow(dictEntry) == 0) next
-      resp[[2]][[dfName]] <- emptyNested
+      resp$nestedDfs[[dfName]] <- emptyNested
       if (!dfName %in% dictionary$dfName) {
         dictionary <- rbind(dictionary, dictEntry)
       }
@@ -355,14 +260,14 @@ GetAnswers <- function(token,
   }
 
   if (singleDataFrame) {
-    resp <- createSingleDataFrame(resp, dictionary)
+    return(createSingleDataFrame(resp, dictionary))
   }
 
   # Return data frames with the answers
-  if (length(resp[[2]]) > 0) {
-    return(resp)
+  if (length(resp$nestedDfs) > 0) {
+    return(structure(list(resp$mainDf, resp$nestedDfs), names = c("", "")))
   } else {
-    return(resp[[1]])
+    return(resp$mainDf)
   }
 
 }

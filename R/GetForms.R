@@ -1,6 +1,6 @@
 #' Get info of all forms.
 #'
-#' Get the principals info of all forms.
+#' Retrieve information about all forms.
 #'
 #' To get more details about the fields provided by the result, please visit the
 #' \href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
@@ -11,7 +11,7 @@
 #' @param publicAnswers Optional filter. Indicates if the form is public or
 #' not, is possible to use "true" or "false".
 #' @param answerTracking Optional filter. Indicates if the form is saving the
-#' local of fill, is possible use "true" or "false".
+#' location at fill time. It is possible to use "true" or "false".
 #'
 #' @return A data frame.
 #' @examples
@@ -42,8 +42,8 @@ GetForms <- function(token,
       if (identical(status, "enabled") || identical(status, "disabled")) {
         filters <- paste0(filters, "status:", status, ",")
       } else {
-        stop(paste0("The option '", status, "' are not avaliable for the ",
-                    "filter 'status'. The avaliable options to this filter ",
+        stop(paste0("The option '", status, "' is not available for the ",
+                    "filter 'status'. The available options to this filter ",
                     "are: 'enabled' or 'disabled'."
                     )
              )
@@ -57,8 +57,8 @@ GetForms <- function(token,
           identical(publicAnswers, "false")) {
         filters <- paste0(filters, "publicAnswers:", publicAnswers, ",")
       } else {
-        stop(paste0("The option '", publicAnswers, "' are not avaliable for",
-                    " the filter 'publicAnswers'. The avaliable options to",
+        stop(paste0("The option '", publicAnswers, "' is not available for",
+                    " the filter 'publicAnswers'. The available options to",
                     " this filter are: 'true' or 'false'."
                     )
              )
@@ -72,9 +72,9 @@ GetForms <- function(token,
           identical(answerTracking, "false")) {
         filters <- paste0(filters, "answerTracking:", answerTracking)
       } else {
-        stop(paste0("The option '", answerTracking, "' are not avaliable.",
-                    "The avaliable options to this filter are: 'true' ",
-                    "or 'false'."
+        stop(paste0("The option '", answerTracking, "' is not available for",
+                    " the filter 'answerTracking'. The available options to",
+                    " this filter are: 'true' or 'false'."
                     )
              )
       }
@@ -99,7 +99,7 @@ GetForms <- function(token,
   resp <- requestFunction(query = query, token = token)
 
   if (length(resp) == 0) {
-    warning("No forms avaliable. Returning NULL")
+    warning("No forms available. Returning NULL")
     return(NULL)
   }
 

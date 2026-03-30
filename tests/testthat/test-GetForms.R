@@ -49,23 +49,23 @@ test_that("error in using incorrection the filters", {
   expect_error(
     GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              status = "enable"),
-    paste0("The option 'enable' are not avaliable for the filter 'status'. ",
-    "The avaliable options to this filter are: 'enabled' or 'disabled'.")
+    paste0("The option 'enable' is not available for the filter 'status'. ",
+    "The available options to this filter are: 'enabled' or 'disabled'.")
   )
 
   expect_error(
     GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              publicAnswers = "enabled"),
-    paste0("The option 'enabled' are not avaliable for the filter ",
-           "'publicAnswers'. The avaliable options to this filter are: 'true' ",
+    paste0("The option 'enabled' is not available for the filter ",
+           "'publicAnswers'. The available options to this filter are: 'true' ",
            "or 'false'.")
   )
 
   expect_error(
     GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              answerTracking = "disabled"),
-    paste0("The option 'disabled' are not avaliable.The avaliable options to ",
-           "this filter are: 'true' or 'false'.")
+    paste0("The option 'disabled' is not available for the filter 'answerTracking'. ",
+           "The available options to this filter are: 'true' or 'false'.")
   )
 
 })
