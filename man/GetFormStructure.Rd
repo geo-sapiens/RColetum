@@ -11,15 +11,14 @@ GetFormStructure(token, idForm, nameForm = NULL, componentId = NULL)
 
 \item{idForm}{Numeric Id of the required form.}
 
-\item{nameForm}{String name of the required form. Just is used when an idForm
-are not supplied. When this parameter is used, are spent extra one access
-quota.}
+\item{nameForm}{String name of the required form. Used only when idForm is
+not supplied. When this parameter is used, one extra access quota is spent.}
 
 \item{componentId}{Optional filter. That is the field identifier, it's
 possible use to filter to get a specific field.}
 }
 \value{
-A possible nested data frame.
+A nested data frame representing the form schema.
 }
 \description{
 Get the structure of the questions of a specific form in the shape a nested

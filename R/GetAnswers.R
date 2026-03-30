@@ -10,9 +10,6 @@
 #' @param idForm Numeric Id of the required form.
 #' @param nameForm String name of the required form. Used only when idForm is
 #' not supplied. When this parameter is used, one extra access quota is spent.
-#' @param singleDataFrame Boolean flag. Indicates the preference to create a
-#' single data frame with all the answers. In this case, is possible to have
-#' repeated values, according to the multiplicity of relationships.
 #' @param source Optional filter. Is the source of the answer and can use
 #' "web_public", "web_private" or "mobile".
 #' @param createdAfter Optional filter. This parameter filters the answers that
@@ -34,12 +31,15 @@
 #' that were updated before this date. Is acceptable in the ISO8601 format
 #' ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").
 #'
-#' @return A list, with one or more data frames.
+#' @return A list with two elements when the form has groups or multivalued
+#' fields: the first element is the main data frame (scalar fields and
+#' metadata), the second is a named list of nested data frames linked by
+#' \code{answer_id}. For simple forms with no groups or multivalued fields, a
+#' single \code{data.frame} is returned directly. Use \code{\link{FlattenAnswers}}
+#' to join everything into one flat table.
 #' @examples
 #' \donttest{
 #' GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
-#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-#'              nameForm = "RColetum Test - Iris", singleDataFrame = TRUE)
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              nameForm = "RColetum Test - Iris")
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -68,14 +68,6 @@
 #'              )
 #' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
 #'              idForm = 5705,
-#'              singleDataFrame = TRUE,
-#'              source = "web_private",
-#'              createdAfter = "2012-12-20T19:20:30Z",
-#'              createdBefore = "2018-12-20T19:20:30Z"
-#'              )
-#' GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-#'              idForm = 5705,
-#'              singleDataFrame = TRUE,
 #'              source = "web_private",
 #'              createdAfter = "2012-12-20T19:20:30Z",
 #'              createdBefore = "2018-12-20T19:20:30Z",
@@ -91,7 +83,6 @@
 GetAnswers <- function(token,
                        idForm,
                        nameForm = NULL,
-                       singleDataFrame = FALSE,
                        source = NULL,
                        createdAfter = NULL,
                        createdBefore = NULL,
@@ -187,10 +178,6 @@ GetAnswers <- function(token,
 
   # Check if the form has any answers.
   if (length(resp) == 0) {
-    if (singleDataFrame) {
-      return(createSingleDataFrame(list(emptyResult$mainDf, emptyResult$nestedDfs),
-                                   emptyResult$dictionary))
-    }
     if (length(emptyResult$nestedDfs) == 0) {
       return(emptyResult$mainDf)
     }
@@ -226,9 +213,6 @@ GetAnswers <- function(token,
 
   # Separate N-cardinality columns into their own nested data frames
   resp <- prepareAnswerDF(resp, "answer", groupTree)
-
-  # Extract the dictionary and rebuild resp with only the return-facing elements
-  dictionary <- resp$dictionary
   resp <- list(mainDf = resp$mainDf, nestedDfs = resp$nestedDfs)
 
   # Remove colon from timezone offsets in date columns (e.g. "+01:00" → "+0100")
@@ -247,20 +231,10 @@ GetAnswers <- function(token,
   for (dfName in names(emptyResult$nestedDfs)) {
     emptyNested <- emptyResult$nestedDfs[[dfName]]
     if (is.null(emptyNested) || ncol(emptyNested) == 0) next
-    # Skip if dfName is already covered by a compound key in resp$nestedDfs
     if (any(endsWith(names(resp$nestedDfs), paste0(".", dfName)))) next
     if (is.null(resp$nestedDfs[[dfName]]) || ncol(resp$nestedDfs[[dfName]]) == 0) {
-      dictEntry <- emptyResult$dictionary[emptyResult$dictionary$dfName == dfName, ]
-      if (nrow(dictEntry) == 0) next
       resp$nestedDfs[[dfName]] <- emptyNested
-      if (!dfName %in% dictionary$dfName) {
-        dictionary <- rbind(dictionary, dictEntry)
-      }
     }
-  }
-
-  if (singleDataFrame) {
-    return(createSingleDataFrame(resp, dictionary))
   }
 
   # Return data frames with the answers

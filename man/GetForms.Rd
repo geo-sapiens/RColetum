@@ -4,8 +4,7 @@
 \alias{GetForms}
 \title{Get info of all forms.}
 \usage{
-GetForms(token, status = NULL, publicAnswers = NULL,
-  answerTracking = NULL)
+GetForms(token, status = NULL, publicAnswers = NULL, answerTracking = NULL)
 }
 \arguments{
 \item{token}{String access token.}
@@ -17,13 +16,13 @@ GetForms(token, status = NULL, publicAnswers = NULL,
 not, is possible to use "true" or "false".}
 
 \item{answerTracking}{Optional filter. Indicates if the form is saving the
-local of fill, is possible use "true" or "false".}
+location at fill time. It is possible to use "true" or "false".}
 }
 \value{
 A data frame.
 }
 \description{
-Get the principals info of all forms.
+Retrieve information about all forms.
 }
 \details{
 To get more details about the fields provided by the result, please visit the

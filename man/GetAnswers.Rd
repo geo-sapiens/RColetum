@@ -4,25 +4,28 @@
 \alias{GetAnswers}
 \title{Get all the answers of a form.}
 \usage{
-GetAnswers(token, idForm, nameForm = NULL, singleDataFrame = FALSE,
-  source = NULL, createdAfter = NULL, createdBefore = NULL,
-  createdDeviceAfter = NULL, createdDeviceBefore = NULL,
-  updatedAfter = NULL, updatedBefore = NULL)
+GetAnswers(
+  token,
+  idForm,
+  nameForm = NULL,
+  source = NULL,
+  createdAfter = NULL,
+  createdBefore = NULL,
+  createdDeviceAfter = NULL,
+  createdDeviceBefore = NULL,
+  updatedAfter = NULL,
+  updatedBefore = NULL
+)
 }
 \arguments{
 \item{token}{String access token.}
 
 \item{idForm}{Numeric Id of the required form.}
 
-\item{nameForm}{String name of the required form. Just is used when an idForm
-is not supplied. When this parameter is used, are spent extra one access
-quota.}
+\item{nameForm}{String name of the required form. Used only when idForm is
+not supplied. When this parameter is used, one extra access quota is spent.}
 
-\item{singleDataFrame}{Boolean flag. Indicates the preference to create a
-single data frame with all the answers. In this case, is possible to have
-repeated values, according to the multiplicity of relationships.}
-
-\item{source}{Optional filter. Is the the source of the answer and can use
+\item{source}{Optional filter. Is the source of the answer and can use
 "web_public", "web_private" or "mobile".}
 
 \item{createdAfter}{Optional filter. This parameter filters the answers that
@@ -50,11 +53,16 @@ that were updated before this date. Is acceptable in the ISO8601 format
 ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
 }
 \value{
-A list, with one or more data frames.
+A list with two elements when the form has groups or multivalued
+fields: the first element is the main data frame (scalar fields and
+metadata), the second is a named list of nested data frames linked by
+\code{answer_id}. For simple forms with no groups or multivalued fields, a
+single \code{data.frame} is returned directly. Use \code{\link{FlattenAnswers}}
+to join everything into one flat table.
 }
 \description{
-Get all the currents answers of a specific form. This function makes a call
-to GetFormStructure and spent 2 quotas.
+Get all the current answers of a specific form. This function makes a call
+to GetFormStructure and uses 2 API quotas.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
@@ -63,7 +71,6 @@ To get more details about the fields provided by the result, please visit the
 \examples{
 \donttest{
 GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5705)
-GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", ,"RColetum Test - Iris", TRUE)
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              nameForm = "RColetum Test - Iris")
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
@@ -92,14 +99,6 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              )
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
-             singleDataFrame = TRUE,
-             source = "web_private",
-             createdAfter = "2012-12-20T19:20:30Z",
-             createdBefore = "2018-12-20T19:20:30Z"
-             )
-GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-             idForm = 5705,
-             singleDataFrame = TRUE,
              source = "web_private",
              createdAfter = "2012-12-20T19:20:30Z",
              createdBefore = "2018-12-20T19:20:30Z",

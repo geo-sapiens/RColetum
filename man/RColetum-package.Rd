@@ -35,7 +35,6 @@ Useful links:
 Authors:
 \itemize{
   \item Marcelo Magnani \email{marcelo@geosapiens.com.br}
-  \item Rodrigo Sant'Ana \email{oc.rodrigosantana@gmail.com}
 }
 
 Other contributors:
