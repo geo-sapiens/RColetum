@@ -1,49 +1,121 @@
-requestFunction <- function(query, token) {
-  # Request function
-  # Is used to make all the requests to the webservice.
+restGetFunction <- function(url, token, params = NULL) {
+  # Makes a GET request to the Coletum REST API v2.
+  # Returns the full parsed JSON response (list with $data and $pagination,
+  # or a plain object for single-resource endpoints like /forms/{id}).
+  base_url <- "http://localhost/api/webservice/v2"
+  full_url <- paste0(base_url, url)
 
-  # API's URL
-  url <- "https://coletum.com/api/graphql"
+  resp <- httr::GET(
+    url    = full_url,
+    config = httr::add_headers(Token = token),
+    query  = params
+  )
 
-  # Request
-  resp <- httr::GET(url = url,
-                    config = httr::add_headers(Token = token),
-                    query = list(query = query),
-                    encode = "json")
+  status_code  <- resp$status_code
+  json_content <- httr::content(resp, "text", encoding = "UTF-8")
 
-  # Get the status code
-  status_code <- toString(resp$status_code)
-  # Get the json content from the response
-  jsonContent <- httr::content(resp, "text", encoding = "UTF-8")
-
-  # Convert the response to useful object
-  resp <- jsonlite::fromJSON(
-    txt = jsonContent,
-    simplifyVector = TRUE,
+  parsed <- jsonlite::fromJSON(
+    txt               = json_content,
+    simplifyVector    = TRUE,
     simplifyDataFrame = TRUE
   )
 
-  # Catch some error from API
-  if (!identical(status_code, "200")) {
-    if (!is.null(resp$code)) {
-      stop(paste0("Error ", status_code, ": ", resp$message, "\n"))
-    } else {
-      if (!is.null(resp$errors)) {
-        stop(paste0("Error ", status_code, ": ", resp$errors$message, "\n"))
-      } else {
-        stop(paste0("Error ", status_code, ": ", resp$error$message, "\n"))
+  if (!identical(as.character(status_code), "200")) {
+    msg <- if (!is.null(parsed$message)) parsed$message else toString(status_code)
+    stop(paste0("Error ", status_code, ": ", msg, "\n"))
+  }
+
+  return(parsed)
+}
+
+fetchAllPages <- function(url, token, params, all_pages, page, page_size) {
+  # Fetches data from a paginated REST endpoint.
+  # If all_pages = TRUE, loops through all pages and returns a combined data.frame.
+  # If all_pages = FALSE, returns only the requested page as a data.frame.
+  params$page_size <- page_size
+
+  if (!isTRUE(all_pages)) {
+    params$page <- page
+    resp <- restGetFunction(url, token, params)
+    data <- resp$data
+    if (is.null(data) || length(data) == 0) return(data.frame())
+    return(data)
+  }
+
+  params$page <- 1
+  all_data <- list()
+
+  repeat {
+    resp <- restGetFunction(url, token, params)
+    data <- resp$data
+    if (!is.null(data) && length(data) > 0) {
+      all_data <- c(all_data, list(data))
+    }
+    if (!isTRUE(resp$pagination$has_next)) break
+    params$page <- params$page + 1
+  }
+
+  if (length(all_data) == 0) return(data.frame())
+  dplyr::bind_rows(all_data)
+}
+
+normalizeComponents <- function(components) {
+  # Renames v2 component fields to the internal names used by helper functions:
+  #   id         → componentId
+  #   help_block → helpBlock
+  # Applies recursively to nested components (groups).
+  if (is.null(components) || !is.data.frame(components) || nrow(components) == 0) {
+    return(components)
+  }
+
+  if ("id" %in% names(components)) {
+    names(components)[names(components) == "id"] <- "componentId"
+  }
+  if ("help_block" %in% names(components)) {
+    names(components)[names(components) == "help_block"] <- "helpBlock"
+  }
+
+  if ("components" %in% names(components)) {
+    for (i in seq_len(nrow(components))) {
+      sub <- components$components[[i]]
+      if (!is.null(sub) && is.data.frame(sub) && nrow(sub) > 0) {
+        components$components[[i]] <- normalizeComponents(sub)
       }
     }
-
   }
 
-  # Catch some another existing error or warning
-  if (!is.null(resp$errors$message)) {
-    warning(paste0("\nCheck careful the result, because something may have gone ",
-                   "wrong: \n", resp$errors$message))
-  }
+  return(components)
+}
 
-  return(resp$data[[1]])
+extractCoordinates <- function(df, col_prefix, lng_col, lat_col) {
+  # Extracts longitude and latitude from a GeoJSON Point column.
+  # col_prefix: base column name, e.g. "metaData.created_at_coordinates"
+  # After jsonlite::flatten, GeoJSON {type, coordinates:[lng,lat]} becomes:
+  #   col_prefix.type  and  col_prefix.coordinates (list column)
+  # Handles missing or all-null coordinate columns by producing NA columns.
+  coords_col <- paste0(col_prefix, ".coordinates")
+  type_col   <- paste0(col_prefix, ".type")
+
+  if (coords_col %in% names(df)) {
+    df[[lng_col]] <- sapply(df[[coords_col]], function(x) {
+      if (is.null(x) || length(x) < 2) NA_real_ else as.numeric(x[1])
+    })
+    df[[lat_col]] <- sapply(df[[coords_col]], function(x) {
+      if (is.null(x) || length(x) < 2) NA_real_ else as.numeric(x[2])
+    })
+    cols_to_drop <- intersect(c(type_col, coords_col), names(df))
+    if (length(cols_to_drop) > 0) {
+      df <- dplyr::select(df, -dplyr::all_of(cols_to_drop))
+    }
+  } else if (col_prefix %in% names(df)) {
+    df[[lng_col]] <- NA_real_
+    df[[lat_col]] <- NA_real_
+    df <- dplyr::select(df, -dplyr::all_of(col_prefix))
+  } else {
+    df[[lng_col]] <- NA_real_
+    df[[lat_col]] <- NA_real_
+  }
+  return(df)
 }
 
 buildGroupTree <- function(dataFrame) {
@@ -142,11 +214,11 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
   # answers, but with 0 rows everywhere. Used when the API returns no data.
   result <- collectEmptyFields(form_structure, "answer")
 
-  metaCols <- c("userName", "userId", "source",
-                "createdAt", "createdAtDevice",
-                "createdAtCoordinates.latitude", "createdAtCoordinates.longitude",
-                "updatedAt", "updatedAtCoordinates.latitude",
-                "updatedAtCoordinates.longitude")
+  metaCols <- c("created_by_user_name", "created_by_user_id", "created_at_source",
+                "created_at",
+                "created_at_coordinates.latitude", "created_at_coordinates.longitude",
+                "updated_at",
+                "updated_at_coordinates.latitude", "updated_at_coordinates.longitude")
   allMainCols <- c("answer_id", result$mainCols, metaCols)
   mainDf <- as.data.frame(
     setNames(
@@ -159,25 +231,6 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
   return(list(dictionary = result$dictionary,
               mainDf    = mainDf,
               nestedDfs = result$nestedDfs))
-}
-
-buildQueryFragment <- function(dataFrame, queryFragment = NULL) {
-  # Recursively walks the form structure to build the GraphQL answer{...}
-  # query fragment. Groups become nested { } blocks; leaf fields become
-  # comma-separated componentIds.
-  # Returns the fragment as a character string.
-  n_components <- nrow(dataFrame)
-  for (i in seq_len(n_components)) {
-
-    if (identical(dataFrame$type[i], "group")) {
-      queryFragment <- paste0(queryFragment, dataFrame$componentId[i], "{")
-      queryFragment <- buildQueryFragment(dataFrame$components[[i]], queryFragment)
-      queryFragment <- paste0(queryFragment, "}")
-    } else {
-      queryFragment <- paste0(queryFragment, dataFrame$componentId[i], ",")
-    }
-  }
-  return(queryFragment)
 }
 
 prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
@@ -369,22 +422,6 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
 
   return(singleDataFrame)
 
-}
-
-appendDateFilter <- function(filters, field_name, value) {
-  # Validates an ISO 8601 date string and appends a "field_name:\"value\","
-  # fragment to `filters`. Returns `filters` unchanged if `value` is NULL.
-  # Stops with a descriptive error if the date format is invalid.
-  if (is.null(value)) {
-    return(filters)
-  }
-  if (!validDate_ISO8601(value)) {
-    stop(paste0(
-      "The date provided for '", field_name, "' is not in ISO 8601 format. ",
-      "Accepted formats are: 'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ssTZD'."
-    ))
-  }
-  paste0(filters, field_name, ":\"", value, "\",")
 }
 
 validDate_ISO8601 <- function(userDate) {
