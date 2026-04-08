@@ -59,19 +59,33 @@ FlattenAnswers <- function(answers) {
 
     idCols <- grep("_id$", names(df), value = TRUE)
     selfCol <- paste0(dfName, "_id")
-    parentIdCol <- idCols[idCols != selfCol]
+    parentIdCols <- idCols[idCols != selfCol]
 
-    if (length(parentIdCol) == 1) {
+    # main_df_id is the explicit FK to the main df ("answer"), added to avoid
+    # collision with relational answer_id (which references another form).
+    if ("main_df_id" %in% parentIdCols) {
+      parentName <- "answer"
+    } else {
+      # For relational nested dfs, answer_id holds a reference to another form's
+      # submission, not the hierarchical parent FK. Prefer any other _id column.
+      nonAnswerParentCols <- parentIdCols[parentIdCols != "answer_id"]
+      if (length(nonAnswerParentCols) >= 1) {
+        parentIdCol <- nonAnswerParentCols[1]
+      } else if (length(parentIdCols) == 1) {
+        parentIdCol <- parentIdCols
+      } else {
+        next
+      }
       parentName <- sub("_id$", "", parentIdCol)
-      dictionary <- rbind(
-        dictionary,
-        data.frame(
-          dfName = dfName,
-          parentDfName = parentName,
-          stringsAsFactors = FALSE
-        )
-      )
     }
+    dictionary <- rbind(
+      dictionary,
+      data.frame(
+        dfName = dfName,
+        parentDfName = parentName,
+        stringsAsFactors = FALSE
+      )
+    )
   }
   dictionary
 }

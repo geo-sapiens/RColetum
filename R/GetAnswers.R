@@ -35,12 +35,12 @@
 #' @return A list with two elements when the form has groups or multivalued
 #'   fields: the first element is the main data frame (scalar fields and
 #'   metadata), the second is a named list of nested data frames linked by
-#'   \code{answer_id}. For simple forms with no groups or multivalued fields, a
+#'   \code{main_df_id}. For simple forms with no groups or multivalued fields, a
 #'   single \code{data.frame} is returned directly. Use \code{\link{FlattenAnswers}}
 #'   to join everything into one flat table.
 #'
 #'   Metadata columns in the main data frame:
-#'   \code{answer_id}, \code{created_by_user_name}, \code{created_by_user_id},
+#'   \code{main_df_id}, \code{created_by_user_name}, \code{created_by_user_id},
 #'   \code{created_at_source}, \code{created_at},
 #'   \code{created_at_coordinates.latitude},
 #'   \code{created_at_coordinates.longitude}, \code{updated_at},
@@ -185,7 +185,7 @@ GetAnswers <- function(token,
   answer_cols <- grep("^answer\\.", names(resp), value = TRUE)
   names(resp)[names(resp) %in% answer_cols] <- sub("^answer\\.", "", answer_cols)
 
-  # Reorder columns: answer_id + form fields (original order) + metadata.
+  # Reorder columns: main_df_id + form fields (original order) + metadata.
   # grep matches both plain IDs and dot-notation group.field IDs.
   reorderNames <- unlist(lapply(orderNames, grep, names(resp), value = TRUE))
   reorderNames <- c(
@@ -205,7 +205,7 @@ GetAnswers <- function(token,
 
   # Rename to the v2 output naming convention
   resp <- dplyr::rename(resp,
-    answer_id            = "id",
+    main_df_id           = "id",
     created_by_user_name = "meta_data.created_by_user_name",
     created_by_user_id   = "meta_data.created_by_user_id",
     created_at_source    = "meta_data.created_at_source",

@@ -21,7 +21,13 @@ restGetFunction <- function(url, token, params = NULL) {
   )
 
   if (!identical(as.character(status_code), "200")) {
-    msg <- if (!is.null(parsed$message)) parsed$message else toString(status_code)
+    msg <- if (!is.null(parsed$message)) {
+      parsed$message
+    } else if (!is.null(parsed$error$message)) {
+      parsed$error$message
+    } else {
+      toString(status_code)
+    }
     stop(paste0("Error ", status_code, ": ", msg, "\n"))
   }
 
@@ -155,7 +161,7 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
       isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1
       if (!isRoot || isMultivalue) {
         sub <- collectEmptyFields(components$components[i][[1]], cId, TRUE)
-        parentFKCol <- paste0(parentName, "_id")
+        parentFKCol <- if (parentName == "answer") "main_df_id" else paste0(parentName, "_id")
         groupIdCol  <- paste0(cId, "_id")
         allGroupCols <- c(sub$mainCols, parentFKCol, groupIdCol)
         nestedDfs[[cId]] <- as.data.frame(
@@ -184,7 +190,7 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
       maxVal      <- if ("maximum" %in% names(components)) components$maximum[i] else 1L
       isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1
       if (isMultivalue) {
-        parentFKCol <- paste0(parentName, "_id")
+        parentFKCol <- if (parentName == "answer") "main_df_id" else paste0(parentName, "_id")
         groupIdCol  <- paste0(cId, "_id")
         allCols <- c(parentFKCol, cId, groupIdCol)
         nestedDfs[[cId]] <- as.data.frame(
@@ -219,7 +225,7 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
                 "created_at_coordinates.latitude", "created_at_coordinates.longitude",
                 "updated_at",
                 "updated_at_coordinates.latitude", "updated_at_coordinates.longitude")
-  allMainCols <- c("answer_id", result$mainCols, metaCols)
+  allMainCols <- c("main_df_id", result$mainCols, metaCols)
   mainDf <- as.data.frame(
     setNames(
       replicate(length(allMainCols), character(0), simplify = FALSE),
@@ -284,23 +290,24 @@ prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
 
         if (is.list(dataFrame[i, j])) {
           aux <- NULL
-          columnId <- paste0(dataFrameName, "_id")
+          # For the main df ("answer"), both the FK lookup column and the FK
+          # column added to nested dfs are "main_df_id", avoiding collision with
+          # relational answer_id (which references another form's submission).
+          columnId <- if (dataFrameName == "answer") "main_df_id" else paste0(dataFrameName, "_id")
           if (is.data.frame(dataFrame[i, j][[1]])) {
             if (nrow(dataFrame[i, j][[1]]) != 0) {
               aux[[1]] <- cbind(dataFrame[i, j][[1]],
                                 "temp" = dataFrame[i, columnId],
                                 stringsAsFactors = FALSE)
               # Rename just the temp column
-              names(aux[[1]])[names(aux[[1]]) == "temp"] <-
-                paste0(dataFrameName, "_id")
+              names(aux[[1]])[names(aux[[1]]) == "temp"] <- columnId
             }
 
           } else {
             if (length(dataFrame[i, j][[1]]) != 0) {
               aux[[1]] <- data.frame(dataFrame[i, columnId], dataFrame[i, j],
                                      stringsAsFactors = FALSE)
-              names(aux[[1]]) <- c(paste0(dataFrameName, "_id"),
-                                   names(dataFrame[j]))
+              names(aux[[1]]) <- c(columnId, names(dataFrame[j]))
             }
           }
 
@@ -400,15 +407,10 @@ createSingleDataFrame <- function(dataFrame, dictionary) {
       names(dataFrame[[i]]) <- paste0(names(dataFrame[i]),
                                       ".",
                                       names(dataFrame[[i]]))
-      parentKey <- paste0(
-        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-        ".",
-        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])],
-        "_id")
-      dFKey <- paste0(
-        names(dataFrame[i]),
-        ".",
-        dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])], "_id")
+      parentDfN <- dictionary$parentDfName[dictionary$dfName == names(dataFrame[i])]
+      parentFKName <- if (parentDfN == "answer") "main_df_id" else paste0(parentDfN, "_id")
+      parentKey <- paste0(parentDfN, ".", parentFKName)
+      dFKey     <- paste0(names(dataFrame[i]), ".", parentFKName)
 
       # dplyr::full_join's `by` expects setNames(y_column, x_column).
       # parentKey is the join column in the left (x) table;
@@ -429,9 +431,13 @@ validDate_ISO8601 <- function(userDate) {
     return(FALSE)
   }
   userDateSize <- nchar(userDate)
-  if (userDateSize == nchar("YYYY/MM/DD")) {
-    error <- try(as.Date(userDate), silent = TRUE)
-    if (identical(class(error), "try-error")) {
+  if (userDateSize == nchar("YYYY-MM-DD")) {
+    # Strict ISO 8601 date: must match YYYY-MM-DD exactly
+    if (!grepl("^\\d{4}-\\d{2}-\\d{2}$", userDate)) {
+      return(FALSE)
+    }
+    parsed <- try(as.Date(userDate, format = "%Y-%m-%d"), silent = TRUE)
+    if (identical(class(parsed), "try-error") || any(is.na(parsed))) {
       return(FALSE)
     } else {
       return(TRUE)

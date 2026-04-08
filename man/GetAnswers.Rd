@@ -11,10 +11,13 @@ GetAnswers(
   source = NULL,
   createdAfter = NULL,
   createdBefore = NULL,
-  createdDeviceAfter = NULL,
-  createdDeviceBefore = NULL,
   updatedAfter = NULL,
-  updatedBefore = NULL
+  updatedBefore = NULL,
+  createdBy = NULL,
+  updatedBy = NULL,
+  page = 1,
+  page_size = 100,
+  all_pages = TRUE
 )
 }
 \arguments{
@@ -25,48 +28,60 @@ GetAnswers(
 \item{nameForm}{String name of the required form. Used only when idForm is
 not supplied. When this parameter is used, one extra access quota is spent.}
 
-\item{source}{Optional filter. Is the source of the answer and can use
-"web_public", "web_private" or "mobile".}
+\item{source}{Optional filter. Origin of the answer: \code{"web_public"},
+\code{"web_private"} or \code{"mobile"}.}
 
-\item{createdAfter}{Optional filter. This parameter filters the answers that
-were answered after this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{createdAfter}{Optional filter. Returns answers created after this date
+(exclusive). Accepts ISO 8601 format (\code{"YYYY-MM-DD"} or
+\code{"YYYY-MM-DDThh:mm:ssTZD"}).}
 
-\item{createdBefore}{Optional filter. This parameter filters the answers
-that were answered before this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{createdBefore}{Optional filter. Returns answers created before this
+date (exclusive). Accepts ISO 8601 format.}
 
-\item{createdDeviceAfter}{Optional filter. This parameter filters the answers
-that were answered after this date on device time. Is acceptable in the
-ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{updatedAfter}{Optional filter. Returns answers updated after this date
+(exclusive). Accepts ISO 8601 format.}
 
-\item{createdDeviceBefore}{Optional filter. This parameter filters the
-answers that were answered before this date on device time. Is acceptable in
-the ISO8601 format ("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{updatedBefore}{Optional filter. Returns answers updated before this
+date (exclusive). Accepts ISO 8601 format.}
 
-\item{updatedAfter}{Optional filter. This parameter filters the answers that
-were updated after this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{createdBy}{Optional filter. Returns answers created by the user with
+this numeric ID.}
 
-\item{updatedBefore}{Optional filter. This parameter filters the answers
-that were updated before this date. Is acceptable in the ISO8601 format
-("YYYY-MM-DD" or "YYYY-MM-DDThh:mm:ssTZD").}
+\item{updatedBy}{Optional filter. Returns answers whose last update was made
+by the user with this numeric ID.}
+
+\item{page}{Integer. Starting page when \code{all_pages = FALSE}. Default: 1.}
+
+\item{page_size}{Integer. Number of records per API request (max 500).
+Default: 100.}
+
+\item{all_pages}{Logical. If \code{TRUE} (default), fetches all pages
+automatically and returns a combined result. If \code{FALSE}, returns
+only the page specified by \code{page}.}
 }
 \value{
 A list with two elements when the form has groups or multivalued
-fields: the first element is the main data frame (scalar fields and
-metadata), the second is a named list of nested data frames linked by
-\code{answer_id}. For simple forms with no groups or multivalued fields, a
-single \code{data.frame} is returned directly. Use \code{\link{FlattenAnswers}}
-to join everything into one flat table.
+  fields: the first element is the main data frame (scalar fields and
+  metadata), the second is a named list of nested data frames linked by
+  \code{main_df_id}. For simple forms with no groups or multivalued fields, a
+  single \code{data.frame} is returned directly. Use \code{\link{FlattenAnswers}}
+  to join everything into one flat table.
+
+  Metadata columns in the main data frame:
+  \code{main_df_id}, \code{created_by_user_name}, \code{created_by_user_id},
+  \code{created_at_source}, \code{created_at},
+  \code{created_at_coordinates.latitude},
+  \code{created_at_coordinates.longitude}, \code{updated_at},
+  \code{updated_at_coordinates.latitude},
+  \code{updated_at_coordinates.longitude}.
 }
 \description{
-Get all the current answers of a specific form. This function makes a call
-to GetFormStructure and uses 2 API quotas.
+Get all the current answers of a specific form. This function calls
+\code{\link{GetForm}} internally to understand the form structure.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://coletum.docs.apiary.io/#reference/0/preenchimentos/listar-preenchimentos}{API documentation}.
+\href{https://coletum.com/api/webservice/v2}{API documentation}.
 }
 \examples{
 \donttest{
@@ -75,38 +90,18 @@ GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              nameForm = "RColetum Test - Iris")
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
-             source = NULL,
              createdAfter = "2012-12-20",
-             createdBefore = "2018-12-20"
-             )
-GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-             idForm = 5705,
-             source = NULL,
-             createdAfter = "2012-12-20",
-             createdBefore = "2018-12-20T19:20:30+01:00"
-             )
-GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-             idForm = 5705,
-             source = NULL,
-             createdAfter = "2012-12-20T19:20:30Z",
-             createdBefore = "2018-12-20T19:20:30+01:00"
-             )
+             createdBefore = "2018-12-20")
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
              source = "web_public",
              createdAfter = "2012-12-20T19:20:30+01:00",
-             createdBefore = "2018-12-20T19:20:30+01:00"
-             )
+             createdBefore = "2018-12-20T19:20:30+01:00")
 GetAnswers(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
              idForm = 5705,
-             source = "web_private",
-             createdAfter = "2012-12-20T19:20:30Z",
-             createdBefore = "2018-12-20T19:20:30Z",
-             createdDeviceAfter = "2012-12-20T19:20:30Z",
-             createdDeviceBefore = "2018-12-20T19:20:30Z",
-             updatedAfter = "2018-05-20T19:20:30Z",
-             updatedBefore = "2018-06-20T19:20:30Z"
-             )
+             all_pages = FALSE,
+             page = 1,
+             page_size = 3)
 }
 
 }
