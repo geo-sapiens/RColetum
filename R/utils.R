@@ -359,7 +359,7 @@ prepareAnswerDF <- function(dataFrame, dataFrameName, groupTree = NULL) {
 
     # Remove the extracted N-cardinality columns from the current data frame
     if (length(extractedDfs) != 0) {
-      dataFrame <- dplyr::select(dataFrame, -dplyr::one_of(names(extractedDfs)))
+      dataFrame <- dplyr::select(dataFrame, -dplyr::all_of(names(extractedDfs)))
     }
 
     if (first) {
