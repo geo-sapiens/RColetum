@@ -165,7 +165,7 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
         groupIdCol  <- paste0(cId, "_id")
         allGroupCols <- c(sub$mainCols, parentFKCol, groupIdCol)
         nestedDfs[[cId]] <- as.data.frame(
-          setNames(
+          stats::setNames(
             replicate(length(allGroupCols), character(0), simplify = FALSE),
             allGroupCols
           ),
@@ -194,7 +194,7 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
         groupIdCol  <- paste0(cId, "_id")
         allCols <- c(parentFKCol, cId, groupIdCol)
         nestedDfs[[cId]] <- as.data.frame(
-          setNames(
+          stats::setNames(
             replicate(length(allCols), character(0), simplify = FALSE),
             allCols
           ),
@@ -227,7 +227,7 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
                 "updated_at_coordinates.latitude", "updated_at_coordinates.longitude")
   allMainCols <- c("main_df_id", result$mainCols, metaCols)
   mainDf <- as.data.frame(
-    setNames(
+    stats::setNames(
       replicate(length(allMainCols), character(0), simplify = FALSE),
       allMainCols
     ),

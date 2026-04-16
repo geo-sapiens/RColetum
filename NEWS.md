@@ -1,6 +1,21 @@
-# RColetum 0.2.2.9000
+# RColetum 1.0.0
 
-* 
+* Migrated all API calls from GraphQL (V1) to REST (`/api/webservice/v2`).
+* `GetFormStructure` replaced by `GetForm` (returns form metadata and component
+  tree via the new REST endpoint).
+* `GetAnswers` no longer accepts `singleDataFrame` parameter. Use the new
+  `FlattenAnswers()` function instead.
+* Added `FlattenAnswers()`: joins all nested data frames from `GetAnswers` into
+  a single flat data frame using `dplyr::full_join`.
+* Added pagination support to `GetForms` and `GetAnswers` (`page`, `page_size`,
+  `all_pages`).
+* Authentication header changed to `Token: <value>` (was `Authorization: Token
+  <value>` in V1).
+* Metadata columns renamed to snake_case: `created_by_user_name`,
+  `created_by_user_id`, `created_at_source`, etc.
+* `GetAnswers` now returns a correctly-shaped empty structure (never `NULL`)
+  when no submissions match the filters.
+
 
 # RColetum 0.2.2
 

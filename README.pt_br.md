@@ -12,6 +12,7 @@ autenticado na página do Web service.
 Se você não tiver uma conta, [INSCREVA-SE AGORA](https://coletum.com/pt_BR/register/).
 
 ## Como instalar o RColetum
+
 Instale este pacote a partir do CRAN:
 ```{r}
 install.packages("RColetum")
@@ -23,25 +24,27 @@ Ou instale a versão de desenvolvedor a partir do GitHub usando o pacote
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")
 ```
+
 ## Como usar o RColetum
-Nesta versão do pacote, existem três funções principais disponíveis,
-que permitem obter seus principais dados do [Coletum](https://coletum.com):
+Nesta versão do pacote, existem quatro funções principais disponíveis,
+que permitem obter seus dados do [Coletum](https://coletum.com):
 
 ### Obter meus formulários
-* `GetForms` essa função obtém a lista de formulários da sua conta.
+* `GetForms` lista todos os formulários da conta.
 
 ```{r}
 meusFormularios <- GetForms("TOKEN_HERE")
 ```
+
 ### Obter a estrutura de um formulário
-* `GetFormStructure` essa função obtém a estrutura de um formulário específico.
-A estrutura contém as especificações de cada campo, como o nome, tipo,
-hierarquia e outros.
+* `GetForm` recupera os metadados e a estrutura completa de campos de um formulário
+específico (rótulos, tipos, opções, regras condicionais, etc.).
 
 ```{r}
-meusFormulariostructure <- GetFormStructure(token = "TOKEN_HERE", idForm = FORM_ID)
+meuFormulario <- GetForm(token = "TOKEN_HERE", idForm = FORM_ID)
 ```
-### Obter as respostas 
+
+### Obter as respostas
 * `GetAnswers` esta função obtém as respostas de um formulário específico. 
 A estrutura de dados retornada depende da estrutura do formulário. Quando o 
 formulário não tem campo com cardinalidade maior que 1, a estrutura é um data
@@ -52,17 +55,16 @@ a estrutura é uma lista de data frames.
 myAnswers <- GetAnswers(token = "TOKEN_HERE", idForm = FORM_ID)
 ```
 
-Se você deseja obter as respostas em um único quadro de dados com dados 
-redundantes (causado por campos com cardinalidade maior que 1), você deve usar
-parâmetro `singleDataFrame` como TRUE.
+### Achatar respostas
+* `FlattenAnswers` une todos os data frames do `GetAnswers` em um único data frame
+plano. Atenção: isso causa duplicação de linhas para submissões com grupos repetidos.
 
 ```{r}
-myAnswers <- GetAnswers(token = "TOKEN_HERE", 
-                        idForm = FORM_ID, 
-                        singleDataFrame = TRUE)
+myFlat <- GetAnswers(token = "TOKEN_HERE", idForm = FORM_ID) |>
+  FlattenAnswers()
 ```
 
-## Examplo completo
+## Exemplo completo
 ```{r}
 install.packages("devtools")
 devtools::install_github("geo-sapiens/RColetum")
@@ -78,13 +80,11 @@ meuToken <- "cizio7xeohwgc8k4g4koo008kkoocwg"
 meusFormularios <- GetForms(meuToken)
 
 ####@> Obtendo a estrutura do formulário usando o ID do formulário
-starWarsEstruturaFormulario <- GetFormStructure(token = meuToken,
-                                                idForm = 5713)
+starWarsEstruturaFormulario <- GetForm(token = meuToken, idForm = 5713)
 
 ####@> Obtendo estrutura do formulário usando o nome do formulário
-starWarsEstruturaFormulario <-
-  GetFormStructure(token = meuToken,  
-                   nameForm = "RColetum Test - Star Wars")
+starWarsEstruturaFormulario <- GetForm(token = meuToken,  
+                                       nameForm = "RColetum Test - Star Wars")
 
 ####@> Obtendo respostas para um formulário usando o ID do formulário
 starWarsRespostas <- GetAnswers(token = meuToken, 
@@ -92,16 +92,16 @@ starWarsRespostas <- GetAnswers(token = meuToken,
 
 ####@> Obtendo respostas para um formulário usando o nome do formulário
 ####@> Neste caso, temos X + 1 dataframes, onde X é o número de campos N
-####@> (campos com cardinalidade> 1)
+####@> (campos com cardinalidade > 1)
 starWarsRespostas <- GetAnswers(token = meuToken, 
                                 nameForm = "RColetum Test - Star Wars")
 
-####@> Obtendo respostas de um formulário obtendo resultado como um único 
-####@> dataframe
-####@> Neste caso, temos redundância para N campos
-starWarsRespostasUnicoDataframe <- GetAnswers(token = meuToken, 
-                                              idForm = 5713, 
-                                              singleDataFrame = TRUE)
+####@> Achatar todos os data frames em um único (atenção à duplicação de linhas
+####@> quando grupos repetidos estão presentes)
+starWarsRespostasUnicoDataframe <- FlattenAnswers(myAnswers)
+
+####@> Alternativa com pipe
+starWarsRespostasUnicoDataframe <- GetAnswers(token = meuToken, idForm = FORM_ID) |> FlattenAnswers()
 
 
 ####@> VAMOS TER ALGUMA DIVERSÃO E MOSTRAR UM GRÁFICO COM IMC (ÍNDICE DE MASSA

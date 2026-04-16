@@ -25,23 +25,24 @@ devtools::install_github("geo-sapiens/RColetum")
 ```
 
 ## How to use RColetum
-In this version of the package, there are three main functions available, 
-Those able you to get your main data from [Coletum](https://coletum.com):
+In this version of the package, there are four main functions available,
+those allow you to get your data from [Coletum](https://coletum.com):
 
 ### Get my forms
-* `GetForms` this function get the list of forms in your account.
+* `GetForms` lists all forms in the account.
 
 ```{r}
-myForms <- GetForms("TOKEN_HERE")
+myForms <- GetForms("YOUR_TOKEN_HERE")
 ```
+
 ### Get form structure
-* `GetFormStructure` this function gets the structure from a specific form. The
-structure contains the specifications of each field, like the name, type, 
-hierarchy and others.
+* `GetForm` retrieves the metadata and complete field structure of a specific
+form (labels, types, options, conditional rules, etc.).
 
 ```{r}
-myFormStructure <- GetFormStructure(token = "TOKEN_HERE", idForm = FORM_ID)
+myForm <- GetForm(token = "YOUR_TOKEN_HERE", idForm = FORM_ID)
 ```
+
 ### Get answers
 * `GetAnswers` this function gets the answers from a specific form. The data 
 structure returned depends of the form structure. When the form has no 
@@ -50,17 +51,17 @@ form has one or more fields with cardinality greater then one, the structure
 is a list of data frames.
 
 ```{r}
-myAnswers <- GetAnswers(token = "TOKEN_HERE", idForm = FORM_ID)
+myAnswers <- GetAnswers(token = "YOUR_TOKEN_HERE", idForm = FORM_ID)
 ```
 
-If you want to get the answers in a single data frame with redundant data 
-(caused by fields with cardinality greater than 1), you should use 
-`singleDataFrame` parameter as TRUE.
+### Flatten answers
+* `FlattenAnswers` joins all data frames from `GetAnswers` into a single flat
+data frame. Note: this causes row duplication for submissions with repeating
+groups.
 
 ```{r}
-myAnswers <- GetAnswers(token = "TOKEN_HERE", 
-                        idForm = FORM_ID, 
-                        singleDataFrame = TRUE)
+myFlat <- GetAnswers(token = "YOUR_TOKEN_HERE", idForm = FORM_ID) |>
+  FlattenAnswers()
 ```
 
 ## Full example
@@ -79,11 +80,10 @@ myToken <- "cizio7xeohwgc8k4g4koo008kkoocwg"
 myForms <- GetForms(myToken)
 
 ####@> Getting form structure using form id
-starWarsFormStructure <- GetFormStructure(token = myToken,
-                                          idForm = 5713)
+starWarsFormStructure <- GetForm(token = myToken, idForm = 5713)
 
 ####@> Getting form structure using form name
-starWarsFormStructure <- GetFormStructure(token = myToken,  
+starWarsFormStructure <- GetForm(token = myToken,  
                                           nameForm = "RColetum Test - Star Wars")
 
 ####@> Getting answers for a form using form id
@@ -96,12 +96,12 @@ starWarsFormAnswer <- GetAnswers(token = myToken,
 starWarsFormAnswer <- GetAnswers(token = myToken, 
                                  nameForm = "RColetum Test - Star Wars")
 
-####@> Getting answers for a form getting result as single dataframe
-####@> In this case we have redundancy for N fields
-starWarsFormAnswerSingleDataframe <- GetAnswers(token = myToken, 
-                                                idForm = 5713, 
-                                                singleDataFrame = TRUE)
+####@> Flatten all data frames into one (beware of row duplication
+####@> when repeating groups are present)
+starWarsFormAnswerSingleDataframe <- FlattenAnswers(myAnswers)
 
+####@> Pipe-friendly alternative
+starWarsFormAnswerSingleDataframe <- GetAnswers(token = myToken, idForm = FORM_ID) |> FlattenAnswers()
 
 ####@> LET'S HAVE SOME FUN AND SHOW A CHART WITH BMI (BODY MASS INDEX) 
 ####@> OF EACH STAR WARS CHARACTERS
