@@ -7,9 +7,11 @@
 #' \itemize{
 #'
 #' \item \code{\link{GetForms}}: get the information about all forms.
-#' \item \code{\link{GetFormStructure}}: get the form structure of a form.
+#' \item \code{\link{GetForm}}: get the metadata and field structure of a form.
 #' \item \code{\link{GetAnswers}}: get the all the answers of a form or
 #' personalize with filters and take just what you need.
+#' \item \code{\link{FlattenAnswers}}: flatten a \code{GetAnswers} result into
+#' a single data frame.
 #'
 #' }
 #'

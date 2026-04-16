@@ -4,39 +4,51 @@
 \alias{GetForms}
 \title{Get info of all forms.}
 \usage{
-GetForms(token, status = NULL, publicAnswers = NULL,
-  answerTracking = NULL)
+GetForms(
+  token,
+  status = NULL,
+  name = NULL,
+  page = 1,
+  page_size = 100,
+  all_pages = TRUE
+)
 }
 \arguments{
 \item{token}{String access token.}
 
-\item{status}{Optional filter. That is the state of the form: accept
-"enabled" or "disabled".}
+\item{status}{Optional filter. State of the form: \code{"enabled"} or
+\code{"disabled"}.}
 
-\item{publicAnswers}{Optional filter. Indicates if the form is public or
-not, is possible to use "true" or "false".}
+\item{name}{Optional filter. Returns forms whose name contains this string
+(partial match, case-insensitive).}
 
-\item{answerTracking}{Optional filter. Indicates if the form is saving the
-local of fill, is possible use "true" or "false".}
+\item{page}{Integer. Starting page when \code{all_pages = FALSE}. Default: 1.}
+
+\item{page_size}{Integer. Number of records per API request (max 500).
+Default: 100.}
+
+\item{all_pages}{Logical. If \code{TRUE} (default), fetches all pages
+automatically and returns a combined data frame. If \code{FALSE}, returns
+only the page specified by \code{page}.}
 }
 \value{
-A data frame.
+A data frame with columns: \code{id}, \code{name},
+  \code{description}, \code{status}, \code{category}, \code{version},
+  \code{public_answers}. Returns \code{NULL} with a warning if no forms are
+  found.
 }
 \description{
-Get the principals info of all forms.
+Retrieve information about all forms in the account.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://coletum.docs.apiary.io/#reference/0/formularios/listar-formularios}{API documentation}.
+\href{https://coletum.com/en_US/webservice/v2/docs}{API documentation}.
 }
 \examples{
 \donttest{
 GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
-GetForms("cizio7xeohwgc8k4g4koo008kkoocwg","enabled","true","true")
-GetForms(token = "cizio7xeohwgc8k4g4koo008kkoocwg",
-           status = "enabled",
-           publicAnswers = "false",
-           answerTracking = "true"
-         )
+GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", status = "enabled")
+GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", name = "Iris")
+GetForms("cizio7xeohwgc8k4g4koo008kkoocwg", page_size = 3, all_pages = FALSE)
 }
 }
