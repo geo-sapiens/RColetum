@@ -2,7 +2,7 @@ restGetFunction <- function(url, token, params = NULL) {
   # Makes a GET request to the Coletum REST API v2.
   # Returns the full parsed JSON response (list with $data and $pagination,
   # or a plain object for single-resource endpoints like /forms/{id}).
-  base_url <- "http://localhost/api/webservice/v2"
+  base_url <- "https://coletum.com/api/webservice/v2"
   full_url <- paste0(base_url, url)
 
   resp <- httr::GET(
