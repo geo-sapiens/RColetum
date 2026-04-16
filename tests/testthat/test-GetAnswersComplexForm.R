@@ -5,11 +5,10 @@ context("GetAnswers – Classic Rocks (complex nested form)")
 myExpectedClassicRocksMainDF <-
   structure(list(
     main_df_id = c("1.121101", "1.121093", "1.121042"),
-    f73b834tqaosgw4ogo8owsw8084gco8w =
-      c("Pink Floyd", "Bon jovi", "Lynyrd Skynyrd"),
-    f4jux5elihsowc40go44kkg0k8w0og4s.fbjgsktuozcgs4cwcc4ccw4g04gk0s0o =
+    artist_name66429 = c("Pink Floyd", "Bon jovi", "Lynyrd Skynyrd"),
+    active66430 = c(TRUE, TRUE, TRUE),
+    origin_localition66431.country66432 =
       c("Reino Unido", "Estados Unidos", "Estados Unidos"),
-    feek9ds2z2i0ooo4cwow08wcsk0kcsoo = c(TRUE, TRUE, TRUE),
     created_by_user_name = rep("André Smaniotto", 3),
     created_by_user_id   = rep(8403L, 3),
     created_at_source    = rep("web_private", 3),
@@ -31,30 +30,27 @@ myExpectedMembersActiveDF <-
                    "1.121093", "1.121093", "1.121093", "1.121093", "1.121093",
                    "1.121042", "1.121042", "1.121042", "1.121042", "1.121042",
                    "1.121042", "1.121042"),
-    fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fqi7y4hxhy4g00okc0k4o8okks8ck0so =
+    members66433.active66434 =
       c("Nick Mason", "Roger Waters", "David Gilmour",
         "Jon Bon Jovi", "David Bryan", "Tico Torres", "Hugh McDonald", "Phil X",
         "Gary Rossington", "Rickey Medlocke", "Johnny Van Zant",
         "Michael Cartellone", "Mark Matejka", "Peter Keys", "Keith Christopher"),
-    fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fqi7y4hxhy4g00okc0k4o8okks8ck0so_id =
-      as.character(1:15)),
+    members66433.active66434_id = as.character(1:15)),
   row.names = c(NA, -15L), class = "data.frame")
 
 # Expected nested df: Albums (multivalued group inside Music group)
 ## Created using dput()
 myExpectedAlbumsDF <-
   structure(list(
-    f9ay0ne4p9d8o8gosw0wc04gkssk84cg =
+    name66438 =
       c("The Dark Side of the Moon", "Wish You Were Here",
         "Slippery When Wet",
         "(Pronounced 'Lĕh-'nérd 'Skin-'nérd)", "Second Helping",
         "Nuthin' Fancy", "Gimme Back My Bullets", "Street Survivors"),
-    fe9g4cwakmu8kg80ksw8k08g80c4kwss =
-      c(1973L, 1975L, 1986L, 1973L, 1974L, 1975L, 1976L, 1977L),
+    year66439 = c(1973L, 1975L, 1986L, 1973L, 1974L, 1975L, 1976L, 1977L),
     main_df_id = c("1.121101", "1.121101", "1.121093",
                    "1.121042", "1.121042", "1.121042", "1.121042", "1.121042"),
-    fiidzigrbp3sccso8c80k0gk4gwkoswc.fabxjhu1pdqg48w8w0c8owcwccg0sw8g_id =
-      as.character(1:8)),
+    music66436.album66437_id = as.character(1:8)),
   row.names = c(NA, -8L), class = "data.frame")
 
 # ---------------------------------------------------------------------------
@@ -69,37 +65,37 @@ test_that("Classic Rocks nested dfs have correct names and row counts", {
   nested  <- result[[2]]
 
   expectedKeys <- c(
-    "fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fqi7y4hxhy4g00okc0k4o8okks8ck0so", # Members Active
-    "fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fjsydc0hjmnksks4s0wg84o8sk80k8g4", # Members Past
-    "fiidzigrbp3sccso8c80k0gk4gwkoswc.fabxjhu1pdqg48w8w0c8owcwccg0sw8g", # Albums
-    "f6ty4l0yisnswcogscgcw40kc4w8sc4w",                                   # Genres (relational)
-    "fqvyyfme97nk08cswso4gs0go4o080ws",                                   # Album Members
-    "fc9d266z44ygcgk84ckskscgw04go8gc"                                    # Instruments (relational)
+    "members66433.active66434", # Members Active
+    "members66433.past66435",   # Members Past
+    "music66436.album66437",    # Albums
+    "genres66441",              # Genres (relational)
+    "members66443",             # Album Members
+    "instruments66446"          # Instruments (relational)
   )
   expect_true(all(expectedKeys %in% names(nested)))
 
-  activeKey <- "fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fqi7y4hxhy4g00okc0k4o8okks8ck0so"
+  activeKey <- "members66433.active66434"
   expect_equal(nrow(nested[[activeKey]]), 15L)
 
-  albumKey <- "fiidzigrbp3sccso8c80k0gk4gwkoswc.fabxjhu1pdqg48w8w0c8owcwccg0sw8g"
+  albumKey <- "music66436.album66437"
   expect_equal(nrow(nested[[albumKey]]), 8L)
 })
 
 test_that("Classic Rocks Members Active nested df matches expected", {
   result <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
-  activeKey <- "fn0bcbxwf1xc0wkck4skcsc4cs8c48kk.fqi7y4hxhy4g00okc0k4o8okks8ck0so"
+  activeKey <- "members66433.active66434"
   expect_equal(result[[2]][[activeKey]], myExpectedMembersActiveDF)
 })
 
 test_that("Classic Rocks Albums nested df matches expected", {
   result <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
-  albumKey <- "fiidzigrbp3sccso8c80k0gk4gwkoswc.fabxjhu1pdqg48w8w0c8owcwccg0sw8g"
+  albumKey <- "music66436.album66437"
   expect_equal(result[[2]][[albumKey]], myExpectedAlbumsDF)
 })
 
 test_that("Classic Rocks Genres relational nested df has correct columns", {
   result   <- GetAnswers("cizio7xeohwgc8k4g4koo008kkoocwg", 5722)
-  genreKey <- "f6ty4l0yisnswcogscgcw40kc4w8sc4w"
+  genreKey <- "genres66441"
   genres   <- result[[2]][[genreKey]]
 
   expect_true(is.data.frame(genres))

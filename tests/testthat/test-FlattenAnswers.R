@@ -12,49 +12,44 @@ myExpectedStarWarsFlatDF <-
         "1.120985", "1.120985", "1.120985", "1.120985", "1.120985",
         "1.120984", "1.120984", "1.120984",
         "1.120978", "1.120978", "1.120978", "1.120978", "1.120978"),
-    answer.fmfowf7id0bkk044cgwocs8k0sookg0o =
+    answer.name66298 =
       c("R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2", "R2-D2",
         "Yoda", "Yoda", "Yoda", "Yoda", "Yoda",
         "Anakin Skywalker", "Anakin Skywalker", "Anakin Skywalker",
         "Luke Skywalker", "Luke Skywalker", "Luke Skywalker",
         "Luke Skywalker", "Luke Skywalker"),
-    answer.fpxmuognj7iso84g8okkkwkw84kg0g4g =
+    answer.height66299 =
       c(96L, 96L, 96L, 96L, 96L, 96L, 96L, 96L,
         66L, 66L, 66L, 66L, 66L,
         188L, 188L, 188L,
         172L, 172L, 172L, 172L, 172L),
-    answer.fta79hjw0x008ww8kkg48okow8w0ck0s =
+    answer.mass66300 =
       c(32L, 32L, 32L, 32L, 32L, 32L, 32L, 32L,
         17L, 17L, 17L, 17L, 17L,
         84L, 84L, 84L,
         77L, 77L, 77L, 77L, 77L),
-    answer.freqdbb2h7rk80gko888kcsg8w400488 =
+    answer.birth_year66380 =
       c(33, 33, 33, 33, 33, 33, 33, 33,
         896, 896, 896, 896, 896,
         41.9, 41.9, 41.9,
         19, 19, 19, 19, 19),
-    answer.fi84q7uwu014o840so4kko0k488skcgc =
+    answer.gender66302 =
       c("none", "none", "none", "none", "none", "none", "none", "none",
         "male", "male", "male", "male", "male",
         "male", "male", "male",
         "male", "male", "male", "male", "male"),
-    answer.fmeuy3h0jjf48c808k8ckgwso0oo4kcc.label =
+    answer.specie66303.label =
       c("Droid", "Droid", "Droid", "Droid", "Droid", "Droid", "Droid", "Droid",
         "Yoda's species", "Yoda's species", "Yoda's species",
         "Yoda's species", "Yoda's species",
         "Human", "Human", "Human",
         "Human", "Human", "Human", "Human", "Human"),
-    answer.fmeuy3h0jjf48c808k8ckgwso0oo4kcc.answer_id =
+    answer.specie66303.answer_id =
       c("1.120773", "1.120773", "1.120773", "1.120773",
         "1.120773", "1.120773", "1.120773", "1.120773",
         "1.120777", "1.120777", "1.120777", "1.120777", "1.120777",
         "1.120771", "1.120771", "1.120771",
         "1.120771", "1.120771", "1.120771", "1.120771", "1.120771"),
-    answer.fllaev0gfl1c4o8og08woogkokwco40g =
-      c(NA, NA, NA, NA, NA, NA, NA, NA,
-        NA, NA, NA, NA, NA,
-        NA, NA, NA,
-        19L, 19L, 19L, 19L, 19L),
     answer.created_by_user_name =
       rep("André Smaniotto", 21),
     answer.created_by_user_id =
@@ -77,7 +72,7 @@ myExpectedStarWarsFlatDF <-
       c(rep(NA_real_, 16), rep(-26.9075, 5)),
     answer.updated_at_coordinates.longitude =
       c(rep(NA_real_, 16), rep(-48.65393, 5)),
-    ftbz8288vmfkcgc0sok400c0wc8cskw8.label =
+    films66304.label =
       c("A New Hope", "Attack of the Clones", "Return of the Jedi",
         "Revenge of the Sith", "The Empire Strikes Back",
         "The Force Awakens", "The Last Jedi", "The Phantom Menace",
@@ -86,14 +81,13 @@ myExpectedStarWarsFlatDF <-
         "Attack of the Clones", "Revenge of the Sith", "The Phantom Menace",
         "A New Hope", "Return of the Jedi", "The Empire Strikes Back",
         "The Force Awakens", "The Last Jedi"),
-    ftbz8288vmfkcgc0sok400c0wc8cskw8.answer_id =
+    films66304.answer_id =
       c("1.120782", "1.120786", "1.120784", "1.120787", "1.120783",
         "1.120788", "1.120789", "1.120785",
         "1.120782", "1.120786", "1.120787", "1.120783", "1.120785",
         "1.120786", "1.120787", "1.120785",
         "1.120782", "1.120784", "1.120783", "1.120788", "1.120789"),
-    ftbz8288vmfkcgc0sok400c0wc8cskw8.ftbz8288vmfkcgc0sok400c0wc8cskw8_id =
-      as.character(1:21)),
+    films66304.films66304_id = as.character(1:21)),
   row.names = c(NA, -21L), class = "data.frame")
 
 # ---------------------------------------------------------------------------
@@ -104,9 +98,9 @@ test_that("FlattenAnswers with multivalued group (Storms 5719)", {
   expect_true(is.data.frame(flat))
   # Main-frame columns are prefixed with "answer."
   expect_true("answer.main_df_id" %in% names(flat))
-  expect_true("answer.f5wvgkdah048woco04404s8080gkcg8o" %in% names(flat))
+  expect_true("answer.name66415" %in% names(flat))
   # Nested group columns are present
-  expect_true("f16v0mc1e309w0kw4o40sggggo08wscc.fsbagnjk0nr4wgw0cgcgocwc800o88c4" %in% names(flat))
+  expect_true("infos66416.status66420" %in% names(flat))
   # Row count: 4 storms × multiple infos each
   expect_true(nrow(flat) > 4L)
 })

@@ -62,9 +62,7 @@ test_that("GetForm returns correct component structure for Iris (5705)", {
   expect_equal(components$type, c("select", "group", "group"))
   expect_equal(components$label, c("Specie", "Sepal", "Petal"))
   expect_equal(components$id,
-               c("fo8vt0bb4bxwcs4cs8kc0os08ss80w0o",
-                 "fs7zax1gguo04c44osc0gcc0so0w0sos",
-                 "fqiu1vv4sk34okgk0kcckg4c040oo4ko"))
+               c("specie66137", "sepal66138", "petal66141"))
 
   # Sepal group has 2 float children
   sepal <- components$components[[2]]

@@ -6,16 +6,12 @@ myExpectedAnswersIrisForm <-
   structure(list(
     main_df_id = c("1.121804", "1.121803", "1.121802",
                    "1.120620", "1.120619", "1.120617"),
-    fs7zax1gguo04c44osc0gcc0so0w0sos.f671ubqt3jn4sgo4c480cc4ossw44kwg =
-      c(5.8, 6.4, 4.9, 6.3, 7, 5.1),
-    fs7zax1gguo04c44osc0gcc0so0w0sos.flvxn5sw6mj480c84488wcw40gw0og8o =
-      c(2.7, 3.2, 3, 3.3, 3.2, 3.5),
-    fqiu1vv4sk34okgk0kcckg4c040oo4ko.fo089equ0nr4w08048kg8wcc0sg4kg0s =
-      c(5.1, 4.5, 1.4, 6, 4.7, 1.4),
-    fqiu1vv4sk34okgk0kcckg4c040oo4ko.fcsb34roww288oc48cokoo0kkckwgs40 =
-      c(1.9, 1.5, 0.2, 2.5, 1.4, 0.2),
-    fo8vt0bb4bxwcs4cs8kc0os08ss80w0o =
+    specie66137 =
       c("virginica", "versicolor", "setosa", "virginica", "versicolor", "setosa"),
+    sepal66138.length66139 = c(5.8, 6.4, 4.9, 6.3, 7, 5.1),
+    sepal66138.width66140  = c(2.7, 3.2, 3, 3.3, 3.2, 3.5),
+    petal66141.length66142 = c(5.1, 4.5, 1.4, 6, 4.7, 1.4),
+    petal66141.width66143  = c(1.9, 1.5, 0.2, 2.5, 1.4, 0.2),
     created_by_user_name = rep("André Smaniotto", 6),
     created_by_user_id   = rep(8403L, 6),
     created_at_source    = rep("web_private", 6),
@@ -34,17 +30,13 @@ myExpectedAnswersIrisForm <-
 myExpectedAnswersStarWarsMainDF <-
   structure(list(
     main_df_id = c("1.120986", "1.120985", "1.120984", "1.120978"),
-    fmfowf7id0bkk044cgwocs8k0sookg0o =
-      c("R2-D2", "Yoda", "Anakin Skywalker", "Luke Skywalker"),
-    fpxmuognj7iso84g8okkkwkw84kg0g4g = c(96L, 66L, 188L, 172L),
-    fta79hjw0x008ww8kkg48okow8w0ck0s = c(32L, 17L, 84L, 77L),
-    freqdbb2h7rk80gko888kcsg8w400488 = c(33, 896, 41.9, 19),
-    fi84q7uwu014o840so4kko0k488skcgc = c("none", "male", "male", "male"),
-    fmeuy3h0jjf48c808k8ckgwso0oo4kcc.label =
-      c("Droid", "Yoda's species", "Human", "Human"),
-    fmeuy3h0jjf48c808k8ckgwso0oo4kcc.answer_id =
-      c("1.120773", "1.120777", "1.120771", "1.120771"),
-    fllaev0gfl1c4o8og08woogkokwco40g = c(NA, NA, NA, 19L),
+    name66298 = c("R2-D2", "Yoda", "Anakin Skywalker", "Luke Skywalker"),
+    height66299 = c(96L, 66L, 188L, 172L),
+    mass66300   = c(32L, 17L, 84L, 77L),
+    birth_year66380 = c(33, 896, 41.9, 19),
+    gender66302 = c("none", "male", "male", "male"),
+    specie66303.label    = c("Droid", "Yoda's species", "Human", "Human"),
+    specie66303.answer_id = c("1.120773", "1.120777", "1.120771", "1.120771"),
     created_by_user_name = rep("André Smaniotto", 4),
     created_by_user_id   = rep(8403L, 4),
     created_at_source    = rep("web_private", 4),
@@ -79,8 +71,7 @@ myExpectedAnswersStarWarsFilmsDF <-
                    "1.120985", "1.120985", "1.120985", "1.120985", "1.120985",
                    "1.120984", "1.120984", "1.120984",
                    "1.120978", "1.120978", "1.120978", "1.120978", "1.120978"),
-    ftbz8288vmfkcgc0sok400c0wc8cskw8_id =
-      as.character(1:21)),
+    films66304_id = as.character(1:21)),
   row.names = c(NA, -21L), class = "data.frame")
 
 # ---------------------------------------------------------------------------
@@ -148,12 +139,11 @@ test_that("form with multivalued group (Storms 5719) returns list", {
   expect_true(is.data.frame(mainDf))
   expect_equal(nrow(mainDf), 4L)
   expect_equal(mainDf$main_df_id, c("1.120992", "1.120990", "1.120989", "1.120988"))
-  expect_equal(mainDf$f5wvgkdah048woco04404s8080gkcg8o,
-               c("Otto", "Bonnie", "Doris", "Amy"))
+  expect_equal(mainDf$name66415, c("Otto", "Bonnie", "Doris", "Amy"))
 
   nestedDfs <- result[[2]]
   expect_true(is.list(nestedDfs))
-  infosKey <- "f16v0mc1e309w0kw4o40sggggo08wscc"
+  infosKey <- "infos66416"
   expect_true(infosKey %in% names(nestedDfs))
   expect_equal(nrow(nestedDfs[[infosKey]]), 12L)
 })
@@ -163,7 +153,7 @@ test_that("form with relational fields (Star Wars 5713) returns correct list", {
   expect_true(is.list(result))
 
   expect_equal(result[[1]], myExpectedAnswersStarWarsMainDF)
-  expect_equal(result[[2]][["ftbz8288vmfkcgc0sok400c0wc8cskw8"]],
+  expect_equal(result[[2]][["films66304"]],
                myExpectedAnswersStarWarsFilmsDF)
 })
 
