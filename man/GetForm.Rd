@@ -30,7 +30,7 @@ specific form. This function replaces the former \code{GetFormStructure}.
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://coletum.com/api/webservice/v2}{API documentation}.
+\href{https://coletum.com/en_US/webservice/v2/docs}{API documentation}.
 }
 \examples{
 \donttest{

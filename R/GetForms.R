@@ -3,7 +3,7 @@
 #' Retrieve information about all forms in the account.
 #'
 #' To get more details about the fields provided by the result, please visit the
-#' \href{https://coletum.com/api/webservice/v2}{API documentation}.
+#' \href{https://coletum.com/en_US/webservice/v2/docs}{API documentation}.
 #'
 #' @param token String access token.
 #' @param status Optional filter. State of the form: \code{"enabled"} or

@@ -81,7 +81,7 @@ Get all the current answers of a specific form. This function calls
 }
 \details{
 To get more details about the fields provided by the result, please visit the
-\href{https://coletum.com/api/webservice/v2}{API documentation}.
+\href{https://coletum.com/en_US/webservice/v2/docs}{API documentation}.
 }
 \examples{
 \donttest{
