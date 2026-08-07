@@ -16,6 +16,8 @@ myExpectedForms <-
   "RColetum Tests"),
   version = c("1.5", "1.3", "1.0", "1.0", "1.2", "1.4", "1.2",
   "1.1", "1.1", "1.0", "1.0"),
+  answer_tracking = c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+  FALSE, FALSE, FALSE, FALSE),
   public_answers = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
   FALSE, FALSE, FALSE, FALSE)),
   class = "data.frame", row.names = c(NA, -11L))

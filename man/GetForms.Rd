@@ -34,8 +34,8 @@ only the page specified by \code{page}.}
 \value{
 A data frame with columns: \code{id}, \code{name},
   \code{description}, \code{status}, \code{category}, \code{version},
-  \code{public_answers}. Returns \code{NULL} with a warning if no forms are
-  found.
+  \code{answer_tracking}, \code{public_answers}. Returns \code{NULL} with a
+  warning if no forms are found.
 }
 \description{
 Retrieve information about all forms in the account.
