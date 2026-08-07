@@ -41,7 +41,7 @@
 #'
 #'   Metadata columns in the main data frame:
 #'   \code{main_df_id}, \code{created_by_user_name}, \code{created_by_user_id},
-#'   \code{created_at_source}, \code{created_at},
+#'   \code{created_at_source}, \code{created_at}, \code{created_at_device},
 #'   \code{created_at_coordinates.latitude},
 #'   \code{created_at_coordinates.longitude}, \code{updated_at},
 #'   \code{updated_at_coordinates.latitude},
@@ -195,6 +195,7 @@ GetAnswers <- function(token,
     "meta_data.created_by_user_id",
     "meta_data.created_at_source",
     "meta_data.created_at",
+    "meta_data.created_at_device",
     "created_at_coordinates.latitude",
     "created_at_coordinates.longitude",
     "meta_data.updated_at",
@@ -210,6 +211,7 @@ GetAnswers <- function(token,
     created_by_user_id   = "meta_data.created_by_user_id",
     created_at_source    = "meta_data.created_at_source",
     created_at           = "meta_data.created_at",
+    created_at_device    = "meta_data.created_at_device",
     updated_at           = "meta_data.updated_at"
   )
 
@@ -220,6 +222,7 @@ GetAnswers <- function(token,
   # Remove colon from timezone offsets in date columns (e.g. "+01:00" → "+0100")
   # so they can be parsed by R's date functions.
   resp$mainDf$created_at <- removeColonDate_ISO8601(resp$mainDf$created_at)
+  resp$mainDf$created_at_device <- removeColonDate_ISO8601(resp$mainDf$created_at_device)
   resp$mainDf$updated_at <- removeColonDate_ISO8601(resp$mainDf$updated_at)
 
   # Supplement nested dfs that are absent or structureless (0 columns) with
