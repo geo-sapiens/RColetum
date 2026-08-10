@@ -18,6 +18,9 @@ myExpectedAnswersIrisForm <-
     created_at = c("2018-05-30T11:05:08-0300", "2018-05-30T11:04:30-0300",
                    "2018-05-30T11:02:47-0300", "2018-05-24T17:01:06-0300",
                    "2018-05-24T17:00:39-0300", "2018-05-24T17:00:12-0300"),
+    created_at_device = c("2018-05-30T11:05:08-0300", "2018-05-30T11:04:30-0300",
+                          "2018-05-30T11:02:47-0300", "2018-05-24T17:01:06-0300",
+                          "2018-05-24T17:00:39-0300", "2018-05-24T17:00:12-0300"),
     created_at_coordinates.latitude  = rep(NA_real_, 6),
     created_at_coordinates.longitude = rep(NA_real_, 6),
     updated_at = c(NA, NA, NA, "2018-05-24T17:03:04-0300", NA, NA),
@@ -42,6 +45,8 @@ myExpectedAnswersStarWarsMainDF <-
     created_at_source    = rep("web_private", 4),
     created_at = c("2018-05-28T08:44:48-0300", "2018-05-28T08:43:26-0300",
                    "2018-05-28T08:42:22-0300", "2018-05-28T08:27:40-0300"),
+    created_at_device = c("2018-05-28T08:44:48-0300", "2018-05-28T08:43:26-0300",
+                          "2018-05-28T08:42:22-0300", "2018-05-28T08:27:40-0300"),
     created_at_coordinates.latitude  = rep(-26.9075, 4),
     created_at_coordinates.longitude = rep(-48.65393, 4),
     updated_at = c(NA, NA, NA, "2018-05-28T08:32:09-0300"),
@@ -189,4 +194,5 @@ test_that("empty result returns correct structure for simple form", {
   expect_equal(nrow(result), 0L)
   expect_true("main_df_id" %in% names(result))
   expect_true("created_at" %in% names(result))
+  expect_true("created_at_device" %in% names(result))
 })

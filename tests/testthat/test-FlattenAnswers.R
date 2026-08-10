@@ -61,6 +61,11 @@ myExpectedStarWarsFlatDF <-
         rep("2018-05-28T08:43:26-0300", 5),
         rep("2018-05-28T08:42:22-0300", 3),
         rep("2018-05-28T08:27:40-0300", 5)),
+    answer.created_at_device =
+      c(rep("2018-05-28T08:44:48-0300", 8),
+        rep("2018-05-28T08:43:26-0300", 5),
+        rep("2018-05-28T08:42:22-0300", 3),
+        rep("2018-05-28T08:27:40-0300", 5)),
     answer.created_at_coordinates.latitude =
       rep(-26.9075, 21),
     answer.created_at_coordinates.longitude =

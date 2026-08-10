@@ -1,6 +1,10 @@
 # RColetum 1.0.0.9000
 
-* 
+* Added the `created_at_device` metadata column to the main data frame
+  returned by `GetAnswers`, exposing the device-local creation timestamp
+  now returned by the webservice V2.
+* Documented the `answer_tracking` column in the `GetForms` return value,
+  reflecting the field now returned by the webservice V2.
 
 # RColetum 1.0.0
 

@@ -17,7 +17,8 @@ access quota is spent.}
 }
 \value{
 A list with elements: \code{id}, \code{name}, \code{description},
-  \code{status}, \code{category}, \code{version}, \code{public_answers},
+  \code{status}, \code{category}, \code{version}, \code{answer_tracking},
+  \code{public_answers},
   and \code{components} (a nested data frame representing the form's field
   schema, where each row is a component with columns \code{id},
   \code{type}, \code{label}, \code{help_block}, \code{maximum},

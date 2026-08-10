@@ -221,7 +221,7 @@ buildEmptyAnswerResult <- function(form_structure, groupTree) {
   result <- collectEmptyFields(form_structure, "answer")
 
   metaCols <- c("created_by_user_name", "created_by_user_id", "created_at_source",
-                "created_at",
+                "created_at", "created_at_device",
                 "created_at_coordinates.latitude", "created_at_coordinates.longitude",
                 "updated_at",
                 "updated_at_coordinates.latitude", "updated_at_coordinates.longitude")

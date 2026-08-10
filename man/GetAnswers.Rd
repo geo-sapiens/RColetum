@@ -69,7 +69,7 @@ A list with two elements when the form has groups or multivalued
 
   Metadata columns in the main data frame:
   \code{main_df_id}, \code{created_by_user_name}, \code{created_by_user_id},
-  \code{created_at_source}, \code{created_at},
+  \code{created_at_source}, \code{created_at}, \code{created_at_device},
   \code{created_at_coordinates.latitude},
   \code{created_at_coordinates.longitude}, \code{updated_at},
   \code{updated_at_coordinates.latitude},

@@ -14,6 +14,8 @@ myExpectedClassicRocksMainDF <-
     created_at_source    = rep("web_private", 3),
     created_at = c("2018-05-28T14:04:53-0300", "2018-05-28T13:49:14-0300",
                    "2018-05-28T11:49:03-0300"),
+    created_at_device = c("2018-05-28T14:04:53-0300", "2018-05-28T13:49:14-0300",
+                          "2018-05-28T11:49:03-0300"),
     created_at_coordinates.latitude  = rep(NA_real_, 3),
     created_at_coordinates.longitude = rep(NA_real_, 3),
     updated_at = c("2018-05-28T14:16:34-0300", "2018-05-28T13:50:54-0300",

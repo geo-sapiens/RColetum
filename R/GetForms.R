@@ -19,8 +19,8 @@
 #'
 #' @return A data frame with columns: \code{id}, \code{name},
 #'   \code{description}, \code{status}, \code{category}, \code{version},
-#'   \code{public_answers}. Returns \code{NULL} with a warning if no forms are
-#'   found.
+#'   \code{answer_tracking}, \code{public_answers}. Returns \code{NULL} with a
+#'   warning if no forms are found.
 #' @examples
 #' \donttest{
 #' GetForms("cizio7xeohwgc8k4g4koo008kkoocwg")
