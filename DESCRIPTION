@@ -20,6 +20,7 @@ Imports:
     httr, 
     jsonlite,
     dplyr,
-    stats
+    stats,
+    utils
 Suggests: testthat
 Config/roxygen2/version: 8.0.0
