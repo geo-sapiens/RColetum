@@ -156,6 +156,10 @@ collectEmptyFields <- function(components, parentName, isRoot = TRUE) {
     cId   <- components$componentId[i]
     cType <- components$type[i]
 
+    # Separators are section breaks: they hold no answers and have no
+    # maximum, which would otherwise classify them as multivalued.
+    if (identical(cType, "separator")) next
+
     if (identical(cType, "group")) {
       maxVal <- if ("maximum" %in% names(components)) components$maximum[i] else 1L
       isMultivalue <- is.null(maxVal) || is.na(maxVal) || maxVal != 1

@@ -1,5 +1,11 @@
 # RColetum 1.1.0.9000
 
+* `GetAnswers` now ignores components of type `separator` (section breaks)
+  in the form structure. Without this, each separator returned by the
+  webservice V2 produced an empty nested data frame, since separators have no
+  `maximum` and were classified as multivalued.
+* Documented `separator` components in the `GetForm` return value.
+
 # RColetum 1.1.0
 
 * Added the `created_at_device` metadata column to the main data frame
