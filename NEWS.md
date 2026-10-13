@@ -1,4 +1,4 @@
-# RColetum 1.1.0.9000
+# RColetum 1.2.0
 
 * All requests to the webservice V2 now send a `User-Agent` header with the
   package name and version (`RColetum/<version>`), so calls made through the
