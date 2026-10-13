@@ -3,8 +3,7 @@ context("User-Agent")
 test_that("User-Agent identifies the package and its version", {
   expect_identical(
     buildUserAgent(),
-    paste0("RColetum/", utils::packageVersion("RColetum"),
-           " (+https://github.com/geo-sapiens/RColetum)")
+    paste0("RColetum/", utils::packageVersion("RColetum"))
   )
 })
 

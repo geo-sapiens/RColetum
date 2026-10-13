@@ -38,8 +38,7 @@ restGetFunction <- function(url, token, params = NULL) {
 buildUserAgent <- function() {
   # Identifies the package and its version to the webservice, so calls made
   # through RColetum can be told apart from other integrations.
-  paste0("RColetum/", utils::packageVersion("RColetum"),
-         " (+https://github.com/geo-sapiens/RColetum)")
+  paste0("RColetum/", utils::packageVersion("RColetum"))
 }
 
 fetchAllPages <- function(url, token, params, all_pages, page, page_size) {
