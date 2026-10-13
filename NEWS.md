@@ -3,6 +3,11 @@
 * All requests to the webservice V2 now send a `User-Agent` header with the
   package name and version (`RColetum/<version>`), so calls made through the
   package can be identified in the account's access log.
+* `GetAnswers` now ignores components of type `separator` (section breaks)
+  in the form structure. Without this, each separator returned by the
+  webservice V2 produced an empty nested data frame, since separators have no
+  `maximum` and were classified as multivalued.
+* Documented `separator` components in the `GetForm` return value.
 
 # RColetum 1.1.0
 

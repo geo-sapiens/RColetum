@@ -23,7 +23,10 @@ A list with elements: \code{id}, \code{name}, \code{description},
   schema, where each row is a component with columns \code{id},
   \code{type}, \code{label}, \code{help_block}, \code{maximum},
   \code{minimum}, \code{visibility}, and — for group components —
-  \code{components}).
+  \code{components}). Section breaks come as components of type
+  \code{"separator"}, with only \code{id}, \code{type}, \code{label} and
+  \code{help_block}; they hold no answers and are ignored by
+  \code{GetAnswers}.
 }
 \description{
 Retrieves the metadata and complete component (field) structure of a
