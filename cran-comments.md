@@ -1,5 +1,5 @@
 ## Test environments
-* local macOS 26.4 (Apple M1), R 4.6.0
+* local macOS 26.4.1 (Apple M1), R 4.6.0
 * ubuntu 24.04 (on github-actions), R 4.6.1
 * R-hub v2 (on github-actions): linux (R-devel), windows (R-devel)
 * win-builder (devel)
